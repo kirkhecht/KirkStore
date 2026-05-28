@@ -13,6 +13,14 @@ from .utils import setup_logging, save_json
 
 log = setup_logging("phase4", "phase4.log")
 
+# ── Optional OT visual guide ───────────────────────────────────────────────────
+try:
+    from .ot_visual_guide import (build_prompt as _ot_build_prompt,
+                                   get_negative_prompt as _ot_get_negative)
+    _OT_GUIDE = True
+except ImportError:
+    _OT_GUIDE = False
+
 # ── Style modifiers by emotion ─────────────────────────────────────────────────
 _STYLE_MODS: dict[str, str] = {
     "dark_and_tense":  "dark and brooding, storm-lit, shadows dominate, chiaroscuro",
@@ -30,6 +38,16 @@ _NEGATIVE_PROMPT = (
     "floating objects, distorted anatomy, modern elements, low quality, "
     "blurry, overexposed, plastic look"
 )
+
+
+def _ot_prompt(scene: dict) -> str:
+    """Build an OT-specific prompt using the visual guide."""
+    section_title = scene.get("section_title") or scene.get("chapter_title", "")
+    chapter_num   = scene.get("chapter", 0)
+    emotion       = scene.get("emotion", "solemn")
+    setting       = scene.get("visual_description")
+    key_figures   = scene.get("key_figures")
+    return _ot_build_prompt(section_title, chapter_num, emotion, setting, key_figures)
 
 
 def _heuristic_prompt(scene: dict) -> str:
@@ -100,11 +118,11 @@ Scenes:
     return [_heuristic_prompt(s) for s in scenes]
 
 
-def enrich_scenes(scenes: list[dict], use_ai: bool = USE_AI_PROMPTS) -> list[dict]:
+def enrich_scenes(scenes: list[dict], use_ai: bool = USE_AI_PROMPTS,
+                  use_ot: bool = False) -> list[dict]:
     """Add enriched image_prompt field to each scene."""
     if use_ai and scenes:
         log.info("  Generating prompts with Claude API (%d scenes)…", len(scenes))
-        # Process in batches of 20 to stay within token limits
         batch_size = 20
         ai_prompts = []
         for i in range(0, len(scenes), batch_size):
@@ -114,6 +132,10 @@ def enrich_scenes(scenes: list[dict], use_ai: bool = USE_AI_PROMPTS) -> list[dic
             ai_prompts.extend(_ai_batch_prompts(batch))
         for scene, prompt in zip(scenes, ai_prompts):
             scene["image_prompt"] = prompt
+    elif use_ot and _OT_GUIDE:
+        log.info("  Generating OT visual guide prompts (%d scenes)…", len(scenes))
+        for scene in scenes:
+            scene["image_prompt"] = _ot_prompt(scene)
     else:
         log.info("  Generating prompts with heuristic templates (%d scenes)…", len(scenes))
         for scene in scenes:
@@ -122,10 +144,14 @@ def enrich_scenes(scenes: list[dict], use_ai: bool = USE_AI_PROMPTS) -> list[dic
     return scenes
 
 
-def run(all_scenes: dict[int, list[dict]]) -> dict[int, list[dict]]:
+def run(all_scenes: dict[int, list[dict]],
+        use_ot: bool = False) -> dict[int, list[dict]]:
     """Enrich all scenes with finalised image prompts. Writes image_prompts.csv."""
     log.info("=== Phase 4: Image Prompt Generation ===")
-    log.info("AI prompts: %s", "enabled (Claude)" if USE_AI_PROMPTS else "disabled (heuristic)")
+    mode = "Claude API" if USE_AI_PROMPTS else ("OT visual guide" if use_ot else "heuristic")
+    log.info("Prompt mode: %s", mode)
+
+    negative = _ot_get_negative() if (use_ot and _OT_GUIDE) else _NEGATIVE_PROMPT
 
     DIRS["image_prompts"].mkdir(parents=True, exist_ok=True)
 
@@ -134,7 +160,7 @@ def run(all_scenes: dict[int, list[dict]]) -> dict[int, list[dict]]:
 
     for ch_num, scenes in all_scenes.items():
         log.info("[%02d] %d scenes", ch_num, len(scenes))
-        scenes = enrich_scenes(list(scenes))
+        scenes = enrich_scenes(list(scenes), use_ot=use_ot)
         enriched[ch_num] = scenes
 
         for s in scenes:
@@ -142,10 +168,11 @@ def run(all_scenes: dict[int, list[dict]]) -> dict[int, list[dict]]:
                 "scene_number": s["scene_number"],
                 "chapter":      s["chapter"],
                 "chapter_title": s["chapter_title"],
+                "section_title": s.get("section_title", ""),
                 "emotion":      s["emotion"],
                 "motion":       s["motion_recommendation"],
                 "prompt":       s["image_prompt"],
-                "negative_prompt": _NEGATIVE_PROMPT,
+                "negative_prompt": negative,
                 "start":        s["start"],
                 "end":          s["end"],
                 "duration":     s["duration"],

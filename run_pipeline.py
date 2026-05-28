@@ -14,6 +14,7 @@ Usage:
 Options:
   --source-dir PATH    Directory containing your ElevenLabs MP3 files
   --demo               Run the full pipeline on synthetic demo data
+  --ot                 Enable Old Testament mode: structured sections + OT visual prompts
   --whisper MODEL      Whisper model to use (tiny|base|small|medium|large) [default: base]
   --ai                 Use Claude API for image prompt generation (requires ANTHROPIC_API_KEY)
   --skip-transcription Skip Whisper transcription (useful if transcripts already exist)
@@ -61,6 +62,8 @@ def parse_args() -> argparse.Namespace:
                    help="Directory containing ElevenLabs MP3 narration files")
     p.add_argument("--demo",        action="store_true",
                    help="Run with built-in demo data (no real MP3s needed)")
+    p.add_argument("--ot",          action="store_true",
+                   help="Old Testament mode: load section structure + use OT visual guide")
     p.add_argument("--whisper",     default=WHISPER_MODEL,
                    choices=["tiny", "base", "small", "medium", "large"],
                    help="Whisper model size (default: base)")
@@ -131,16 +134,27 @@ def main() -> None:
             if tp.exists():
                 ch["transcript_path"] = str(tp)
 
+    # ── OT mode: load structured chapter/section data ────────────────────────
+    ot_chapters: dict = {}
+    if args.ot:
+        banner("OT Mode — Loading scripture structure")
+        from pipeline.parse_script import run as ot_script_run
+        ot_list = ot_script_run()
+        ot_chapters = {c["chapter_number"]: c for c in ot_list}
+        log.info("OT chapters loaded: %d chapters, %d total sections",
+                 len(ot_chapters),
+                 sum(len(c["sections"]) for c in ot_list))
+
     # ── Phase 3 — Scene Segmentation ─────────────────────────────────────────
     all_scenes: dict[int, list[dict]] = {}
     if 3 in phases:
         banner("Phase 3 — Scene Segmentation")
-        all_scenes = phase3_segment.run(chapters)
+        all_scenes = phase3_segment.run(chapters, ot_chapters=ot_chapters or None)
 
     # ── Phase 4 — Image Prompt Generation ────────────────────────────────────
     if 4 in phases and all_scenes:
         banner("Phase 4 — Image Prompt Generation")
-        all_scenes = phase4_prompts.run(all_scenes)
+        all_scenes = phase4_prompts.run(all_scenes, use_ot=args.ot)
 
     # ── Phase 5 — Subtitle Generation ────────────────────────────────────────
     if 5 in phases and all_scenes:

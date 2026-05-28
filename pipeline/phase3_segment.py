@@ -175,7 +175,19 @@ def estimate_scenes_from_duration(duration: float, chapter_num: int,
     return scenes
 
 
-def run(chapters: list[dict]) -> dict[int, list[dict]]:
+def _annotate_sections(scenes: list[dict], sections: list[dict]) -> None:
+    """Proportionally assign section_title and key_figures to scenes."""
+    n, k = len(scenes), len(sections)
+    if not n or not k:
+        return
+    for i, scene in enumerate(scenes):
+        sec = sections[min(int(i / n * k), k - 1)]
+        scene["section_title"] = sec["title"]
+        scene["key_figures"]   = sec.get("key_figures", [])
+
+
+def run(chapters: list[dict],
+        ot_chapters: dict | None = None) -> dict[int, list[dict]]:
     """Segment all chapters. Returns {chapter_num: [scene, ...]}."""
     log.info("=== Phase 3: Scene Segmentation ===")
     all_scenes: dict[int, list[dict]] = {}
@@ -202,6 +214,12 @@ def run(chapters: list[dict]) -> dict[int, list[dict]]:
         else:
             scenes = estimate_scenes_from_duration(duration, num, title)
             log.info("  %d scenes estimated (no timestamps)", len(scenes))
+
+        if ot_chapters and num in ot_chapters:
+            sections = ot_chapters[num].get("sections", [])
+            if sections:
+                _annotate_sections(scenes, sections)
+                log.info("  Annotated with %d OT sections", len(sections))
 
         out = DIRS["scene_json"] / f"chapter_{num:02d}_scenes.json"
         save_json(scenes, out)
