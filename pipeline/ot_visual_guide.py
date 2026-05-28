@@ -23,12 +23,12 @@ OT_BASE_STYLE = (
     "shot on cinema camera, photographic depth of field, "
     "real Levantine rocky limestone landscape, authentic Israeli hill country, "
     "ancient stone terraced hillsides, scattered scrub vegetation, "
-    "dramatic natural lighting, warm golden hour sun, "
+    "natural sunlight from upper left, warm golden hour color temperature, "
     "visible fabric texture (rough linen weave, coarse wool, frayed edges), "
     "realistic weathered skin with visible pores, slightly oily sun-darkened skin, "
     "dust on clothing and sandals, authentic period-accurate Middle Eastern, "
-    "foreground subject sharp, background atmospheric haze, "
-    "wide angle cinematic composition, no text, no watermarks"
+    "character face clearly visible and sharply in focus, "
+    "cinematic composition, no text, no watermarks, no glowing orbs, no lens flare"
 )
 
 # Comprehensive negative prompt (Part 11 of the Visual Bible)
@@ -51,15 +51,20 @@ OT_NEGATIVE = (
     "modern buildings, glass, concrete, steel, "
     "modern weapons, gun, rifle, pistol, firearm, "
     "text overlays, watermark, signature, logo, copyright, "
-    "nudity, sexual content, explicit, graphic violence, gore"
+    "nudity, sexual content, explicit, graphic violence, gore, "
+    "supernatural light beam, divine glow beam, glowing pillar of light, lens flare, "
+    "figure walking away from camera, back of head only, faceless silhouette, "
+    "person seen only from behind with no face visible"
 )
 
 # Inline style anchor appended inside every Flux prompt
 OT_INLINE_NEGATIVE = (
     "ultra photorealistic photography only, not painterly, not illustrated, not painted, "
+    "no supernatural light beams unless scene explicitly calls for it, "
     "no fantasy elements, no European medieval aesthetics, "
     "no modern elements, no anime or illustration style, authentic ancient Middle Eastern appearance, "
-    "Middle Eastern Levantine features on all Hebrew characters, not European"
+    "Middle Eastern Levantine features on all Hebrew characters, not European, "
+    "show the character's face clearly — not just their back"
 )
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -888,16 +893,16 @@ STRUCTURES: dict[str, str] = {
 # ══════════════════════════════════════════════════════════════════════════════
 
 EMOTION_STYLE: dict[str, str] = {
-    "awe":            "divine golden light breaking through darkness, volumetric god-rays, vast scale, sacred haze",
-    "dark_and_tense": "deep shadow and smoke, storm clouds, blood-red sky at horizon, high contrast chiaroscuro",
-    "dramatic":       "high contrast directional light, deep shadow, Caravaggio chiaroscuro, intense focal moment",
-    "hopeful":        "warm sunrise light, soft golden hour glow, open horizon, optimistic framing, warm honey tones",
-    "solemn":         "muted warm tones, single oil lamp or torch light, heavy atmosphere, still composition",
-    "mysterious":     "deep shadow, flickering torchlight, desert night, starlit sky, hidden forms in darkness",
-    "triumphant":     "golden light, wide epic scope, raised banners, crowds, warm triumphant honey-gold palette",
-    "epic_grandeur":  "sweeping aerial perspective, monumental architecture, vast landscape, awe-inspiring scale",
-    "grief":          "grey cold tones, hunched figures, ash and smoke, tears on weathered faces, broken forms",
-    "supernatural":   "unearthly luminous amber and white, impossible radiance, diffuse sacred haze, god-rays",
+    "awe":            "character's face showing wonder and awe, wide eyes, natural light from open sky above",
+    "dark_and_tense": "overcast sky, harsh midday shadows, tense expression on character's face, dust and heat",
+    "dramatic":       "strong directional natural sunlight casting deep shadows, character's face half-lit, intense eyes",
+    "hopeful":        "warm sunrise light on character's face, open horizon behind, optimistic expression, honey tones",
+    "solemn":         "soft diffused daylight, serious weathered expression on face, muted earth tones, still posture",
+    "mysterious":     "late dusk light, character's face lit from one side, thoughtful or searching expression",
+    "triumphant":     "golden afternoon sun on face, character looking up or forward, wide warm landscape behind",
+    "epic_grandeur":  "sweeping landscape behind character, natural golden hour, face showing determination or awe",
+    "grief":          "overcast grey light, tears on weathered face, head bowed, broken posture, cold tones",
+    "supernatural":   "character's face lit by otherworldly golden glow, awestruck expression, unearthly light source",
 }
 
 CHAPTER_ENVIRONMENT: dict[int, str] = {
@@ -966,10 +971,10 @@ SECTION_VISUAL: dict[str, str] = {
 
     # ── Chapter 1: Creation to the Flood ──────────────────────────────────────
     "Cold Open": (
-        "vast cosmic void, infinite black space with faintest blue mist, "
-        "single beam of warm golden light beginning to pierce the darkness, "
-        "volumetric light rays, infinite darkness before creation, "
-        "deep navy to gold gradient, cinematic wide shot, sacred restraint"
+        "sweeping aerial view of ancient Levantine landscape at golden hour, "
+        "rolling limestone hills, scattered ancient olive trees, "
+        "vast empty horizon, no cities or roads, primordial wilderness, "
+        "warm amber sunlight raking across rocky terrain, long shadows"
     ),
     "The Creation": (
         "first light of creation bursting through cosmic darkness, divine golden radiance, "
@@ -1647,14 +1652,14 @@ SECTION_VISUAL: dict[str, str] = {
 
 # Camera angle rotation — cycles per scene so consecutive frames differ visually
 _ANGLES = [
-    "wide establishing shot, low horizon line",
-    "medium shot, subject fills lower third",
-    "close-up on hands and face, shallow depth of field",
-    "low angle looking up, dramatic sky above",
-    "over-the-shoulder view, subject facing away toward distant landscape",
-    "aerial wide angle, vast landscape below",
-    "tight medium shot, strong side lighting",
-    "foreground rocks framing distant figure",
+    "medium shot, character facing camera three-quarters, face clearly lit by natural sunlight",
+    "close-up portrait, character's weathered face sharp in focus, bokeh background",
+    "wide establishing shot, character in foreground facing viewer, landscape behind",
+    "low angle medium shot, character looking directly into camera, strong jaw and eyes visible",
+    "over-the-shoulder shot looking at distant landscape, face in three-quarter profile",
+    "medium close-up, character's face and upper body, natural side lighting on facial features",
+    "two-shot medium, two characters facing each other, both faces visible",
+    "environmental portrait, character standing in landscape, face turned toward camera",
 ]
 
 # Keyword → visual phrase mapping for narration-driven scene specificity
@@ -1695,8 +1700,8 @@ _NARRATION_VISUALS: list[tuple[str, str]] = [
     ("kingdom",          "ancient hilltop city, stone walls, distant plains"),
     ("nation",           "large gathering of ancient people, desert camp, many tents"),
     ("people",           "crowd of ancient Semitic people, period dress, sun-drenched"),
-    ("voice",            "lone figure in open landscape, looking upward, divine light"),
-    ("word",             "ancient scribe writing on parchment by torchlight"),
+    ("voice",            "close-up of ancient person's face, eyes wide, looking upward in awe, open sky above"),
+    ("word",             "ancient scribe writing on parchment, face focused by daylight from doorway"),
     ("covenant",         "stone altar with sacred fire, two figures in solemn agreement"),
     ("sacrifice",        "stone altar on rocky hilltop, smoke rising into dawn sky"),
     ("angel",            "radiant figure in brilliant white light, rocky landscape"),
@@ -1708,17 +1713,17 @@ _NARRATION_VISUALS: list[tuple[str, str]] = [
     ("return",           "long road home, ancient city walls in distance, twilight"),
     # Broad fallback for abstract/short narration that didn't hit a specific keyword
     ("fall and rise",    "ancient walled city, dramatic sky, cycle of history"),
-    ("creator",          "vast primordial landscape, divine golden light on horizon"),
-    ("lord god",         "lone figure kneeling in awe, overwhelming golden divine light"),
-    ("the deep",         "infinite dark primordial ocean, first light touching water"),
+    ("creator",          "vast primordial Levantine landscape at golden hour, no human civilization"),
+    ("lord god",         "close-up of ancient person's face turned upward in reverence, warm natural light"),
+    ("the deep",         "ancient rocky coastline, dark storm sea, dramatic clouds, spray on rocks"),
     ("refused",          "lone figure standing firm, desolate rocky landscape, storm"),
     ("walked away",      "long empty road disappearing to horizon, ancient landscape"),
     ("turned against",   "crowd of ancient figures in conflict, dusty ancient square"),
     # Creation / divine phenomena
-    ("let there be",     "moment of creation, divine light splitting primordial darkness"),
-    ("in the beginning", "void before creation, primordial darkness, first light emerging"),
-    ("light",            "brilliant shaft of divine light piercing deep darkness, volumetric rays"),
-    ("darkness",         "total darkness, deep black sky, single distant torch or starlight"),
+    ("let there be",     "ancient landscape at the moment of sunrise, first rays of light breaking over limestone hills"),
+    ("in the beginning", "vast primordial wilderness, untouched ancient landscape, no buildings or roads"),
+    ("light",            "warm golden sunlight breaking over rocky horizon, long shadows on ancient terrain"),
+    ("darkness",         "ancient figure holding oil lamp at night, face lit from below, rocky surroundings"),
     ("heavens",          "sweeping view of ancient night sky, brilliant stars, Milky Way arc"),
     ("waters",           "primordial waters, misty ancient sea, horizon vanishing in haze"),
     ("sea",              "ancient coastline, dramatic waves crashing on rocky shore"),
