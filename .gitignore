@@ -1,6 +1,9 @@
 # Generated pipeline outputs
 project/
 
+# Audio source files (large binaries — keep local only)
+audio/
+
 # Python
 __pycache__/
 *.py[cod]
