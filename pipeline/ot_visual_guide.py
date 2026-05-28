@@ -274,6 +274,25 @@ CHARACTER_APPEARANCE: dict[str, str] = {
         "fine robes with embroidered borders, biblical Boaz, photorealistic"
     ),
 
+    # ── Sarai / Abram pre-rename variants ────────────────────────────────────
+    "Sarai": (
+        "remarkably beautiful Hebrew woman, long dark hair under headcovering, "
+        "refined Middle Eastern features, layered fine robes, "
+        "biblical Sarai (before renaming to Sarah), photorealistic"
+    ),
+    # ── Exodus craftsmen ──────────────────────────────────────────────────────
+    "Bezalel": (
+        "skilled Hebrew craftsman, dark beard, intelligent creative eyes, "
+        "hands stained with dye and metalwork, working apron over tunic, "
+        "biblical Bezalel the craftsman of the Tabernacle, photorealistic"
+    ),
+    # ── Numbers: Balaam ───────────────────────────────────────────────────────
+    "Balaam": (
+        "Aramean diviner and prophet, long beard, turbaned, Mesopotamian-style robes, "
+        "staff in hand, complex conflicted expression, "
+        "biblical Balaam, photorealistic"
+    ),
+
     # ── Samuel's Era ──────────────────────────────────────────────────────────
     "Hannah": (
         "young Hebrew woman, careworn gentle face, anguished prayer, "

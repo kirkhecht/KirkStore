@@ -81,6 +81,7 @@ from pipeline import (
     phase5_subtitles,
     phase6_ffmpeg,
     phase7_dashboard,
+    phase8a_char_refs,
     phase8_images,
 )
 from pipeline.config import DIRS, WHISPER_MODEL
@@ -108,8 +109,9 @@ def parse_args() -> argparse.Namespace:
                    help="Enable Claude API for image prompt generation")
     p.add_argument("--skip-transcription", action="store_true",
                    help="Skip Whisper step (use existing transcripts)")
-    p.add_argument("--phases",      default="1,2,3,4,5,6,7,8",
-                   help="Comma-separated phase numbers to run (default: all)")
+    p.add_argument("--phases",      default="1,2,3,4,5,6,7,8a,8",
+                   help="Comma-separated phase numbers to run (default: all). "
+                        "8a=character portrait generation, 8=scene image generation")
     p.add_argument("--project-root", type=Path, default=None,
                    help="Override project output directory")
     return p.parse_args()
@@ -135,7 +137,13 @@ def main() -> None:
     elif args.ai:
         log.warning("--ai flag set but ANTHROPIC_API_KEY not found. Heuristic prompts will be used.")
 
-    phases = set(int(x) for x in args.phases.split(",") if x.strip().isdigit())
+    raw_phases = [x.strip() for x in args.phases.split(",") if x.strip()]
+    phases: set[int | str] = set()
+    for p_str in raw_phases:
+        if p_str == "8a":
+            phases.add("8a")
+        elif p_str.isdigit():
+            phases.add(int(p_str))
 
     # ── Initialise directories ────────────────────────────────────────────────
     create_all_dirs()
@@ -220,9 +228,14 @@ def main() -> None:
         banner("Phase 7 — Production Dashboard")
         phase7_dashboard.run(chapters, all_scenes)
 
+    # ── Phase 8a — Character Reference Portrait Generation ───────────────────
+    if "8a" in phases and all_scenes:
+        banner("Phase 8a — Character Reference Portrait Generation")
+        phase8a_char_refs.run(all_scenes)
+
     # ── Phase 8 — Image Generation ────────────────────────────────────────────
     if 8 in phases and all_scenes:
-        banner("Phase 8 — Image Generation (Flux Dev via Replicate)")
+        banner("Phase 8 — Image Generation (Flux Dev + Kontext via Replicate)")
         phase8_images.run(all_scenes)
 
     # ── Summary ───────────────────────────────────────────────────────────────

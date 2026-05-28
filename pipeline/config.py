@@ -11,6 +11,7 @@ DIRS = {
     "scene_json":    PROJECT_ROOT / "scene_json",
     "image_prompts": PROJECT_ROOT / "image_prompts",
     "images":        PROJECT_ROOT / "images",
+    "char_refs":     PROJECT_ROOT / "character_refs",
     "subtitles":     PROJECT_ROOT / "subtitles",
     "ffmpeg":        PROJECT_ROOT / "ffmpeg",
     "exports":       PROJECT_ROOT / "exports",
@@ -62,6 +63,7 @@ USE_AI_PROMPTS    = bool(ANTHROPIC_API_KEY)
 # ── Replicate / image generation ──────────────────────────────────────────────
 REPLICATE_API_KEY    = os.getenv("REPLICATE_API_KEY", "")
 IMAGE_MODEL          = "black-forest-labs/flux-dev"
+IMAGE_KONTEXT_MODEL  = "black-forest-labs/flux-kontext-dev"  # for character consistency
 IMAGE_WIDTH          = 1344   # 16:9 at ~720p equivalent for Flux
 IMAGE_HEIGHT         = 768
 IMAGE_STEPS          = 28
