@@ -21,14 +21,14 @@ OT_BASE_STYLE = (
     "ultra photorealistic, hyperrealistic cinematic photograph, "
     "sharp focus, 8K resolution, real film photography quality, "
     "shot on cinema camera, photographic depth of field, "
-    "real Levantine rocky limestone landscape, authentic Israeli hill country, "
-    "ancient stone terraced hillsides, scattered scrub vegetation, "
     "natural sunlight from upper left, warm golden hour color temperature, "
-    "visible fabric texture (rough linen weave, coarse wool, frayed edges), "
-    "realistic weathered skin with visible pores, slightly oily sun-darkened skin, "
-    "dust on clothing and sandals, authentic period-accurate Middle Eastern, "
-    "character face clearly visible and sharply in focus, "
-    "cinematic composition, no text, no watermarks, no glowing orbs, no lens flare"
+    "visible rough linen and coarse wool fabric texture, frayed worn edges, leather belt, "
+    "realistic weathered olive skin with visible pores, slightly sun-darkened, "
+    "thick full beard and wild unkempt dark hair on men, "
+    "dust and wear on clothing, worn sandals, authentic period-accurate Middle Eastern, "
+    "character's face sharp and clearly lit, both eyes visible, "
+    "soft bokeh background with hazy distant mountains or landscape, "
+    "cinematic composition, no text, no watermarks, no glowing orbs"
 )
 
 # Comprehensive negative prompt (Part 11 of the Visual Bible)
@@ -893,16 +893,16 @@ STRUCTURES: dict[str, str] = {
 # ══════════════════════════════════════════════════════════════════════════════
 
 EMOTION_STYLE: dict[str, str] = {
-    "awe":            "character's face showing wonder and awe, wide eyes, natural light from open sky above",
-    "dark_and_tense": "overcast sky, harsh midday shadows, tense expression on character's face, dust and heat",
-    "dramatic":       "strong directional natural sunlight casting deep shadows, character's face half-lit, intense eyes",
-    "hopeful":        "warm sunrise light on character's face, open horizon behind, optimistic expression, honey tones",
-    "solemn":         "soft diffused daylight, serious weathered expression on face, muted earth tones, still posture",
-    "mysterious":     "late dusk light, character's face lit from one side, thoughtful or searching expression",
-    "triumphant":     "golden afternoon sun on face, character looking up or forward, wide warm landscape behind",
-    "epic_grandeur":  "sweeping landscape behind character, natural golden hour, face showing determination or awe",
-    "grief":          "overcast grey light, tears on weathered face, head bowed, broken posture, cold tones",
-    "supernatural":   "character's face lit by otherworldly golden glow, awestruck expression, unearthly light source",
+    "awe":            "character's face showing wonder, mouth slightly open, natural sky light, eyes wide",
+    "dark_and_tense": "overcast harsh light, tense jaw, narrowed eyes, dust and heat on face",
+    "dramatic":       "strong side sunlight, half-lit weathered face, deep eye shadow, intense gaze into distance",
+    "hopeful":        "soft warm sunrise on face, open expression, honey-gold tones, optimistic eyes",
+    "solemn":         "diffused overcast daylight, serious grave expression, muted earth tones, still composed posture",
+    "mysterious":     "torchlight or oil lamp from below illuminating face, one side lit one side dark, dusk",
+    "triumphant":     "golden afternoon sun on upturned face, wide smile or exultant expression, warm amber light",
+    "epic_grandeur":  "face lit by golden hour sun, jaw set with determination, vast ancient landscape behind",
+    "grief":          "overcast grey cold light, tears on weathered cheeks, head bowed, broken posture",
+    "supernatural":   "face lit by impossible unearthly golden radiance from above, awestruck open-mouthed expression, dramatic golden clouds overhead",
 }
 
 CHAPTER_ENVIRONMENT: dict[int, str] = {
@@ -1658,8 +1658,8 @@ _ANGLES = [
     "low angle medium shot, character looking directly into camera, strong jaw and eyes visible",
     "over-the-shoulder shot looking at distant landscape, face in three-quarter profile",
     "medium close-up, character's face and upper body, natural side lighting on facial features",
-    "two-shot medium, two characters facing each other, both faces visible",
-    "environmental portrait, character standing in landscape, face turned toward camera",
+    "tight two-shot, two characters facing each other in conversation, both faces fully lit and visible, ancient setting",
+    "environmental portrait, character standing in rocky landscape, face turned three-quarters toward camera, bokeh background",
 ]
 
 # Keyword → visual phrase mapping for narration-driven scene specificity
@@ -1745,8 +1745,25 @@ _NARRATION_VISUALS: list[tuple[str, str]] = [
     ("bow",              "ancient archer with composite bow, desert landscape"),
     ("ship",             "ancient wooden vessel on stormy sea, waves crashing"),
     ("city",             "ancient walled city on hilltop, stone buildings, bustling"),
-    ("born",             "stone house interior, newborn, lamplight, women attending"),
-    ("died",             "mourning scene, figures in sackcloth, ancient burial preparation"),
+    ("born",             "dim ancient stone house interior, newborn, warm oil lamp light, women attending, dark fabric walls"),
+    ("died",             "mourning figures in rough sackcloth, ash on faces, desolate ancient courtyard"),
+    # Interior scenes
+    ("cook",             "dark ancient tent interior with hanging fabric walls, woman cooking flatbread on clay griddle, warm fire glow on face, steam rising"),
+    ("meal",             "ancient tent interior, figures reclining on rugs, clay bowls of food, warm oil lamp light, both faces visible"),
+    ("eat",              "intimate ancient meal scene, figures facing each other over food, warm firelight, dark tent interior"),
+    ("feast",            "crowded ancient stone hall, long low tables, many figures eating, torch-lit interior, lively faces"),
+    ("sold",             "ancient marketplace transaction, two men facing each other, one handing coins, stone market stalls behind"),
+    ("bought",           "ancient marketplace, merchant and buyer close together, both faces visible, stone arch"),
+    ("wept",             "close-up of weathered bearded face with tears, hand covering face, grief-stricken expression"),
+    ("begged",           "man kneeling before standing figures, face upturned in supplication, ancient stone courtyard"),
+    ("bowed",            "figure bowing low before standing person, face turned upward, stone floor, ancient interior"),
+    ("spoke",            "medium two-shot, one figure speaking animatedly to another, both faces visible, outdoor ancient setting"),
+    ("said",             "medium shot of speaking figure, face animated, direct gaze, period authentic setting"),
+    ("answered",         "two-shot conversation, one figure responding, faces close, stone wall or tent behind"),
+    ("crowd",            "group of bearded Middle Eastern men, all faces visible, torches lit, ancient stone city at dusk"),
+    ("people gathered",  "large assembly of ancient Semitic people, all facing same direction, dust and sun"),
+    ("torch",            "torch-lit scene, multiple bearded faces illuminated by warm flame light, ancient city backdrop"),
+    ("night",            "torch-lit ancient stone courtyard at night, multiple figures with faces lit by warm flame glow"),
     ("sun",              "blazing Middle Eastern sun, heat haze, ancient arid landscape"),
     ("moon",             "full moon over ancient Levantine landscape, silhouetted palm trees"),
     ("star",             "night sky filled with stars, Milky Way arc, figure looking up"),
