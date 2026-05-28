@@ -4,13 +4,13 @@ Old Testament Documentary — Master Visual Reference Bible
 Single source of truth for all character, location, object, and atmospheric
 visualization across the Old Testament Documentary.
 
-Aesthetic target: @TheBibleWalkReal cinematic biblical realism —
-warm earth-toned painterly realism, period-accurate Middle Eastern features,
-authentic costuming, real Levantine landscapes, golden-hour lighting,
-sacred restraint in supernatural depiction.
+Aesthetic target: @TheBibleWalkReal — ultra-photorealistic cinematic photography,
+indistinguishable from a real high-budget film set photograph. NOT painterly,
+NOT illustrated. Looks like actual DSLR/cinema camera footage of real actors
+in real Levantine landscapes with dramatic natural lighting.
 
-Quality references: The Chosen, Risen, Kingdom of Heaven (Ridley Scott),
-Caravaggio chiaroscuro for intimate scenes, Cecil B. DeMille epics for scale.
+Quality references: The Chosen (TV series), Risen (2016 film),
+Kingdom of Heaven (Ridley Scott) — all treated as if photographed in real locations.
 """
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -18,23 +18,29 @@ Caravaggio chiaroscuro for intimate scenes, Cecil B. DeMille epics for scale.
 # ══════════════════════════════════════════════════════════════════════════════
 
 OT_BASE_STYLE = (
-    "painterly realism, cinematic biblical drama, warm earth tones, "
-    "golden hour lighting, atmospheric depth, period accurate Middle Eastern, "
-    "Levantine landscape, high texture on fabrics (linen weave, wool nap, leather grain), "
-    "visible dust on skin and clothing, real pores weathered sun-tanned skin, "
-    "textured stone rough hewn sun-baked, rule of thirds composition, "
-    "foreground-midground-background layered depth, atmospheric perspective, "
-    "16:9 widescreen, no text, no watermarks"
+    "ultra photorealistic, hyperrealistic cinematic photograph, "
+    "sharp focus, 8K resolution, real film photography quality, "
+    "shot on cinema camera, photographic depth of field, "
+    "real Levantine rocky limestone landscape, authentic Israeli hill country, "
+    "ancient stone terraced hillsides, scattered scrub vegetation, "
+    "dramatic natural lighting, warm golden hour sun, "
+    "visible fabric texture (rough linen weave, coarse wool, frayed edges), "
+    "realistic weathered skin with visible pores, slightly oily sun-darkened skin, "
+    "dust on clothing and sandals, authentic period-accurate Middle Eastern, "
+    "foreground subject sharp, background atmospheric haze, "
+    "wide angle cinematic composition, no text, no watermarks"
 )
 
 # Comprehensive negative prompt (Part 11 of the Visual Bible)
 OT_NEGATIVE = (
+    "painterly, oil painting, illustration, painting, artistic rendering, watercolor, "
+    "digital painting, concept art, stylized, painted style, brush strokes, "
     "modern clothing, modern technology, smartphones, watches, glasses, plastic, metal eyewear, "
     "neon, anime, cartoon, comic-style, 3D render, video game graphics, low quality, blurry, "
     "deformed, extra limbs, bad anatomy, twisted hands, melted faces, six fingers, "
     "blonde Hebrews, white European Jesus, European white people as ancient Israelites, "
     "Renaissance art style, Baroque, neoclassical, Victorian, art nouveau, "
-    "hyperreal, oversharpened photo, modern photograph, "
+    "oversharpened, modern photograph, HDR, "
     "modern hairstyle, modern haircut, modern beard styling, beard fade, "
     "modern makeup, glossy lipstick, eyeshadow palette, "
     "fantasy armor, sci-fi armor, plate armor, full plate, medieval European armor, knight, "
@@ -50,7 +56,8 @@ OT_NEGATIVE = (
 
 # Inline style anchor appended inside every Flux prompt
 OT_INLINE_NEGATIVE = (
-    "painterly realism only, no fantasy elements, no European medieval aesthetics, "
+    "ultra photorealistic photography only, not painterly, not illustrated, not painted, "
+    "no fantasy elements, no European medieval aesthetics, "
     "no modern elements, no anime or illustration style, authentic ancient Middle Eastern appearance, "
     "Middle Eastern Levantine features on all Hebrew characters, not European"
 )
@@ -66,103 +73,103 @@ CHARACTER_APPEARANCE: dict[str, str] = {
     "Adam": (
         "young Middle Eastern man, strong build, shoulder-length dark hair, dark beard, "
         "olive skin, warm brown eyes, weathered features, simple animal-skin garment around waist, "
-        "biblical Adam, painterly realism"
+        "biblical Adam, photorealistic"
     ),
     "Eve": (
         "young Middle Eastern woman, long flowing dark hair, olive skin, deep brown eyes, "
         "gentle expression, simple natural covering, "
-        "biblical Eve, painterly realism"
+        "biblical Eve, photorealistic"
     ),
     "Cain": (
         "strong Middle Eastern farmer, dark hair, dark beard, brooding intense expression, "
         "dusty rough linen tunic, leather sandals, simple sash, "
-        "biblical Cain, painterly realism"
+        "biblical Cain, photorealistic"
     ),
     "Abel": (
         "young Middle Eastern shepherd, slim build, dark hair, gentle face, "
         "holding a white lamb, simple shepherd's wrap, "
-        "biblical Abel, painterly realism"
+        "biblical Abel, photorealistic"
     ),
     "Noah": (
         "aged patriarch, long gray-white beard, weathered face, strong calloused hands, "
         "simple aged tunic, leather belt, often carrying a tool or staff, "
-        "biblical Noah, painterly realism"
+        "biblical Noah, photorealistic"
     ),
 
     # ── Genesis: Patriarchs ───────────────────────────────────────────────────
     "Abraham": (
         "aged Hebrew patriarch, long flowing white beard, weathered tan skin, deep wise eyes, "
         "layered linen and wool robes with embroidered borders, striped mantle, leather sandals, "
-        "staff in hand, biblical Abraham, painterly realism"
+        "staff in hand, biblical Abraham, photorealistic"
     ),
     "Abram": (
         "older Middle Eastern man of means, long flowing white beard, weathered tan skin, "
         "deep wise eyes, layered linen and wool robes, striped mantle, leather sandals, "
-        "biblical Abram, painterly realism"
+        "biblical Abram, photorealistic"
     ),
     "Sarah": (
         "remarkably beautiful aged Hebrew woman, dignified bearing, "
         "long dark hair with silver streaks under headcovering, refined Middle Eastern features, "
-        "layered fine robes, biblical Sarah, painterly realism"
+        "layered fine robes, biblical Sarah, photorealistic"
     ),
     "Lot": (
         "middle-aged Hebrew townsman, dark beard, weathered face, "
-        "townsman robes finer than nomadic Abraham, biblical Lot, painterly realism"
+        "townsman robes finer than nomadic Abraham, biblical Lot, photorealistic"
     ),
     "Hagar": (
         "young Egyptian woman, bronze skin slightly darker than Sarah, dark hair, "
         "beautiful but with worn dignity of a servant, Egyptian-influenced dress with simpler servant robes, "
-        "biblical Hagar, painterly realism"
+        "biblical Hagar, photorealistic"
     ),
     "Isaac": (
         "Hebrew patriarch, gentle pensive features, dark hair and beard, "
-        "layered wool robes, finer in older age, biblical Isaac, painterly realism"
+        "layered wool robes, finer in older age, biblical Isaac, photorealistic"
     ),
     "Rebekah": (
         "beautiful young Hebrew woman at a well, water jar on shoulder, "
         "dark hair, kind determined eyes, simple young woman's robe, "
-        "biblical Rebekah, painterly realism"
+        "biblical Rebekah, photorealistic"
     ),
     "Esau": (
         "powerfully built hairy Hebrew hunter, reddish-brown body hair, thick red-brown beard, "
         "ruddy complexion, animal skin clothing, bow and quiver on back, "
-        "biblical Esau, painterly realism"
+        "biblical Esau, photorealistic"
     ),
     "Jacob": (
         "Hebrew shepherd, smooth-faced contrast to hairy brother, thoughtful dark eyes, "
         "layered shepherd's wool robes, staff in hand, slight limp after Peniel, "
-        "biblical Jacob, painterly realism"
+        "biblical Jacob, photorealistic"
     ),
     "Laban": (
         "older Mesopotamian man, gray-flecked dark beard, calculating eyes, "
-        "prosperous Mesopotamian-style robes, biblical Laban, painterly realism"
+        "prosperous Mesopotamian-style robes, biblical Laban, photorealistic"
     ),
     "Leah": (
         "plain kind Hebrew woman, dark hair under headcovering, gentle but weak eyes, "
-        "simple matron's robes, biblical Leah, painterly realism"
+        "simple matron's robes, biblical Leah, photorealistic"
     ),
     "Rachel": (
         "strikingly beautiful young Hebrew shepherdess, dark flowing hair, "
-        "vivid expressive eyes, biblical Rachel, painterly realism"
+        "vivid expressive eyes, biblical Rachel, photorealistic"
     ),
     "Joseph": (
         "handsome young Hebrew man, dark wavy hair, intelligent expressive eyes, "
         "wearing an ornate many-colored long-sleeved tunic with embroidered borders, "
-        "biblical young Joseph, painterly realism"
+        "biblical young Joseph, photorealistic"
     ),
     "Joseph_vizier": (
         "Hebrew man in elaborate Egyptian vizier dress, white linen kilt, gold collar of office, "
         "kohl-lined eyes, distinctly Middle Eastern Hebrew features under Egyptian dress, "
-        "biblical Joseph as vizier of Egypt, painterly realism"
+        "biblical Joseph as vizier of Egypt, photorealistic"
     ),
     "Benjamin": (
         "young Hebrew teenager, smaller slim build, sensitive features, dark hair, "
-        "simple tunic, biblical Benjamin, painterly realism"
+        "simple tunic, biblical Benjamin, photorealistic"
     ),
     "Potiphar": (
         "Egyptian noble captain of the guard, bronze skin, shaved head, kohl-lined eyes, "
         "white linen kilt, gold pectoral, leather belt with sword, "
-        "biblical Potiphar, painterly realism"
+        "biblical Potiphar, photorealistic"
     ),
 
     # ── Exodus ────────────────────────────────────────────────────────────────
@@ -171,159 +178,159 @@ CHARACTER_APPEARANCE: dict[str, str] = {
         "intense piercing eyes, long mantle pulled over head, gnarled wooden staff — "
         "NOTE: as Egyptian prince he is young athletic shaved beardless in Egyptian linen kilt and gold collar; "
         "as Midianite shepherd bearded sun-darkened in rough wool tunic, "
-        "biblical Moses, painterly realism"
+        "biblical Moses, photorealistic"
     ),
     "Aaron": (
         "Hebrew high priest, older Hebrew man, dignified full white-streaked beard, "
         "kind authoritative face, white linen ephod, blue robe with golden bells and pomegranates on hem, "
         "ornate gold breastplate set with 12 colored stones, gold turban with engraved plate, "
-        "biblical Aaron, painterly realism"
+        "biblical Aaron, photorealistic"
     ),
     "Miriam": (
         "aged Hebrew prophetess, dignified bearing, dark hair under headcovering, "
-        "simple robes, tambourine in hand, biblical Miriam, painterly realism"
+        "simple robes, tambourine in hand, biblical Miriam, photorealistic"
     ),
     "Pharaoh": (
         "Egyptian pharaoh of the Exodus, hard-eyed regal ruler, "
         "striped Nemes headdress, false ceremonial beard, "
         "ornate gold and lapis pectoral, white linen, "
-        "biblical pharaoh of the Exodus, painterly realism"
+        "biblical pharaoh of the Exodus, photorealistic"
     ),
     "Jochebed": (
         "Hebrew slave mother, weathered dignified face, simple worn robes, "
-        "dust-stained slave clothing, biblical Jochebed, painterly realism"
+        "dust-stained slave clothing, biblical Jochebed, photorealistic"
     ),
     "Jethro": (
         "older Midianite priest, white beard, nomadic robes with cloth wrappings, "
-        "dignified bearing, biblical Jethro, painterly realism"
+        "dignified bearing, biblical Jethro, photorealistic"
     ),
     "Zipporah": (
         "Midianite woman, dark complexion, intense eyes, "
-        "Bedouin-style robes and headscarf, biblical Zipporah, painterly realism"
+        "Bedouin-style robes and headscarf, biblical Zipporah, photorealistic"
     ),
 
     # ── Wilderness and Judges ─────────────────────────────────────────────────
     "Joshua": (
         "Hebrew warrior commander, dark beard, intense battle-hardened face, "
         "leather armor over tunic, bronze helmet, sword at side, "
-        "biblical Joshua, painterly realism"
+        "biblical Joshua, photorealistic"
     ),
     "Caleb": (
         "aged Hebrew warrior, white-streaked beard, weathered determined face, "
-        "leather armor, biblical Caleb, painterly realism"
+        "leather armor, biblical Caleb, photorealistic"
     ),
     "Rahab": (
         "beautiful Canaanite woman, dark flowing hair, vibrant eyes, "
         "layered colorful Canaanite robes, scarlet cord in window, "
-        "biblical Rahab, painterly realism, restrained"
+        "biblical Rahab, restrained, photorealistic"
     ),
     "Deborah": (
         "strong-featured Hebrew prophetess, dignified matron, "
         "layered robes with headcovering, seated beneath a large palm tree, "
-        "biblical Deborah, painterly realism"
+        "biblical Deborah, photorealistic"
     ),
     "Barak": (
         "Hebrew warrior general, dark beard, leather armor, "
-        "biblical Barak, painterly realism"
+        "biblical Barak, photorealistic"
     ),
     "Jael": (
         "decisive Kenite tent-dwelling woman, Bedouin-style dress, dark hair, "
-        "tent peg and mallet in hand, biblical Jael, painterly realism, restrained"
+        "tent peg and mallet in hand, biblical Jael, restrained, photorealistic"
     ),
     "Gideon": (
         "Hebrew farmer-warrior, dark beard, average build, leather armor over tunic, "
         "holding trumpet and clay jar with torch inside, "
-        "biblical Gideon, painterly realism"
+        "biblical Gideon, photorealistic"
     ),
     "Jephthah": (
         "lean weathered Hebrew warrior, complex tortured face, "
-        "outlaw-warrior dress, leather armor, biblical Jephthah, painterly realism"
+        "outlaw-warrior dress, leather armor, biblical Jephthah, photorealistic"
     ),
     "Samson": (
         "immensely muscled Hebrew warrior, tall, long uncut dark hair prominently displayed, "
         "full beard, sun-darkened skin, simple tunic and leather belt, "
-        "biblical Samson, painterly realism"
+        "biblical Samson, photorealistic"
     ),
     "Delilah": (
         "beautiful Philistine woman, dark hair, calculating eyes, "
-        "layered colorful Philistine robes, biblical Delilah, painterly realism, restrained"
+        "layered colorful Philistine robes, biblical Delilah, restrained, photorealistic"
     ),
     "Ruth": (
         "young Moabite widow, dark hair, gentle determined expression, "
         "simple modest robes, gleaning barley sheaves, "
-        "biblical Ruth, painterly realism"
+        "biblical Ruth, photorealistic"
     ),
     "Naomi": (
         "aged Hebrew widow, gray hair under headcovering, weathered grieving face, "
-        "dark widow's robes, biblical Naomi, painterly realism"
+        "dark widow's robes, biblical Naomi, photorealistic"
     ),
     "Boaz": (
         "prosperous older Hebrew landowner, dignified beard, kind eyes, "
-        "fine robes with embroidered borders, biblical Boaz, painterly realism"
+        "fine robes with embroidered borders, biblical Boaz, photorealistic"
     ),
 
     # ── Samuel's Era ──────────────────────────────────────────────────────────
     "Hannah": (
         "young Hebrew woman, careworn gentle face, anguished prayer, "
         "simple dress with headcovering, lips moving silently in prayer, "
-        "biblical Hannah, painterly realism"
+        "biblical Hannah, photorealistic"
     ),
     "Eli": (
         "extremely aged Hebrew high priest, nearly blind, heavy frame, long white beard, "
-        "faded priestly robes with breastplate, biblical Eli, painterly realism"
+        "faded priestly robes with breastplate, biblical Eli, photorealistic"
     ),
     "Samuel": (
         "aged Hebrew prophet, long white beard and hair, intense piercing eyes, "
-        "prophet's mantle, horn of oil in hand, biblical Samuel, painterly realism"
+        "prophet's mantle, horn of oil in hand, biblical Samuel, photorealistic"
     ),
     "Samuel_boy": (
         "young Hebrew boy in priestly service, dark hair, intelligent serious eyes, "
-        "simple white linen child's ephod, biblical young Samuel, painterly realism"
+        "simple white linen child's ephod, biblical young Samuel, photorealistic"
     ),
     "Saul": (
         "tall imposing Hebrew king, head and shoulders above all others in the frame, "
         "strong build, dark hair and beard, haunted suspicious eyes in later scenes, "
         "royal robes with simple Hebrew crown, sword at side, "
-        "biblical King Saul, painterly realism"
+        "biblical King Saul, photorealistic"
     ),
     "David": (
         "ruddy young Hebrew shepherd, slightly fair complexion, chestnut-brown hair, "
         "bright intense eyes, slim athletic build, simple shepherd's tunic, sling at belt, "
-        "holding a small Hebrew kinnor lyre, biblical young David, painterly realism"
+        "holding a small Hebrew kinnor lyre, biblical young David, photorealistic"
     ),
     "David_king": (
         "Hebrew king, ruddy complexion, chestnut beard, weathered regal face, "
         "royal robes with embroidered borders, simple gold crown, mantle on shoulders, "
-        "biblical King David, painterly realism"
+        "biblical King David, photorealistic"
     ),
     "Goliath": (
         "giant Philistine warrior, towering nine-foot height above all others, "
         "massive muscular build, full bronze scale armor, feathered Sea Peoples helmet (NOT horned), "
         "bronze greaves on his legs, holding a spear with massive bronze point, huge sword at side, "
-        "biblical Goliath, painterly realism"
+        "biblical Goliath, photorealistic"
     ),
     "Jonathan": (
         "young Hebrew prince warrior, dark hair and beard, loyal expression, "
         "royal warrior dress with leather armor, bow and sword, "
-        "biblical Jonathan, painterly realism"
+        "biblical Jonathan, photorealistic"
     ),
     "Nathan": (
         "older Hebrew prophet, dignified white beard, fearless piercing eyes, "
         "prophet's mantle, simple robes, stands before kings without fear, "
-        "biblical Nathan, painterly realism"
+        "biblical Nathan, photorealistic"
     ),
     "Bathsheba": (
         "beautiful young Hebrew woman, dark hair under headcovering, "
         "modest robes, dignified expression, "
-        "biblical Bathsheba, painterly realism, restrained"
+        "biblical Bathsheba, restrained, photorealistic"
     ),
     "Absalom": (
         "strikingly handsome Hebrew prince, very long thick dark hair — his defining feature, "
-        "polished beard, fine princely robes, biblical Absalom, painterly realism"
+        "polished beard, fine princely robes, biblical Absalom, photorealistic"
     ),
     "Joab": (
         "hard-faced Hebrew general, scarred warrior, "
-        "leather armor, captain's mantle, biblical Joab, painterly realism"
+        "leather armor, captain's mantle, biblical Joab, photorealistic"
     ),
 
     # ── Kingdom Era ───────────────────────────────────────────────────────────
@@ -331,37 +338,37 @@ CHARACTER_APPEARANCE: dict[str, str] = {
         "Hebrew king at the peak of glory, distinguished dark beard, "
         "intelligent commanding eyes, layered embroidered royal robes, "
         "gold crown set with precious stones, ceremonial scepter, "
-        "biblical King Solomon, painterly realism"
+        "biblical King Solomon, photorealistic"
     ),
     "Solomon_old": (
         "aged Hebrew king, white beard, world-weary expression, "
         "still opulent clothing but something behind the eyes that has seen everything, "
-        "biblical aged Solomon, painterly realism"
+        "biblical aged Solomon, photorealistic"
     ),
     "Queen_of_Sheba": (
         "regal Ethiopian queen, deep brown skin, elaborate Sabean royal dress "
         "with gold and ivory ornaments, ornate headpiece, "
-        "biblical Queen of Sheba, painterly realism"
+        "biblical Queen of Sheba, photorealistic"
     ),
     "Rehoboam": (
         "young Hebrew king, slightly arrogant features, "
         "royal robes less grand than his father Solomon, "
-        "biblical Rehoboam, painterly realism"
+        "biblical Rehoboam, photorealistic"
     ),
     "Jeroboam": (
         "Hebrew rebel king of the north, strong build, dark beard, ambitious eyes, "
-        "northern Israelite royal robes, biblical Jeroboam, painterly realism"
+        "northern Israelite royal robes, biblical Jeroboam, photorealistic"
     ),
     "Ahab": (
         "Hebrew king of the northern kingdom, powerful build, dark beard, "
         "weak-willed expression dominated by his wife, royal robes, "
-        "biblical King Ahab, painterly realism"
+        "biblical King Ahab, photorealistic"
     ),
     "Jezebel": (
         "striking Phoenician queen, distinctly non-Hebrew lighter complexion, "
         "elaborate dark hair, intense painted eyes with heavy kohl — she painted her eyes, "
         "ornate Phoenician royal dress with Baal religious ornamentation subtly present, "
-        "biblical Queen Jezebel, painterly realism, restrained sacred imagery"
+        "biblical Queen Jezebel, restrained sacred imagery, photorealistic"
     ),
 
     # ── Prophets ──────────────────────────────────────────────────────────────
@@ -369,57 +376,57 @@ CHARACTER_APPEARANCE: dict[str, str] = {
         "wild weathered Hebrew prophet, deeply tanned, intense burning eyes, "
         "long unkempt dark hair, full unkempt beard, "
         "rough haircloth mantle with the hair still on (camel hair, dark brown-black), "
-        "leather belt around waist, walking staff, biblical Elijah, painterly realism"
+        "leather belt around waist, walking staff, biblical Elijah, photorealistic"
     ),
     "Elisha": (
         "aged Hebrew prophet, completely bald head — this is his defining visual feature, "
         "full beard, weathered piercing eyes, rough prophet's mantle, "
-        "biblical Elisha, painterly realism"
+        "biblical Elisha, photorealistic"
     ),
     "Amos": (
         "rough Hebrew shepherd prophet, deeply tanned weathered face, "
         "working man's hands, plain shepherd's robes, very rural appearance, "
-        "biblical Amos, painterly realism"
+        "biblical Amos, photorealistic"
     ),
     "Hosea": (
         "middle-aged Hebrew prophet, careworn tortured but kind eyes, "
-        "prophet's mantle, biblical Hosea, painterly realism"
+        "prophet's mantle, biblical Hosea, photorealistic"
     ),
     "Isaiah": (
         "dignified older Hebrew prophet, white-streaked beard, intense scholar's eyes, "
         "fine prophet's robes with embroidered borders (court access), "
-        "ancient scroll in hand, biblical Isaiah, painterly realism"
+        "ancient scroll in hand, biblical Isaiah, photorealistic"
     ),
     "Micah": (
         "rural Hebrew prophet, sun-darkened weathered face, "
-        "simple prophet's robes, biblical Micah, painterly realism"
+        "simple prophet's robes, biblical Micah, photorealistic"
     ),
     "Hezekiah": (
         "dignified Hebrew king of Judah, dark beard with gray, devout careworn face, "
         "royal robes with crown, spreading a scroll before the Lord, "
-        "biblical King Hezekiah, painterly realism"
+        "biblical King Hezekiah, photorealistic"
     ),
     "Sennacherib": (
         "imperious Assyrian emperor, square-cut tightly curled beard — the Assyrian signature look, "
         "hard cruel eyes, tall conical Assyrian crown, embroidered robes with rosettes and gold ornaments, "
-        "biblical King Sennacherib, painterly realism"
+        "biblical King Sennacherib, photorealistic"
     ),
     "Manasseh": (
         "Hebrew king with cruel hardened features, royal Judean robes "
-        "with subtle pagan ornamentation, biblical King Manasseh, painterly realism"
+        "with subtle pagan ornamentation, biblical King Manasseh, photorealistic"
     ),
     "Josiah": (
         "young Hebrew king with passionate righteous expression, "
-        "royal robes with crown, biblical King Josiah, painterly realism"
+        "royal robes with crown, biblical King Josiah, photorealistic"
     ),
     "Jeremiah": (
         "aged weeping Hebrew prophet, tear-streaked face, deep grief, white beard, "
         "plain torn prophet's robes, sometimes sackcloth, wooden yoke around neck in enacted prophecies, "
-        "biblical Jeremiah, painterly realism"
+        "biblical Jeremiah, photorealistic"
     ),
     "Zedekiah": (
         "weak-featured final Hebrew king, hunted look, tattered royal robes, "
-        "biblical King Zedekiah, painterly realism"
+        "biblical King Zedekiah, photorealistic"
     ),
 
     # ── Exilic Era ────────────────────────────────────────────────────────────
@@ -427,121 +434,121 @@ CHARACTER_APPEARANCE: dict[str, str] = {
         "imposing Babylonian emperor, long luxurious curled beard (longer and more flowing than Assyrian), "
         "commanding eyes, cylindrical Babylonian crown with rosettes, "
         "embroidered polychrome royal robes, "
-        "biblical King Nebuchadnezzar, painterly realism"
+        "biblical King Nebuchadnezzar, photorealistic"
     ),
     "Nebuchadnezzar_mad": (
         "Babylonian king reduced to madness in field, wild matted long hair like eagle feathers, "
         "overgrown fingernails like bird claws, crawling in field grass, "
-        "ragged royal remnants still visible, biblical Nebuchadnezzar madness, painterly realism, restrained"
+        "ragged royal remnants still visible, biblical Nebuchadnezzar madness, restrained, photorealistic"
     ),
     "Daniel": (
         "aged Hebrew statesman in Babylonian court, distinguished Hebrew features, "
         "intelligent serene eyes, white beard, fine but dignified Persian official robes, "
-        "biblical Daniel, painterly realism"
+        "biblical Daniel, photorealistic"
     ),
     "Daniel_young": (
         "young Hebrew nobleman, distinctive Hebrew features amid Babylonian court, "
         "intelligent serene eyes, dark beard, fine Babylonian-Persian court robes, "
-        "worn with Hebrew dignity, biblical young Daniel, painterly realism"
+        "worn with Hebrew dignity, biblical young Daniel, photorealistic"
     ),
     "Shadrach": (
         "young Hebrew nobleman in the Babylonian court, distinct Hebrew features, "
         "fine court robes, courageous calm expression, "
-        "biblical Shadrach, painterly realism"
+        "biblical Shadrach, photorealistic"
     ),
     "Meshach": (
         "young Hebrew nobleman in the Babylonian court, distinct Hebrew features, "
         "fine court robes, courageous calm expression, "
-        "biblical Meshach, painterly realism"
+        "biblical Meshach, photorealistic"
     ),
     "Abednego": (
         "young Hebrew nobleman in the Babylonian court, distinct Hebrew features, "
         "fine court robes, courageous calm expression, "
-        "biblical Abednego, painterly realism"
+        "biblical Abednego, photorealistic"
     ),
     "Ezekiel": (
         "Hebrew priest-prophet in exile, dark beard with gray, intense visionary eyes, "
-        "white linen ephod under prophet's mantle, biblical Ezekiel, painterly realism"
+        "white linen ephod under prophet's mantle, biblical Ezekiel, photorealistic"
     ),
     "Belshazzar": (
         "decadent Babylonian co-regent, weak features, "
-        "elaborate royal dress dishevelled in feast, biblical Belshazzar, painterly realism"
+        "elaborate royal dress dishevelled in feast, biblical Belshazzar, photorealistic"
     ),
     "Darius_Mede": (
         "older Median-Persian ruler, white beard, troubled gracious face, "
         "long flowing Persian royal robes with Median tiara soft cap, "
-        "biblical King Darius the Mede, painterly realism"
+        "biblical King Darius the Mede, photorealistic"
     ),
     "Cyrus": (
         "imposing Persian emperor, dignified Persian features, characteristic curled beard, "
-        "Persian imperial royal robes with crown, biblical King Cyrus the Great, painterly realism"
+        "Persian imperial royal robes with crown, biblical King Cyrus the Great, photorealistic"
     ),
 
     # ── Post-Exilic Era ───────────────────────────────────────────────────────
     "Zerubbabel": (
         "dignified Hebrew governor of the returned exiles, descendant of David, "
-        "official but not royal robes, biblical Zerubbabel, painterly realism"
+        "official but not royal robes, biblical Zerubbabel, photorealistic"
     ),
     "Ezra": (
         "aged Hebrew scribe-priest, distinguished scholar's bearing, white beard, "
-        "priestly robes, holding a large scroll, biblical Ezra the scribe, painterly realism"
+        "priestly robes, holding a large scroll, biblical Ezra the scribe, photorealistic"
     ),
     "Nehemiah": (
         "middle-aged Hebrew official, dignified capable face, "
         "Persian court robes initially, working clothes with sword during wall-building, "
-        "biblical Nehemiah, painterly realism"
+        "biblical Nehemiah, photorealistic"
     ),
     "Esther": (
         "strikingly beautiful young Hebrew queen in the Persian court, "
         "dark flowing hair, intelligent gentle eyes, "
         "elaborate Persian queen's robes layered with gold and lapis, ornate Persian crown, "
-        "biblical Queen Esther, painterly realism, restrained"
+        "biblical Queen Esther, restrained, photorealistic"
     ),
     "Mordecai": (
         "distinguished older Hebrew man at the Persian king's gate, "
         "dark gray-streaked beard, intelligent watchful eyes, modest Hebrew robes, "
-        "biblical Mordecai, painterly realism"
+        "biblical Mordecai, photorealistic"
     ),
     "Ahasuerus": (
         "imposing Persian emperor, characteristic curled hair and beard, "
         "elaborate Persian imperial robes embroidered with gold, high Persian crown, "
-        "golden ceremonial scepter, biblical King Ahasuerus, painterly realism"
+        "golden ceremonial scepter, biblical King Ahasuerus, photorealistic"
     ),
     "Haman": (
         "Persian noble of Agagite descent, cold proud cruel features, "
         "elaborate Persian noble's robes second only to the king, "
-        "biblical Haman, painterly realism"
+        "biblical Haman, photorealistic"
     ),
     "Malachi": (
         "older Hebrew prophet, dignified bearing, plain prophet's robes, "
-        "the last prophet of the Old Testament era, biblical Malachi, painterly realism"
+        "the last prophet of the Old Testament era, biblical Malachi, photorealistic"
     ),
     "Haggai": (
         "older Hebrew prophet, dignified bearing, prophet's mantle, "
-        "biblical Haggai, painterly realism"
+        "biblical Haggai, photorealistic"
     ),
     "Zechariah_prophet": (
         "younger Hebrew prophet with visionary eyes, prophet's robes, "
-        "biblical Zechariah post-exilic prophet, painterly realism"
+        "biblical Zechariah post-exilic prophet, photorealistic"
     ),
     "Naaman": (
         "powerful Syrian general, Aramean features, commanding presence, "
         "fine Syrian military dress with chariot armor, "
-        "visible white leprous patches on skin, biblical Naaman, painterly realism, restrained"
+        "visible white leprous patches on skin, biblical Naaman, restrained, photorealistic"
     ),
     "Job": (
         "Middle Eastern man of Uz, prosperous appearance in early scenes, "
         "same man in ash heap with torn robes and skin sores in suffering scenes, "
-        "dignified resilient expression even in anguish, biblical Job, painterly realism"
+        "dignified resilient expression even in anguish, biblical Job, photorealistic"
     ),
     "Jonah": (
         "Hebrew prophet, middle-aged, dark beard, olive skin, plain prophet's robes, "
         "stubborn expression; dripping wet and pale after the great fish, "
-        "biblical Jonah, painterly realism"
+        "biblical Jonah, photorealistic"
     ),
     "Abigail": (
         "wise dignified beautiful Hebrew woman, fine matron robes, intelligent kind eyes, "
-        "provisions on donkeys nearby, biblical Abigail, painterly realism"
+        "provisions on donkeys nearby, biblical Abigail, photorealistic"
     ),
 }
 
@@ -552,80 +559,80 @@ CHARACTER_APPEARANCE: dict[str, str] = {
 SUPERNATURAL_ENTITIES: dict[str, str] = {
     "God_presence": (
         "diffuse warm divine light from above, glowing cloud, no figure visible, "
-        "sacred presence implied through light and cloud, painterly realism"
+        "sacred presence implied through light and cloud, photorealistic"
     ),
     "Angel_of_Lord": (
         "luminous brilliant white-gold figure, back-lit and partially obscured by divine glory, "
         "face not clearly visible, tall imposing presence, "
-        "biblical Angel of the Lord, painterly realism, sacred restraint"
+        "biblical Angel of the Lord, photorealistic, sacred restraint"
     ),
     "Angel": (
         "tall luminous male figure in shining white linen robes, "
         "ageless beautiful severe face, radiant inner light, "
         "not cherubic putti, not feminine with halo — tall and severe, "
-        "biblical angel, painterly realism"
+        "biblical angel, photorealistic"
     ),
     "Angel_warrior": (
         "massive warrior figure in white and light, drawn blazing sword, "
         "overwhelming physical presence, golden-white light, guardian stance, "
-        "biblical angel of the Lord with sword drawn, painterly realism, sacred"
+        "biblical angel of the Lord with sword drawn, photorealistic, sacred"
     ),
     "Cherubim": (
         "biblical cherubim, four-faced (human, lion, ox, eagle), four wings, "
         "feet like burnished bronze, awesome and strange, NOT Renaissance cherubs, "
-        "painterly realism, sacred restraint"
+        "photorealistic, sacred restraint"
     ),
     "Seraphim": (
         "biblical seraphim, six-winged celestial beings, "
         "two wings covering face, two covering feet, two flying, "
-        "burning with divine fire, painterly realism, sacred restraint"
+        "burning with divine fire, photorealistic, sacred restraint"
     ),
     "Fourth_in_furnace": (
         "luminous mysterious figure in the midst of furnace flames with three Hebrew youths, "
         "surrounded by fire but untouched, glowing white-gold, face not clearly visible, "
-        "biblical fourth figure in the fiery furnace, painterly realism, sacred"
+        "biblical fourth figure in the fiery furnace, photorealistic, sacred"
     ),
     "Ancient_of_Days": (
         "awesome enthroned figure clothed in pure white robes, hair like pure wool, "
         "face obscured by divine light, throne of flame, river of fire flowing before, "
-        "biblical Ancient of Days vision, painterly realism, sacred restraint"
+        "biblical Ancient of Days vision, photorealistic, sacred restraint"
     ),
     "Burning_Bush": (
         "desert thornbush engulfed in flame yet unconsumed, "
         "leaves and branches visible through the holy fire, "
-        "biblical burning bush at Sinai, painterly realism, sacred"
+        "biblical burning bush at Sinai, photorealistic, sacred"
     ),
     "Pillar_Cloud": (
         "massive vertical pillar of glowing white cloud rising into the sky "
-        "above a wilderness camp, biblical pillar of cloud by day, painterly realism, sacred"
+        "above a wilderness camp, biblical pillar of cloud by day, photorealistic, sacred"
     ),
     "Pillar_Fire": (
         "massive vertical pillar of bright flame rising into the night sky "
-        "above a wilderness camp, biblical pillar of fire by night, painterly realism, sacred"
+        "above a wilderness camp, biblical pillar of fire by night, photorealistic, sacred"
     ),
     "Glory_cloud": (
         "massive luminous golden cloud of divine glory filling an ancient temple sanctuary, "
         "priests stepping back unable to stand, biblical Glory of the Lord filling Solomon's Temple, "
-        "painterly realism, sacred"
+        "photorealistic, sacred"
     ),
     "Serpent_Eden": (
         "beautiful subtle iridescent serpent creature with intelligent eyes, "
         "coiled around ancient tree branch in lush garden, "
-        "biblical serpent in Eden before the curse, painterly realism, restrained sacred imagery"
+        "biblical serpent in Eden before the curse, restrained sacred imagery, photorealistic"
     ),
     "Chariot_of_Fire": (
         "flaming celestial chariot drawn by flaming horses, descending from tearing sky, "
-        "no figure of God within it, biblical chariot of fire taking Elijah, painterly realism, sacred restraint"
+        "no figure of God within it, biblical chariot of fire taking Elijah, photorealistic, sacred restraint"
     ),
     "Writing_on_Wall": (
         "disembodied human hand appearing in midair, "
         "writing mysterious letters of fire on a white plaster wall, no arm or body attached, "
-        "biblical writing on the wall at Belshazzar's feast, painterly realism, sacred"
+        "biblical writing on the wall at Belshazzar's feast, photorealistic, sacred"
     ),
     "Jacob_Ladder": (
         "luminous golden staircase rising from earth into starlit heavens, "
         "angelic figures ascending and descending on it, "
-        "biblical Jacob's ladder dream vision, painterly realism, sacred, restrained"
+        "biblical Jacob's ladder dream vision, photorealistic, sacred, restrained"
     ),
 }
 
@@ -704,136 +711,136 @@ LOCATION_BIBLE: dict[str, str] = {
         "lush primeval paradise garden, four rivers flowing outward, "
         "trees heavy with golden fruit, peaceful wild animals, "
         "soft golden eternal light, central glowing Tree of Life, "
-        "biblical Garden of Eden, painterly realism"
+        "biblical Garden of Eden, photorealistic"
     ),
     "Ur_Chaldees": (
         "ancient Mesopotamian city of mudbrick flat-roofed houses, "
         "great ziggurat of the moon god rising in the distance, "
-        "biblical Ur of the Chaldees, painterly realism"
+        "biblical Ur of the Chaldees, photorealistic"
     ),
     "Mamre": (
         "cluster of ancient massive oak trees at Mamre, "
         "patriarch's goat-hair tents pitched nearby, "
-        "biblical oaks of Mamre, painterly realism"
+        "biblical oaks of Mamre, photorealistic"
     ),
     "Sodom_Gomorrah": (
         "prosperous ancient walled cities of the plain consumed by fire and burning sulfur "
         "falling from a darkened sky, towering pillar of smoke and flame, "
-        "biblical destruction of Sodom and Gomorrah, painterly realism, restrained"
+        "biblical destruction of Sodom and Gomorrah, restrained, photorealistic"
     ),
     "Mount_Moriah": (
         "high wooded hill in the land of Canaan, stone altar at summit, "
         "wood arranged upon it, ram caught in thicket nearby, "
-        "biblical Mount Moriah, painterly realism"
+        "biblical Mount Moriah, photorealistic"
     ),
     "Egypt_Nile": (
         "ancient Egypt, the Nile flowing through desert, distant pyramids already a thousand years old, "
         "massive temple complexes with lotus-pillar courtyards, hieroglyphic walls, "
         "slave brick-making operations, sphinxes flanking processional ways, "
-        "biblical Egypt, painterly realism"
+        "biblical Egypt, photorealistic"
     ),
     "Sinai": (
         "massive desert mountain rising from a barren plain, "
         "wrapped in thick dark cloud, lightning flashing from within, fire on the summit, "
         "smoke pouring out, trembling and terrible, "
-        "biblical Mount Sinai in the giving of the Law, painterly realism"
+        "biblical Mount Sinai in the giving of the Law, photorealistic"
     ),
     "Red_Sea": (
         "wide sea miraculously parted, towering walls of water on either side, "
         "dry seabed exposed below, fish visible swimming in the water walls, "
-        "biblical Red Sea crossing, painterly realism"
+        "biblical Red Sea crossing, photorealistic"
     ),
     "Tabernacle": (
         "biblical Tabernacle in the wilderness, portable sanctuary tent with wooden frame, "
         "layered curtains, white linen outer court fence, golden lampstand glowing inside, "
         "cloud of glory hovering above, vast desert camp surrounding, "
-        "painterly realism"
+        "photorealistic"
     ),
     "Canaan_Hills": (
         "hilly Levantine landscape, ancient olive groves on terraced hillsides, "
         "scattered ancient stone-walled villages on hilltops, "
-        "biblical land of Canaan, painterly realism"
+        "biblical land of Canaan, photorealistic"
     ),
     "Jordan_River": (
         "swift Jordan river miraculously dammed, dry riverbed exposed, "
-        "water piled up on the upstream side, biblical crossing of the Jordan, painterly realism"
+        "water piled up on the upstream side, biblical crossing of the Jordan, photorealistic"
     ),
     "Jericho": (
         "ancient circular walled city in the Jordan valley, massive mudbrick walls, "
         "palm tree groves nearby, oasis, city of palms, "
-        "biblical Jericho, painterly realism"
+        "biblical Jericho, photorealistic"
     ),
     "Jerusalem_Davidic": (
         "ancient Jerusalem on its hilltop, City of David compact stone buildings "
         "on narrow ridge above Kidron Valley, early fortifications, "
-        "biblical Jerusalem in David's time, painterly realism"
+        "biblical Jerusalem in David's time, photorealistic"
     ),
     "Jerusalem_Solomon": (
         "ancient Jerusalem on its hilltop, Solomon's First Temple at the northern end "
         "gleaming with gold and white limestone, walled city descending the slopes, "
-        "biblical Jerusalem in the time of Solomon, painterly realism"
+        "biblical Jerusalem in the time of Solomon, photorealistic"
     ),
     "Jerusalem_ruins": (
         "Jerusalem in ruins after Babylonian destruction, charred walls, "
         "burned Temple, rubble and ash, smoke still rising, "
-        "biblical Jerusalem after 586 BC, painterly realism"
+        "biblical Jerusalem after 586 BC, photorealistic"
     ),
     "Solomon_Temple": (
         "biblical Solomon's Temple, white limestone walls overlaid with gold, "
         "twin bronze pillars Jachin and Boaz at the entrance, cedar courtyard with golden ornamentation, "
         "the great bronze sea on twelve bronze oxen, golden lampstands glowing, "
-        "biblical First Temple, painterly realism, sacred"
+        "biblical First Temple, photorealistic, sacred"
     ),
     "Valley_Elah": (
         "wide flat valley between two hills, Hebrews on one side, Philistines on the other, "
-        "stream running through the middle, biblical Valley of Elah, painterly realism"
+        "stream running through the middle, biblical Valley of Elah, photorealistic"
     ),
     "Mount_Carmel": (
         "coastal mountain ridge with sweeping views to the Mediterranean Sea, "
-        "scrub forest and rocky outcrops, biblical Mount Carmel, painterly realism"
+        "scrub forest and rocky outcrops, biblical Mount Carmel, photorealistic"
     ),
     "Samaria": (
         "capital of the northern kingdom on hilltop, Ahab's palace, "
         "Phoenician-influenced architecture, ivory decorations, "
-        "biblical Samaria, painterly realism"
+        "biblical Samaria, photorealistic"
     ),
     "Babylon": (
         "legendary ancient Babylon, massive walls wider than chariots, "
         "Ishtar Gate in brilliant blue glazed brick with golden bulls and dragons, "
         "great ziggurat of Marduk rising in stages, hanging gardens cascading from terraces, "
         "Euphrates flowing through stone channels in the heart of the city, "
-        "biblical Babylon, painterly realism"
+        "biblical Babylon, photorealistic"
     ),
     "Chebar_exile": (
         "Babylonian canal (Chebar River), willow trees on banks, "
         "Hebrew exile community of reed huts and mudbrick homes, "
         "date palms, distant ziggurat on horizon, the weight of displacement, "
-        "painterly realism"
+        "photorealistic"
     ),
     "Persian_Susa": (
         "magnificent Persian palace complex at Susa, marble columns, "
         "brilliant glazed brick walls, hanging tapestries, gold ornamentation, "
-        "biblical Susa of Esther's day, painterly realism"
+        "biblical Susa of Esther's day, photorealistic"
     ),
     "Second_Temple": (
         "rebuilt Jerusalem Temple on same foundation, "
         "visibly smaller and less ornate than Solomon's First Temple — humble stone, "
         "no gold overlay, surrounded by rubble and rebuilding Jerusalem, "
-        "biblical Second Temple, painterly realism"
+        "biblical Second Temple, photorealistic"
     ),
     "Bethlehem": (
         "small hill town south of Jerusalem, stone houses, olive groves, sheep folds, "
         "night road to Bethlehem, single bright star rising on horizon, "
-        "biblical Bethlehem, painterly realism"
+        "biblical Bethlehem, photorealistic"
     ),
     "Nineveh": (
         "massive walled Assyrian capital, towering city mound, "
         "palaces guarded by colossal winged-bull lamassu sculptures, "
-        "biblical Nineveh, painterly realism"
+        "biblical Nineveh, photorealistic"
     ),
     "Noah_Ark": (
         "massive boxy wooden ark, three decks, single door in the side, "
-        "pitch-blackened exterior, no mast or sail, biblical Noah's ark, painterly realism"
+        "pitch-blackened exterior, no mast or sail, biblical Noah's ark, photorealistic"
     ),
 }
 
@@ -845,34 +852,34 @@ STRUCTURES: dict[str, str] = {
     "Ark_Covenant": (
         "biblical Ark of the Covenant, golden chest with two sculpted golden cherubim "
         "with wings stretched forward on the lid, golden carrying poles through side rings, "
-        "glowing with sacred presence, painterly realism, sacred"
+        "glowing with sacred presence, photorealistic, sacred"
     ),
     "Fiery_furnace": (
         "massive ancient Mesopotamian industrial furnace, brick-walled, "
         "intense white-hot flames roaring from the opening and bursting from the top, "
-        "biblical fiery furnace of Babylon, painterly realism"
+        "biblical fiery furnace of Babylon, photorealistic"
     ),
     "Lions_den": (
         "deep stone pit with heavy stone covering the opening, "
         "magnificent Persian lions visible inside, Persian royal seals on the stone, "
-        "shaft of light from above, painterly realism"
+        "shaft of light from above, photorealistic"
     ),
     "Tower_Babel": (
         "massive stepped ziggurat tower under construction, scaffolding climbing its sides, "
         "brick-making operations at the base, distinct from Egyptian pyramid (stepped vs smooth), "
-        "biblical Tower of Babel on the plain of Shinar, painterly realism"
+        "biblical Tower of Babel on the plain of Shinar, photorealistic"
     ),
     "Patriarchal_tent": (
         "low wide black goat-hair tent, open sides for ventilation, "
         "fabric panels rolled up, cluster of tents for the patriarch's household, "
-        "flocks of sheep nearby, painterly realism"
+        "flocks of sheep nearby, photorealistic"
     ),
     "Ark_Noah": (
         "massive boxy wooden ark, pitch-blackened exterior, three decks, "
         "single door in the side, single window near the top, "
         "no mast or sail or oars — approximately 450 feet long, "
         "visually gigantic scale, animals approaching in pairs, "
-        "biblical Noah's ark, painterly realism"
+        "biblical Noah's ark, photorealistic"
     ),
 }
 
@@ -1645,7 +1652,7 @@ def build_prompt(section_title: str, chapter_num: int, emotion: str,
     Template (Part 12):
       [Character Description], [Action/Emotional State], [Environment],
       [Time of Day/Lighting], [Atmospheric Details],
-      painterly realism, cinematic biblical drama, warm earth tones,
+      ultra photorealistic, cinematic biblical drama, warm earth tones,
       golden hour lighting, atmospheric depth, period accurate Middle Eastern,
       [Base Style], [Inline Negative]
     """
