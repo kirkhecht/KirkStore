@@ -28,6 +28,15 @@ import sys
 import time
 from pathlib import Path
 
+# ── Load .env if present ───────────────────────────────────────────────────────
+_env_file = Path(__file__).parent / ".env"
+if _env_file.exists():
+    for _line in _env_file.read_text().splitlines():
+        _line = _line.strip()
+        if _line and not _line.startswith("#") and "=" in _line:
+            _k, _v = _line.split("=", 1)
+            os.environ.setdefault(_k.strip(), _v.strip())
+
 # ── Setup project root before importing pipeline modules ──────────────────────
 def _parse_project_root() -> None:
     for i, arg in enumerate(sys.argv):
@@ -151,6 +160,18 @@ def main() -> None:
     if 3 in phases:
         banner("Phase 3 — Scene Segmentation")
         all_scenes = phase3_segment.run(chapters, ot_chapters=ot_chapters or None)
+    else:
+        # Load saved scene JSONs so downstream phases (4–8) can run standalone
+        from pipeline.utils import load_json
+        import re as _re
+        for p in sorted(DIRS["scene_json"].glob("chapter_*_scenes.json")):
+            m = _re.search(r"chapter_(\d+)_scenes", p.name)
+            if m:
+                num = int(m.group(1))
+                all_scenes[num] = load_json(p)
+        if all_scenes:
+            log.info("Loaded %d chapters of scenes from disk (%d total scenes)",
+                     len(all_scenes), sum(len(s) for s in all_scenes.values()))
 
     # ── Phase 4 — Image Prompt Generation ────────────────────────────────────
     if 4 in phases and all_scenes:

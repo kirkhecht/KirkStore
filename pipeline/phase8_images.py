@@ -23,7 +23,7 @@ def _image_path(chapter: int, scene_number: int) -> Path:
 
 
 def _generate_one(scene: dict) -> tuple[dict, bool, str]:
-    """Generate a single image. Returns (scene, success, error_msg)."""
+    """Generate a single image with retry/backoff. Returns (scene, success, error_msg)."""
     import replicate
 
     ch  = scene["chapter"]
@@ -34,28 +34,34 @@ def _generate_one(scene: dict) -> tuple[dict, bool, str]:
         return scene, True, "cached"
 
     out.parent.mkdir(parents=True, exist_ok=True)
-
     prompt = scene.get("image_prompt", "ancient Near Eastern cinematic scene")
 
-    try:
-        output = replicate.run(
-            IMAGE_MODEL,
-            input={
-                "prompt":              prompt,
-                "width":               IMAGE_WIDTH,
-                "height":              IMAGE_HEIGHT,
-                "num_inference_steps": IMAGE_STEPS,
-                "guidance":            IMAGE_GUIDANCE,
-                "output_format":       "jpg",
-                "output_quality":      90,
-            }
-        )
-        # output is a list of FileOutput objects
-        url = str(output[0]) if isinstance(output, list) else str(output)
-        urllib.request.urlretrieve(url, out)
-        return scene, True, ""
-    except Exception as exc:
-        return scene, False, str(exc)
+    for attempt in range(5):
+        try:
+            output = replicate.run(
+                IMAGE_MODEL,
+                input={
+                    "prompt":              prompt,
+                    "width":               IMAGE_WIDTH,
+                    "height":              IMAGE_HEIGHT,
+                    "num_inference_steps": IMAGE_STEPS,
+                    "guidance":            IMAGE_GUIDANCE,
+                    "output_format":       "jpg",
+                    "output_quality":      90,
+                }
+            )
+            url = str(output[0]) if isinstance(output, list) else str(output)
+            urllib.request.urlretrieve(url, out)
+            return scene, True, ""
+        except Exception as exc:
+            msg = str(exc)
+            if "429" in msg or "throttled" in msg or "rate limit" in msg.lower():
+                wait = 15 * (2 ** attempt)   # 15s, 30s, 60s, 120s, 240s
+                time.sleep(wait)
+                continue
+            return scene, False, msg
+
+    return scene, False, "rate limit retries exhausted"
 
 
 def run(all_scenes: dict[int, list[dict]]) -> dict[int, list[dict]]:
