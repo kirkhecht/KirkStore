@@ -38,10 +38,12 @@ def _generate_one(scene: dict) -> tuple[dict, bool, str]:
 
     for attempt in range(5):
         try:
+            from .ot_visual_guide import OT_NEGATIVE
             output = replicate.run(
                 IMAGE_MODEL,
                 input={
                     "prompt":              prompt,
+                    "negative_prompt":     OT_NEGATIVE,
                     "width":               IMAGE_WIDTH,
                     "height":              IMAGE_HEIGHT,
                     "num_inference_steps": IMAGE_STEPS,

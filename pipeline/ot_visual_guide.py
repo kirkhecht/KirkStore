@@ -6,18 +6,137 @@ and cinematic style instructions for each of the 10 chapters.
 
 # ── Base cinematic style for all OT prompts ────────────────────────────────────
 OT_BASE_STYLE = (
-    "ultra photorealistic cinematic film still, dramatic chiaroscuro lighting, "
-    "ancient Near Eastern setting, historically grounded, deep rich colours, "
-    "film grain, anamorphic lens bokeh, 16:9 widescreen composition, "
-    "no text, no watermarks, no modern elements"
+    "ultra photorealistic cinematic film still, high-budget biblical historical documentary, "
+    "ancient Middle Eastern setting, historically grounded Bronze Age and Iron Age details, "
+    "warm desert lighting, natural materials only (hand-woven wool robes, rough linen, "
+    "leather sandals, bronze tools, hewn stone, weathered wood), "
+    "dramatic but realistic lighting, highly detailed faces and environments, "
+    "consistent warm cinematic color grading, film grain, anamorphic lens, "
+    "16:9 widescreen composition, no text, no watermarks"
 )
 
 OT_NEGATIVE = (
-    "cartoon, anime, illustration, painting, watercolour, religious iconography style, "
-    "European Renaissance art, modern clothing, modern buildings, "
-    "CGI uncanny valley, plastic texture, flat lighting, "
-    "text, watermark, logo, distorted anatomy"
+    "avoid: medieval European castle aesthetics, fantasy armor, European Renaissance art style, "
+    "anime, cartoon, illustration, CGI uncanny valley look, plastic skin texture, "
+    "modern clothing, modern buildings, modern hairstyles, whitewashed European facial features, "
+    "oversaturated colors, flat lighting, clean studio lighting, "
+    "science fiction elements, unrealistic weapons, generic AI fantasy imagery, "
+    "text, watermark, logo, distorted anatomy, nudity"
 )
+
+# ── Inline negative guidance appended to every Flux prompt ────────────────────
+OT_INLINE_NEGATIVE = (
+    "cinematic realism only, no fantasy elements, no European medieval aesthetics, "
+    "no modern elements, no anime or illustration style, authentic ancient Middle Eastern appearance"
+)
+
+# ── Recurring character appearance definitions ────────────────────────────────
+CHARACTER_APPEARANCE: dict[str, str] = {
+    # Patriarchs
+    "Adam":        "first man, muscular Bronze Age build, dark olive skin, short dark hair, "
+                   "primitive woven cloth wrap, barefoot, innocent direct gaze",
+    "Eve":         "first woman, dark olive skin, long dark wavy hair, "
+                   "simple leaf and cloth covering, barefoot, ancient beauty",
+    "Noah":        "elderly patriarch, very long white beard and hair, deeply weathered bronze skin, "
+                   "rough undyed wool robes, calloused carpenter's hands, determined eyes",
+    "Abraham":     "elderly Semitic patriarch, long grey-white beard, deeply tanned weathered skin, "
+                   "earth-toned nomadic wool robes, leather belt, dignified bearing, wise eyes",
+    "Abram":       "middle-aged Semitic man, dark beard going grey, bronze skin, "
+                   "wealthy Mesopotamian wool robes, desert nomad bearing",
+    "Sarah":       "elderly Semitic woman, silver hair, weathered kind face, "
+                   "earth-toned head covering and robes, graceful dignity",
+    "Isaac":       "middle-aged Semitic man, dark beard, bronze skin, "
+                   "plain Canaanite shepherd's robes, quiet gentle expression",
+    "Jacob":       "strong Semitic man in his prime, dark curly beard, bronze olive skin, "
+                   "multi-layered wool traveling robes, shepherd's staff, intense determined eyes",
+    "Esau":        "rugged stocky Semitic man, reddish-brown complexion, thick wild reddish beard, "
+                   "hunter's rough leather garments, carrying bow or game",
+    "Joseph":      "young handsome Semitic man, smooth bronze skin, dark eyes, "
+                   "ornate multi-colored striped robe (early scenes) or fine Egyptian linen (later), "
+                   "dignified intelligent bearing",
+    # Moses
+    "Moses":       "elderly Hebrew prophet, very long white beard and hair, deeply weathered "
+                   "dark bronze skin, rough undyed wool desert robes, wooden staff, "
+                   "intense smoldering dark eyes, commanding presence — "
+                   "NOTE: in Egyptian court scenes he is clean-shaven with Egyptian linen",
+    "Aaron":       "elderly Hebrew priest, long white beard, bronze skin, "
+                   "elaborate embroidered priestly robes (blue, purple, scarlet, gold) in Temple scenes, "
+                   "plain wool robes in wilderness scenes",
+    "Miriam":      "elderly Hebrew woman, grey hair with head covering, bronze skin, "
+                   "simple earth-toned robes, tambourine in celebration scenes",
+    # Joshua and Judges era
+    "Joshua":      "strong middle-aged Hebrew warrior, bronze skin, dark beard, "
+                   "Bronze Age Israelite leather and linen armor, sword at belt, commanding presence",
+    "Deborah":     "middle-aged Hebrew woman, olive skin, dark hair with head covering, "
+                   "simple Israelite robes, seated under palm tree with authority",
+    "Gideon":      "young Hebrew man, olive skin, dark hair, "
+                   "plain farmer's rough linen clothing, initially fearful expression",
+    "Samson":      "enormously muscular Hebrew man, bronze skin, very long thick dark hair "
+                   "(his power), simple rough Israelite clothing, fierce presence",
+    "Ruth":        "young Moabite woman, olive-bronze skin, dark hair, "
+                   "simple earth-toned rural robes, gleaning basket",
+    # Samuel and the Kings
+    "Samuel":      "elderly Hebrew prophet-judge, long grey beard, bronze skin, "
+                   "simple prophet's wool robes, horn of oil, stern wise expression",
+    "Hannah":      "Hebrew woman in her 30s, dark hair with head covering, "
+                   "modest wool robes, tearful or joyful expression depending on scene",
+    "Saul":        "very tall Hebrew king, bronze skin, dark beard, "
+                   "early scenes: plain Israelite clothing, later: royal bronze-age armor and robes",
+    "David":       "young David: ruddy complexion, auburn-brown hair, shepherd's simple robes, "
+                   "sling in hand, bright intense eyes — "
+                   "King David: dark beard, bronze skin, royal blue and gold robes, crown",
+    "Jonathan":    "young Hebrew warrior, bronze skin, dark hair, "
+                   "Israelite bronze-age armor and robes, loyal warm expression",
+    "Bathsheba":   "beautiful Hebrew woman, olive skin, dark hair, "
+                   "fine linen robes in palace scenes",
+    "Absalom":     "strikingly handsome young Hebrew man, bronze skin, "
+                   "famously very long thick dark hair, fine robes, proud bearing",
+    "Solomon":     "young Solomon: clean-shaven handsome Hebrew king, bronze skin, dark hair, "
+                   "increasingly elaborate gold and purple royal robes — "
+                   "old Solomon: grey beard, world-weary expression, still opulent clothing",
+    # Prophets
+    "Elijah":      "wild-looking Hebrew prophet, lean and weathered, bronze skin, "
+                   "rough camel-hair garment, wide leather belt, intense burning eyes, "
+                   "no elaborate robes — he looks like a desert wanderer",
+    "Elisha":      "middle-aged Hebrew prophet, dark beard going grey, bronze skin, "
+                   "plain wool prophet's mantle, Elijah's cloak after Elijah departs",
+    "Isaiah":      "Hebrew prophet, middle-aged, olive skin, dark beard, "
+                   "fine Jerusalem robes (he was educated and urban), scroll in hand",
+    "Jeremiah":    "Hebrew prophet, initially young (smooth-faced), later middle-aged with beard, "
+                   "worn simple robes, tear-stained face, scroll or clay tablet, grief-stricken bearing",
+    "Ezekiel":     "Hebrew priest-prophet, middle-aged, bronze skin, dark beard, "
+                   "priestly linen robes, intense visionary expression",
+    "Daniel":      "young Hebrew noble, bronze skin, clean-shaven or light beard (Babylonian court), "
+                   "fine Babylonian court clothing, dignified intelligent bearing — "
+                   "old Daniel: white beard, still dignified, worn but unbroken",
+    "Shadrach":    "young Hebrew man, bronze skin, short dark beard, "
+                   "Babylonian court clothing, courageous calm expression",
+    "Meshach":     "young Hebrew man, bronze skin, short dark beard, "
+                   "Babylonian court clothing, courageous calm expression",
+    "Abednego":    "young Hebrew man, bronze skin, short dark beard, "
+                   "Babylonian court clothing, courageous calm expression",
+    # Foreign rulers
+    "Pharaoh":     "Egyptian king, clean-shaven, dark kohl-lined eyes, "
+                   "white linen shendyt kilt, gold pectoral collar, blue-and-gold nemes headdress, "
+                   "bronze-toned Egyptian complexion, commanding imperial bearing",
+    "Nebuchadnezzar": "Babylonian emperor, full black beard (oiled and curled), "
+                      "elaborate gold and lapis lazuli robes, ornate Babylonian headdress, "
+                      "bronze-olive complexion, powerful intimidating presence",
+    "Cyrus":       "Persian king, full dark beard, elaborate Persian robes and crown, "
+                   "lighter complexion than Babylonians, dignified benevolent bearing",
+    "Esther":      "young Jewish woman of exceptional beauty, olive-bronze skin, dark hair, "
+                   "elaborate Persian royal robes and jewelry in court scenes, "
+                   "modest Jewish clothing in private scenes",
+    "Mordecai":    "middle-aged Jewish man, dark beard going grey, "
+                   "plain Jewish robes in early scenes, official Persian court clothing later",
+    # Return era
+    "Ezra":        "Jewish scribe-priest, middle-aged, dark beard, "
+                   "priestly linen robes, ancient Torah scroll in arms, scholarly bearing",
+    "Nehemiah":    "Jewish official, middle-aged, dark beard, "
+                   "fine Persian court clothing in palace, work clothes during wall-building",
+    "Zerubbabel":  "Jewish leader, middle-aged, dark beard, bronze skin, "
+                   "plain post-exilic Jewish robes, leadership bearing",
+}
 
 # ── Per-emotion lighting/colour modifiers ─────────────────────────────────────
 EMOTION_STYLE: dict[str, str] = {
@@ -532,15 +651,24 @@ def build_prompt(section_title: str, chapter_num: int, emotion: str,
     emo    = EMOTION_STYLE.get(emotion, EMOTION_STYLE["solemn"])
     visual = SECTION_VISUAL.get(section_title, setting or "ancient Near Eastern scene")
 
-    figures = ""
+    # Build character descriptions for visual consistency
+    char_desc = ""
     if key_figures:
-        figures = f"featuring {', '.join(key_figures)}, "
+        descs = []
+        for fig in key_figures:
+            if fig in CHARACTER_APPEARANCE:
+                descs.append(f"{fig}: {CHARACTER_APPEARANCE[fig]}")
+            else:
+                descs.append(fig)
+        char_desc = "Characters — " + "; ".join(descs) + ". "
 
     return (
-        f"{visual}, {figures}"
+        f"{visual}, "
+        f"{char_desc}"
         f"{emo}, "
         f"{env}, "
-        f"{OT_BASE_STYLE}"
+        f"{OT_BASE_STYLE}, "
+        f"{OT_INLINE_NEGATIVE}"
     )
 
 
