@@ -45,6 +45,7 @@ from pipeline import (
     phase5_subtitles,
     phase6_ffmpeg,
     phase7_dashboard,
+    phase8_images,
 )
 from pipeline.config import DIRS, WHISPER_MODEL
 from pipeline.utils import create_all_dirs, setup_logging
@@ -71,7 +72,7 @@ def parse_args() -> argparse.Namespace:
                    help="Enable Claude API for image prompt generation")
     p.add_argument("--skip-transcription", action="store_true",
                    help="Skip Whisper step (use existing transcripts)")
-    p.add_argument("--phases",      default="1,2,3,4,5,6,7",
+    p.add_argument("--phases",      default="1,2,3,4,5,6,7,8",
                    help="Comma-separated phase numbers to run (default: all)")
     p.add_argument("--project-root", type=Path, default=None,
                    help="Override project output directory")
@@ -171,6 +172,11 @@ def main() -> None:
         banner("Phase 7 — Production Dashboard")
         phase7_dashboard.run(chapters, all_scenes)
 
+    # ── Phase 8 — Image Generation ────────────────────────────────────────────
+    if 8 in phases and all_scenes:
+        banner("Phase 8 — Image Generation (Flux Dev via Replicate)")
+        phase8_images.run(all_scenes)
+
     # ── Summary ───────────────────────────────────────────────────────────────
     elapsed = time.time() - start_time
     total_scenes = sum(len(s) for s in all_scenes.values())
@@ -191,8 +197,9 @@ def main() -> None:
     log.info("  %-40s %s", "FFmpeg plan",    DIRS["ffmpeg"]      / "ffmpeg_plan.json")
     log.info("  %-40s %s", "Assembly script",DIRS["ffmpeg"]      / "assemble_video.sh")
     log.info("  %-40s %s", "Production report", DIRS["production"] / "production_report.md")
+    log.info("  %-40s %s", "Generated images",  DIRS["images"])
     log.info("")
-    log.info("Next step: generate images, then run:  bash project/ffmpeg/assemble_video.sh")
+    log.info("Next step: run:  bash project/ffmpeg/assemble_video.sh")
 
 
 if __name__ == "__main__":

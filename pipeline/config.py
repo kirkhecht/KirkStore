@@ -10,6 +10,7 @@ DIRS = {
     "scripts":       PROJECT_ROOT / "scripts",
     "scene_json":    PROJECT_ROOT / "scene_json",
     "image_prompts": PROJECT_ROOT / "image_prompts",
+    "images":        PROJECT_ROOT / "images",
     "subtitles":     PROJECT_ROOT / "subtitles",
     "ffmpeg":        PROJECT_ROOT / "ffmpeg",
     "exports":       PROJECT_ROOT / "exports",
@@ -57,6 +58,15 @@ WHISPER_MODEL = os.getenv("WHISPER_MODEL", "base")  # tiny | base | small | medi
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
 CLAUDE_MODEL      = "claude-sonnet-4-6"
 USE_AI_PROMPTS    = bool(ANTHROPIC_API_KEY)
+
+# ── Replicate / image generation ──────────────────────────────────────────────
+REPLICATE_API_KEY    = os.getenv("REPLICATE_API_KEY", "")
+IMAGE_MODEL          = "black-forest-labs/flux-dev"
+IMAGE_WIDTH          = 1344   # 16:9 at ~720p equivalent for Flux
+IMAGE_HEIGHT         = 768
+IMAGE_STEPS          = 28
+IMAGE_GUIDANCE       = 3.5
+IMAGE_BATCH_WORKERS  = 4      # parallel requests
 
 # ── Narration pacing (ElevenLabs typical) ─────────────────────────────────────
 DEFAULT_WPM = 150
