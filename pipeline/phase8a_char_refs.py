@@ -105,7 +105,7 @@ def run(all_scenes: dict[int, list[dict]]) -> None:
     todo = {n: d for n, d in to_generate.items() if not portrait_path(n).exists()}
     done_count = already
 
-    with ThreadPoolExecutor(max_workers=2) as pool:
+    with ThreadPoolExecutor(max_workers=1) as pool:
         futures = {pool.submit(_generate_portrait, n, d): n for n, d in todo.items()}
         for future in as_completed(futures):
             name, ok, msg = future.result()
