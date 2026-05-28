@@ -1,708 +1,878 @@
 """
-Old Testament documentary visual style guide.
-Provides section-specific image prompt templates, negative prompts,
-and cinematic style instructions for each of the 15 chapters.
+Old Testament Documentary — Master Visual Reference Bible
+=========================================================
+Single source of truth for all character, location, object, and atmospheric
+visualization across the Old Testament Documentary.
 
-Implements a Level 1-6 lore database:
-  Level 1 — Major recurring characters (Moses, David, Abraham, etc.)
-  Level 2 — Secondary named characters (Lot, Rebekah, Goliath, etc.)
-  Level 3 — Supernatural entities (Angels, Cherubim, Seraphim)
-  Level 4 — Nation/culture profiles (Israelites, Egyptians, Philistines, etc.)
-  Level 5 — Geographic locations (Garden of Eden, Egypt, Sinai, etc.)
-  Level 6 — Section-level scene descriptions
+Aesthetic target: @TheBibleWalkReal cinematic biblical realism —
+warm earth-toned painterly realism, period-accurate Middle Eastern features,
+authentic costuming, real Levantine landscapes, golden-hour lighting,
+sacred restraint in supernatural depiction.
+
+Quality references: The Chosen, Risen, Kingdom of Heaven (Ridley Scott),
+Caravaggio chiaroscuro for intimate scenes, Cecil B. DeMille epics for scale.
 """
 
-# ── Base cinematic style for all OT prompts ────────────────────────────────────
+# ══════════════════════════════════════════════════════════════════════════════
+# PART 1 — UNIVERSAL STYLE (appended to every prompt)
+# ══════════════════════════════════════════════════════════════════════════════
+
 OT_BASE_STYLE = (
-    "ultra photorealistic cinematic film still, high-budget biblical historical documentary, "
-    "ancient Middle Eastern setting, historically grounded Bronze Age and Iron Age details, "
-    "warm desert lighting, natural materials only (hand-woven wool robes, rough linen, "
-    "leather sandals, bronze tools, hewn stone, weathered wood), "
-    "dramatic but realistic lighting, highly detailed faces and environments, "
-    "consistent warm cinematic color grading, film grain, anamorphic lens, "
-    "16:9 widescreen composition, no text, no watermarks"
+    "painterly realism, cinematic biblical drama, warm earth tones, "
+    "golden hour lighting, atmospheric depth, period accurate Middle Eastern, "
+    "Levantine landscape, high texture on fabrics (linen weave, wool nap, leather grain), "
+    "visible dust on skin and clothing, real pores weathered sun-tanned skin, "
+    "textured stone rough hewn sun-baked, rule of thirds composition, "
+    "foreground-midground-background layered depth, atmospheric perspective, "
+    "16:9 widescreen, no text, no watermarks"
 )
 
+# Comprehensive negative prompt (Part 11 of the Visual Bible)
 OT_NEGATIVE = (
-    "avoid: medieval European castle aesthetics, fantasy armor, European Renaissance art style, "
-    "anime, cartoon, illustration, CGI uncanny valley look, plastic skin texture, "
-    "modern clothing, modern buildings, modern hairstyles, whitewashed European facial features, "
-    "oversaturated colors, flat lighting, clean studio lighting, "
-    "science fiction elements, unrealistic weapons, generic AI fantasy imagery, "
-    "text, watermark, logo, distorted anatomy, nudity"
+    "modern clothing, modern technology, smartphones, watches, glasses, plastic, metal eyewear, "
+    "neon, anime, cartoon, comic-style, 3D render, video game graphics, low quality, blurry, "
+    "deformed, extra limbs, bad anatomy, twisted hands, melted faces, six fingers, "
+    "blonde Hebrews, white European Jesus, European white people as ancient Israelites, "
+    "Renaissance art style, Baroque, neoclassical, Victorian, art nouveau, "
+    "hyperreal, oversharpened photo, modern photograph, "
+    "modern hairstyle, modern haircut, modern beard styling, beard fade, "
+    "modern makeup, glossy lipstick, eyeshadow palette, "
+    "fantasy armor, sci-fi armor, plate armor, full plate, medieval European armor, knight, "
+    "crucifix, cross necklace, Christmas, Easter decorations, "
+    "modern footwear, sneakers, boots, modern leather goods, "
+    "zippers, buttons, snaps, modern fasteners, "
+    "electric lighting, lamp post, street light, neon sign, "
+    "modern buildings, glass, concrete, steel, "
+    "modern weapons, gun, rifle, pistol, firearm, "
+    "text overlays, watermark, signature, logo, copyright, "
+    "nudity, sexual content, explicit, graphic violence, gore"
 )
 
-# ── Inline negative guidance appended to every Flux prompt ────────────────────
+# Inline style anchor appended inside every Flux prompt
 OT_INLINE_NEGATIVE = (
-    "cinematic realism only, no fantasy elements, no European medieval aesthetics, "
-    "no modern elements, no anime or illustration style, authentic ancient Middle Eastern appearance"
+    "painterly realism only, no fantasy elements, no European medieval aesthetics, "
+    "no modern elements, no anime or illustration style, authentic ancient Middle Eastern appearance, "
+    "Middle Eastern Levantine features on all Hebrew characters, not European"
 )
 
 # ══════════════════════════════════════════════════════════════════════════════
-# LEVEL 1 — MAJOR RECURRING CHARACTERS
-# Full physical appearance for every prompt that includes these figures.
+# PART 2 — CHARACTER VISUAL KEYS
+# Exact prompt fragments — copy directly into image prompts for consistency.
 # ══════════════════════════════════════════════════════════════════════════════
+
 CHARACTER_APPEARANCE: dict[str, str] = {
 
-    # ── Primordial Era ────────────────────────────────────────────────────────
+    # ── Genesis: Primeval ─────────────────────────────────────────────────────
     "Adam": (
-        "first man, lean muscular Bronze Age build, medium-dark olive skin, short dark hair, "
-        "simple primitive woven cloth wrap, barefoot in garden setting, innocent direct gaze, "
-        "no beard in early scenes"
+        "young Middle Eastern man, strong build, shoulder-length dark hair, dark beard, "
+        "olive skin, warm brown eyes, weathered features, simple animal-skin garment around waist, "
+        "biblical Adam, painterly realism"
     ),
     "Eve": (
-        "first woman, dark olive skin, long dark wavy hair loose to her waist, "
-        "simple leaf and natural cloth covering, barefoot, ancient Semitic beauty, "
-        "wide dark eyes, graceful bearing"
+        "young Middle Eastern woman, long flowing dark hair, olive skin, deep brown eyes, "
+        "gentle expression, simple natural covering, "
+        "biblical Eve, painterly realism"
+    ),
+    "Cain": (
+        "strong Middle Eastern farmer, dark hair, dark beard, brooding intense expression, "
+        "dusty rough linen tunic, leather sandals, simple sash, "
+        "biblical Cain, painterly realism"
+    ),
+    "Abel": (
+        "young Middle Eastern shepherd, slim build, dark hair, gentle face, "
+        "holding a white lamb, simple shepherd's wrap, "
+        "biblical Abel, painterly realism"
     ),
     "Noah": (
-        "very elderly patriarch, enormously long grey-white beard and flowing grey hair, "
-        "deeply sun-weathered and wrinkled bronze skin, rough undyed wool robes, "
-        "calloused carpenter's hands, determined wise eyes, commanding presence"
+        "aged patriarch, long gray-white beard, weathered face, strong calloused hands, "
+        "simple aged tunic, leather belt, often carrying a tool or staff, "
+        "biblical Noah, painterly realism"
     ),
 
-    # ── Patriarchs ────────────────────────────────────────────────────────────
+    # ── Genesis: Patriarchs ───────────────────────────────────────────────────
     "Abraham": (
-        "elderly Semitic patriarch, long flowing grey-white beard, deeply tanned weathered olive skin, "
-        "dark brown eyes, earth-toned nomadic wool robes belted with leather, "
-        "dignified composed bearing, wise and kind expression"
+        "aged Hebrew patriarch, long flowing white beard, weathered tan skin, deep wise eyes, "
+        "layered linen and wool robes with embroidered borders, striped mantle, leather sandals, "
+        "staff in hand, biblical Abraham, painterly realism"
     ),
     "Abram": (
-        "middle-aged Semitic man, dark beard beginning to grey at edges, bronze-olive skin, "
-        "wealthy Mesopotamian-style fine wool robes, confident desert nomad bearing, "
-        "strong hands, alert intelligent eyes"
+        "older Middle Eastern man of means, long flowing white beard, weathered tan skin, "
+        "deep wise eyes, layered linen and wool robes, striped mantle, leather sandals, "
+        "biblical Abram, painterly realism"
     ),
     "Sarah": (
-        "elderly Semitic woman, silver hair, deeply kind weathered face, "
-        "earth-toned linen head covering and robes, graceful dignified bearing, "
-        "eyes that hold both sorrow and joy"
+        "remarkably beautiful aged Hebrew woman, dignified bearing, "
+        "long dark hair with silver streaks under headcovering, refined Middle Eastern features, "
+        "layered fine robes, biblical Sarah, painterly realism"
+    ),
+    "Lot": (
+        "middle-aged Hebrew townsman, dark beard, weathered face, "
+        "townsman robes finer than nomadic Abraham, biblical Lot, painterly realism"
+    ),
+    "Hagar": (
+        "young Egyptian woman, bronze skin slightly darker than Sarah, dark hair, "
+        "beautiful but with worn dignity of a servant, Egyptian-influenced dress with simpler servant robes, "
+        "biblical Hagar, painterly realism"
     ),
     "Isaac": (
-        "middle-aged Semitic man, dark beard, bronze-olive skin, "
-        "plain Canaanite shepherd's robes of undyed wool, quiet gentle expression, "
-        "calm and meditative bearing"
+        "Hebrew patriarch, gentle pensive features, dark hair and beard, "
+        "layered wool robes, finer in older age, biblical Isaac, painterly realism"
     ),
-    "Jacob": (
-        "strong Semitic man in his prime, thick dark curly beard, bronze olive skin, "
-        "multi-layered wool traveling robes in earth tones, shepherd's staff, "
-        "intense determined dark eyes, shrewd and purposeful expression"
+    "Rebekah": (
+        "beautiful young Hebrew woman at a well, water jar on shoulder, "
+        "dark hair, kind determined eyes, simple young woman's robe, "
+        "biblical Rebekah, painterly realism"
     ),
     "Esau": (
-        "rugged stocky Semitic man, reddish-brown skin complexion, thick wild reddish-brown beard, "
-        "rough hunter's leather garments, carrying bow or game animals, "
-        "coarse dark reddish hair on arms, direct bold expression"
+        "powerfully built hairy Hebrew hunter, reddish-brown body hair, thick red-brown beard, "
+        "ruddy complexion, animal skin clothing, bow and quiver on back, "
+        "biblical Esau, painterly realism"
+    ),
+    "Jacob": (
+        "Hebrew shepherd, smooth-faced contrast to hairy brother, thoughtful dark eyes, "
+        "layered shepherd's wool robes, staff in hand, slight limp after Peniel, "
+        "biblical Jacob, painterly realism"
+    ),
+    "Laban": (
+        "older Mesopotamian man, gray-flecked dark beard, calculating eyes, "
+        "prosperous Mesopotamian-style robes, biblical Laban, painterly realism"
+    ),
+    "Leah": (
+        "plain kind Hebrew woman, dark hair under headcovering, gentle but weak eyes, "
+        "simple matron's robes, biblical Leah, painterly realism"
+    ),
+    "Rachel": (
+        "strikingly beautiful young Hebrew shepherdess, dark flowing hair, "
+        "vivid expressive eyes, biblical Rachel, painterly realism"
     ),
     "Joseph": (
-        "young handsome Semitic man, smooth bronze-olive skin, dark eyes, high cheekbones, "
-        "ornate multi-colored striped robe in early Canaan scenes, "
-        "fine white Egyptian linen in Egyptian court scenes, "
-        "dignified intelligent bearing, natural leadership presence"
+        "handsome young Hebrew man, dark wavy hair, intelligent expressive eyes, "
+        "wearing an ornate many-colored long-sleeved tunic with embroidered borders, "
+        "biblical young Joseph, painterly realism"
+    ),
+    "Joseph_vizier": (
+        "Hebrew man in elaborate Egyptian vizier dress, white linen kilt, gold collar of office, "
+        "kohl-lined eyes, distinctly Middle Eastern Hebrew features under Egyptian dress, "
+        "biblical Joseph as vizier of Egypt, painterly realism"
+    ),
+    "Benjamin": (
+        "young Hebrew teenager, smaller slim build, sensitive features, dark hair, "
+        "simple tunic, biblical Benjamin, painterly realism"
+    ),
+    "Potiphar": (
+        "Egyptian noble captain of the guard, bronze skin, shaved head, kohl-lined eyes, "
+        "white linen kilt, gold pectoral, leather belt with sword, "
+        "biblical Potiphar, painterly realism"
     ),
 
-    # ── Moses and the Exodus Era ──────────────────────────────────────────────
+    # ── Exodus ────────────────────────────────────────────────────────────────
     "Moses": (
-        "elderly Hebrew prophet, long dark-gray beard (dark grey with streaks, not white), "
-        "sun-worn olive skin, deep brown eyes that burn with fire, "
-        "rough undyed wool desert robes, worn leather sandals, heavy wooden staff, "
-        "commanding towering presence, radiates authority — "
-        "NOTE: in Egyptian palace scenes he is younger, clean-shaven, wearing fine Egyptian linen"
+        "aged Hebrew prophet, long flowing white beard reaching chest, weathered face, "
+        "intense piercing eyes, long mantle pulled over head, gnarled wooden staff — "
+        "NOTE: as Egyptian prince he is young athletic shaved beardless in Egyptian linen kilt and gold collar; "
+        "as Midianite shepherd bearded sun-darkened in rough wool tunic, "
+        "biblical Moses, painterly realism"
     ),
     "Aaron": (
-        "elderly Hebrew priest, long white beard, bronze-olive skin, "
-        "elaborate embroidered priestly robes (blue, purple, scarlet, gold) with breastplate in Temple scenes, "
-        "plain undyed wool robes in wilderness scenes, gold incense censer in hand"
+        "Hebrew high priest, older Hebrew man, dignified full white-streaked beard, "
+        "kind authoritative face, white linen ephod, blue robe with golden bells and pomegranates on hem, "
+        "ornate gold breastplate set with 12 colored stones, gold turban with engraved plate, "
+        "biblical Aaron, painterly realism"
     ),
     "Miriam": (
-        "elderly Hebrew prophetess, grey hair under simple cloth head covering, bronze-olive skin, "
-        "simple earth-toned linen robes, tambourine in celebration scenes, "
-        "strong face with prophetic authority"
+        "aged Hebrew prophetess, dignified bearing, dark hair under headcovering, "
+        "simple robes, tambourine in hand, biblical Miriam, painterly realism"
     ),
     "Pharaoh": (
-        "Egyptian king, clean-shaven face, dark kohl-lined eyes, "
-        "crisp white linen shendyt kilt, ornate gold pectoral collar, "
-        "blue-and-gold nemes headdress with uraeus cobra, bronze-toned Egyptian complexion, "
-        "commanding imperial bearing, seated on gold throne in court scenes"
+        "Egyptian pharaoh of the Exodus, hard-eyed regal ruler, "
+        "striped Nemes headdress, false ceremonial beard, "
+        "ornate gold and lapis pectoral, white linen, "
+        "biblical pharaoh of the Exodus, painterly realism"
+    ),
+    "Jochebed": (
+        "Hebrew slave mother, weathered dignified face, simple worn robes, "
+        "dust-stained slave clothing, biblical Jochebed, painterly realism"
+    ),
+    "Jethro": (
+        "older Midianite priest, white beard, nomadic robes with cloth wrappings, "
+        "dignified bearing, biblical Jethro, painterly realism"
+    ),
+    "Zipporah": (
+        "Midianite woman, dark complexion, intense eyes, "
+        "Bedouin-style robes and headscarf, biblical Zipporah, painterly realism"
     ),
 
-    # ── Joshua and Judges Era ─────────────────────────────────────────────────
+    # ── Wilderness and Judges ─────────────────────────────────────────────────
     "Joshua": (
-        "strong middle-aged Hebrew warrior, bronze-olive skin, dark beard, "
-        "Bronze Age Israelite leather and linen battle armor, bronze-tipped spear, "
-        "sword at belt, commanding military presence, confident steady gaze"
+        "Hebrew warrior commander, dark beard, intense battle-hardened face, "
+        "leather armor over tunic, bronze helmet, sword at side, "
+        "biblical Joshua, painterly realism"
+    ),
+    "Caleb": (
+        "aged Hebrew warrior, white-streaked beard, weathered determined face, "
+        "leather armor, biblical Caleb, painterly realism"
+    ),
+    "Rahab": (
+        "beautiful Canaanite woman, dark flowing hair, vibrant eyes, "
+        "layered colorful Canaanite robes, scarlet cord in window, "
+        "biblical Rahab, painterly realism, restrained"
     ),
     "Deborah": (
-        "middle-aged Hebrew prophetess, olive skin, dark hair with simple cloth head covering, "
-        "plain Israelite robes, seated beneath large date palm with authority, "
-        "wise and calm expression, scroll in hand"
+        "strong-featured Hebrew prophetess, dignified matron, "
+        "layered robes with headcovering, seated beneath a large palm tree, "
+        "biblical Deborah, painterly realism"
+    ),
+    "Barak": (
+        "Hebrew warrior general, dark beard, leather armor, "
+        "biblical Barak, painterly realism"
+    ),
+    "Jael": (
+        "decisive Kenite tent-dwelling woman, Bedouin-style dress, dark hair, "
+        "tent peg and mallet in hand, biblical Jael, painterly realism, restrained"
     ),
     "Gideon": (
-        "young Hebrew man, olive skin, dark hair, strong farmer's build, "
-        "plain rough linen farmer's clothing, initially fearful and uncertain expression, "
-        "later resolute warrior bearing"
+        "Hebrew farmer-warrior, dark beard, average build, leather armor over tunic, "
+        "holding trumpet and clay jar with torch inside, "
+        "biblical Gideon, painterly realism"
+    ),
+    "Jephthah": (
+        "lean weathered Hebrew warrior, complex tortured face, "
+        "outlaw-warrior dress, leather armor, biblical Jephthah, painterly realism"
     ),
     "Samson": (
-        "enormously muscular Hebrew man, very bronze tanned skin, "
-        "very long thick dark hair (his power — seven braids or loose), "
-        "simple rough undyed Israelite cloth wrap, bare chest in battle scenes, "
-        "overwhelming physical presence"
+        "immensely muscled Hebrew warrior, tall, long uncut dark hair prominently displayed, "
+        "full beard, sun-darkened skin, simple tunic and leather belt, "
+        "biblical Samson, painterly realism"
+    ),
+    "Delilah": (
+        "beautiful Philistine woman, dark hair, calculating eyes, "
+        "layered colorful Philistine robes, biblical Delilah, painterly realism, restrained"
     ),
     "Ruth": (
-        "young Moabite woman, olive-bronze skin, dark hair tied back, "
-        "simple earth-toned rural field robes, gleaning basket on her arm, "
-        "loyal devoted expression, quiet inner strength"
+        "young Moabite widow, dark hair, gentle determined expression, "
+        "simple modest robes, gleaning barley sheaves, "
+        "biblical Ruth, painterly realism"
+    ),
+    "Naomi": (
+        "aged Hebrew widow, gray hair under headcovering, weathered grieving face, "
+        "dark widow's robes, biblical Naomi, painterly realism"
+    ),
+    "Boaz": (
+        "prosperous older Hebrew landowner, dignified beard, kind eyes, "
+        "fine robes with embroidered borders, biblical Boaz, painterly realism"
     ),
 
-    # ── Samuel and the Kingdom Era ────────────────────────────────────────────
-    "Samuel": (
-        "elderly Hebrew prophet-judge, long flowing grey beard, bronze-olive skin, "
-        "simple undyed prophet's wool robes, animal horn of oil in hand, "
-        "stern wise expression, the last judge and first kingmaker"
-    ),
+    # ── Samuel's Era ──────────────────────────────────────────────────────────
     "Hannah": (
-        "Hebrew woman in her 30s, dark hair under simple cloth head covering, "
-        "modest plain wool robes, tearful anguished expression in Temple scenes, "
-        "radiant joyful expression in later scenes holding her child"
+        "young Hebrew woman, careworn gentle face, anguished prayer, "
+        "simple dress with headcovering, lips moving silently in prayer, "
+        "biblical Hannah, painterly realism"
+    ),
+    "Eli": (
+        "extremely aged Hebrew high priest, nearly blind, heavy frame, long white beard, "
+        "faded priestly robes with breastplate, biblical Eli, painterly realism"
+    ),
+    "Samuel": (
+        "aged Hebrew prophet, long white beard and hair, intense piercing eyes, "
+        "prophet's mantle, horn of oil in hand, biblical Samuel, painterly realism"
+    ),
+    "Samuel_boy": (
+        "young Hebrew boy in priestly service, dark hair, intelligent serious eyes, "
+        "simple white linen child's ephod, biblical young Samuel, painterly realism"
     ),
     "Saul": (
-        "very tall Hebrew king — stands head and shoulders above others, "
-        "bronze-olive skin, dark beard, early scenes: plain Israelite shepherd's clothes, "
-        "later: Bronze Age leather and bronze royal armor, purple-trimmed robes, "
-        "initially humble, later haunted and tormented expression"
+        "tall imposing Hebrew king, head and shoulders above all others in the frame, "
+        "strong build, dark hair and beard, haunted suspicious eyes in later scenes, "
+        "royal robes with simple Hebrew crown, sword at side, "
+        "biblical King Saul, painterly realism"
     ),
     "David": (
-        "young David: ruddy olive complexion, auburn-brown wavy hair, shepherd's simple rough robes, "
-        "sling at belt, bright intense eyes, youthful vitality — "
-        "King David: dark beard, bronze-olive skin, royal blue and gold robes, "
-        "simple gold crown, lyre in some scenes"
+        "ruddy young Hebrew shepherd, slightly fair complexion, chestnut-brown hair, "
+        "bright intense eyes, slim athletic build, simple shepherd's tunic, sling at belt, "
+        "holding a small Hebrew kinnor lyre, biblical young David, painterly realism"
+    ),
+    "David_king": (
+        "Hebrew king, ruddy complexion, chestnut beard, weathered regal face, "
+        "royal robes with embroidered borders, simple gold crown, mantle on shoulders, "
+        "biblical King David, painterly realism"
+    ),
+    "Goliath": (
+        "giant Philistine warrior, towering nine-foot height above all others, "
+        "massive muscular build, full bronze scale armor, feathered Sea Peoples helmet (NOT horned), "
+        "bronze greaves on his legs, holding a spear with massive bronze point, huge sword at side, "
+        "biblical Goliath, painterly realism"
     ),
     "Jonathan": (
-        "young Hebrew warrior, bronze-olive skin, dark hair, "
-        "Israelite Bronze Age armor and royal robes (king's son), "
-        "loyal warm expression, genuine brotherly love in his bearing"
+        "young Hebrew prince warrior, dark hair and beard, loyal expression, "
+        "royal warrior dress with leather armor, bow and sword, "
+        "biblical Jonathan, painterly realism"
+    ),
+    "Nathan": (
+        "older Hebrew prophet, dignified white beard, fearless piercing eyes, "
+        "prophet's mantle, simple robes, stands before kings without fear, "
+        "biblical Nathan, painterly realism"
     ),
     "Bathsheba": (
-        "beautiful Hebrew woman, olive skin, long dark hair, "
-        "fine linen robes in palace scenes, modest clothing in private scenes, "
-        "composed expression that holds both beauty and sorrow"
+        "beautiful young Hebrew woman, dark hair under headcovering, "
+        "modest robes, dignified expression, "
+        "biblical Bathsheba, painterly realism, restrained"
     ),
     "Absalom": (
-        "strikingly handsome young Hebrew man, bronze-olive skin, "
-        "famously very long thick dark hair (the most beautiful man in Israel), "
-        "fine elaborate robes, proud and charismatic bearing"
+        "strikingly handsome Hebrew prince, very long thick dark hair — his defining feature, "
+        "polished beard, fine princely robes, biblical Absalom, painterly realism"
     ),
+    "Joab": (
+        "hard-faced Hebrew general, scarred warrior, "
+        "leather armor, captain's mantle, biblical Joab, painterly realism"
+    ),
+
+    # ── Kingdom Era ───────────────────────────────────────────────────────────
     "Solomon": (
-        "young Solomon: clean-shaven handsome Hebrew king, bronze-olive skin, dark eyes, "
-        "increasingly elaborate gold and purple royal robes — "
-        "old Solomon: white beard, world-weary expression, still opulent clothing, "
-        "eyes that have seen everything and found it empty"
+        "Hebrew king at the peak of glory, distinguished dark beard, "
+        "intelligent commanding eyes, layered embroidered royal robes, "
+        "gold crown set with precious stones, ceremonial scepter, "
+        "biblical King Solomon, painterly realism"
+    ),
+    "Solomon_old": (
+        "aged Hebrew king, white beard, world-weary expression, "
+        "still opulent clothing but something behind the eyes that has seen everything, "
+        "biblical aged Solomon, painterly realism"
+    ),
+    "Queen_of_Sheba": (
+        "regal Ethiopian queen, deep brown skin, elaborate Sabean royal dress "
+        "with gold and ivory ornaments, ornate headpiece, "
+        "biblical Queen of Sheba, painterly realism"
+    ),
+    "Rehoboam": (
+        "young Hebrew king, slightly arrogant features, "
+        "royal robes less grand than his father Solomon, "
+        "biblical Rehoboam, painterly realism"
+    ),
+    "Jeroboam": (
+        "Hebrew rebel king of the north, strong build, dark beard, ambitious eyes, "
+        "northern Israelite royal robes, biblical Jeroboam, painterly realism"
+    ),
+    "Ahab": (
+        "Hebrew king of the northern kingdom, powerful build, dark beard, "
+        "weak-willed expression dominated by his wife, royal robes, "
+        "biblical King Ahab, painterly realism"
+    ),
+    "Jezebel": (
+        "striking Phoenician queen, distinctly non-Hebrew lighter complexion, "
+        "elaborate dark hair, intense painted eyes with heavy kohl — she painted her eyes, "
+        "ornate Phoenician royal dress with Baal religious ornamentation subtly present, "
+        "biblical Queen Jezebel, painterly realism, restrained sacred imagery"
     ),
 
     # ── Prophets ──────────────────────────────────────────────────────────────
     "Elijah": (
-        "wild-looking Hebrew prophet, lean and deeply sun-weathered, dark bronze skin, "
-        "rough coarse camel-hair outer garment, wide leather belt around his waist, "
-        "intense burning eyes, no elaborate robes — he looks like a desert wanderer, "
-        "wild dark-grey hair and beard"
+        "wild weathered Hebrew prophet, deeply tanned, intense burning eyes, "
+        "long unkempt dark hair, full unkempt beard, "
+        "rough haircloth mantle with the hair still on (camel hair, dark brown-black), "
+        "leather belt around waist, walking staff, biblical Elijah, painterly realism"
     ),
     "Elisha": (
-        "middle-aged Hebrew prophet, dark beard going grey, bronze-olive skin, "
-        "plain wool prophet's mantle over simple robes, "
-        "carrying Elijah's cloak after Elijah departs, calm purposeful expression"
+        "aged Hebrew prophet, completely bald head — this is his defining visual feature, "
+        "full beard, weathered piercing eyes, rough prophet's mantle, "
+        "biblical Elisha, painterly realism"
+    ),
+    "Amos": (
+        "rough Hebrew shepherd prophet, deeply tanned weathered face, "
+        "working man's hands, plain shepherd's robes, very rural appearance, "
+        "biblical Amos, painterly realism"
+    ),
+    "Hosea": (
+        "middle-aged Hebrew prophet, careworn tortured but kind eyes, "
+        "prophet's mantle, biblical Hosea, painterly realism"
     ),
     "Isaiah": (
-        "Hebrew prophet, middle-aged, olive skin, dark beard, "
-        "fine Jerusalem wool robes with embroidered borders (he was an educated urban court prophet), "
-        "ancient scroll in hand, intense prophetic gaze"
+        "dignified older Hebrew prophet, white-streaked beard, intense scholar's eyes, "
+        "fine prophet's robes with embroidered borders (court access), "
+        "ancient scroll in hand, biblical Isaiah, painterly realism"
     ),
-    "Jeremiah": (
-        "Hebrew prophet, initially young (smooth-faced early scenes), later middle-aged with short beard, "
-        "worn simple rough robes, tear-stained face, scroll or clay tablet, "
-        "grief-stricken bearing — the weeping prophet — "
-        "yoke around neck in enacted prophecy scenes"
-    ),
-    "Ezekiel": (
-        "Hebrew priest-prophet, middle-aged, bronze-olive skin, dark beard, "
-        "priestly linen robes in vision scenes, intense visionary expression, "
-        "eyes wide with what he has witnessed, scroll in hand"
-    ),
-    "Daniel": (
-        "young Hebrew noble, bronze-olive skin, clean-shaven or very light beard (Babylonian court style), "
-        "fine Babylonian court clothing (lapis lazuli blue and gold), "
-        "dignified intelligent bearing, unbroken inner calm — "
-        "old Daniel: neat white beard, still dignified, eyes full of wisdom"
-    ),
-    "Shadrach": (
-        "young Hebrew man, bronze-olive skin, short dark beard, "
-        "fine Babylonian court clothing, courageous calm expression, "
-        "standing with Meshach and Abednego"
-    ),
-    "Meshach": (
-        "young Hebrew man, bronze-olive skin, short dark beard, "
-        "fine Babylonian court clothing, courageous calm expression"
-    ),
-    "Abednego": (
-        "young Hebrew man, bronze-olive skin, short dark beard, "
-        "fine Babylonian court clothing, courageous calm expression"
-    ),
-
-    # ── Foreign Rulers ────────────────────────────────────────────────────────
-    "Nebuchadnezzar": (
-        "Babylonian emperor, full black beard oiled and tightly curled in Babylonian style, "
-        "elaborate gold and lapis lazuli embroidered robes, tall ornate Babylonian conical crown, "
-        "bronze-olive complexion, powerful intimidating presence, commanding authority"
-    ),
-    "Cyrus": (
-        "Persian king, full dark beard trimmed neatly, elaborate Persian embroidered robes, "
-        "Persian-style tiara crown, slightly lighter complexion than Babylonians, "
-        "dignified benevolent bearing, the king who lets Israel go free"
-    ),
-    "Esther": (
-        "young Jewish woman of exceptional beauty, olive-bronze skin, dark lustrous hair, "
-        "elaborate Persian royal robes with gold embroidery and jewelry in court scenes, "
-        "modest plain Jewish clothing in private scenes, "
-        "graceful bearing that blends both worlds"
-    ),
-    "Mordecai": (
-        "middle-aged Jewish man, dark beard going grey, "
-        "plain undyed Jewish robes in early scenes, "
-        "official Persian court clothing with gold chain in later scenes"
-    ),
-
-    # ── Return Era ────────────────────────────────────────────────────────────
-    "Ezra": (
-        "Jewish scribe-priest, middle-aged, neat dark beard, "
-        "white priestly linen robes, ancient Torah scroll cradled in his arms, "
-        "scholarly reverent bearing"
-    ),
-    "Nehemiah": (
-        "Jewish official, middle-aged, dark beard, "
-        "fine Persian court clothing in palace scenes, "
-        "work clothes and sword at hip during Jerusalem wall-building"
-    ),
-    "Zerubbabel": (
-        "Jewish governor, middle-aged, dark beard, bronze-olive skin, "
-        "plain post-exilic Jewish robes, builder's leadership bearing"
-    ),
-}
-
-# ══════════════════════════════════════════════════════════════════════════════
-# LEVEL 2 — SECONDARY NAMED CHARACTERS
-# ══════════════════════════════════════════════════════════════════════════════
-SECONDARY_CHARACTERS: dict[str, str] = {
-    "Lot": (
-        "middle-aged Semitic man, dark beard, bronze skin, "
-        "plain nomadic wool robes, Abraham's nephew, torn between two worlds"
-    ),
-    "Rebekah": (
-        "young Semitic woman, olive skin, dark hair, beautiful and strong-willed, "
-        "simple Aramean village robes, water jar on her shoulder"
-    ),
-    "Rachel": (
-        "young beautiful Aramean woman, olive skin, dark hair, graceful, "
-        "simple shepherd girl's robes, sheep around her"
-    ),
-    "Leah": (
-        "young Aramean woman, olive skin, dark hair, kind face, "
-        "simple robes, tender expression"
-    ),
-    "Potiphar": (
-        "Egyptian official, clean-shaven, dark kohl eyes, "
-        "white linen robes with gold collar, commanding Egyptian bearing"
-    ),
-    "Jochebed": (
-        "Hebrew mother, olive skin, dark hair, plain slave robes, "
-        "desperate protective love in her expression, Moses' mother"
-    ),
-    "Caleb": (
-        "middle-aged Hebrew warrior, bronze skin, dark beard, "
-        "battle-worn Israelite armor, confident fearless expression"
-    ),
-    "Rahab": (
-        "Canaanite woman, olive skin, dark hair, "
-        "colorful Canaanite robes, crimson cord in her window"
-    ),
-    "Boaz": (
-        "prosperous middle-aged Hebrew landowner, dark beard going grey, "
-        "fine quality wool robes, generous dignified bearing, Bethlehem farmer"
-    ),
-    "Naomi": (
-        "elderly Israelite woman, grey hair, deeply weathered face, "
-        "plain travel-worn robes, grief and resilience in equal measure"
-    ),
-    "Eli": (
-        "very elderly Hebrew high priest, white beard, failing eyesight, "
-        "elaborate priestly robes, large frame, sitting in the gate"
-    ),
-    "Goliath": (
-        "enormous Philistine warrior standing over nine feet tall, "
-        "full bronze scale armor from head to foot, bronze helmet, "
-        "massive iron spear, bronze javelin, towering over everyone, "
-        "Philistine warrior markings, terrifying physical presence"
-    ),
-    "Jezebel": (
-        "Phoenician queen, bold and striking beauty, olive skin, dark kohl-painted eyes, "
-        "elaborate Phoenician robes in purple and crimson, heavy gold jewelry, "
-        "calculating dangerous expression, Baal devotee — "
-        "never subdued-looking, always commanding and threatening"
-    ),
-    "Elijah_young": (
-        "young Hebrew man before his prophetic calling, plain Israelite robes"
-    ),
-    "Naaman": (
-        "Syrian army commander, strong military bearing, fine Aramean armor, "
-        "skin marred by leprosy in early scenes, cleansed skin in Jordan scenes"
+    "Micah": (
+        "rural Hebrew prophet, sun-darkened weathered face, "
+        "simple prophet's robes, biblical Micah, painterly realism"
     ),
     "Hezekiah": (
-        "Judean king, middle-aged, dark beard, royal robes and crown, "
-        "pious expression, kneeling in prayer"
-    ),
-    "Josiah": (
-        "young Judean king — crowned at age eight, very young in early scenes, "
-        "teen in reform scenes, bronze-olive skin, earnest pious expression"
-    ),
-    "Job": (
-        "prosperous middle-aged man of Uz, dark beard, wealthy robes in early scenes, "
-        "same man reduced to sitting in ash heap, torn robes, skin covered in sores, "
-        "but dignified and resolute even in suffering"
-    ),
-    "Jonah": (
-        "Hebrew prophet, middle-aged, dark beard, olive skin, "
-        "plain prophet's robes, stubborn expression giving way to wonder, "
-        "dripping wet and pale after the great fish"
-    ),
-    "Balaam": (
-        "Aramean diviner, middle-aged, dark beard, non-Israelite robes, "
-        "riding a donkey, staff in hand, conflicted expression"
-    ),
-    "Tamar_Judah": (
-        "young Canaanite woman, olive skin, dark hair, "
-        "simple robes, then disguised with veil at crossroads"
-    ),
-    "Jael": (
-        "Kenite woman, olive skin, dark hair, simple tent-dwelling robes, "
-        "determined fierce expression"
-    ),
-    "Delilah": (
-        "Philistine woman, olive skin, dark hair, "
-        "fine Philistine robes, beautiful but scheming expression"
-    ),
-    "Nathan": (
-        "Hebrew prophet, middle-aged, dark beard, simple prophet's robes, "
-        "standing before kings with calm authority"
-    ),
-    "Joab": (
-        "veteran Hebrew military commander, dark beard, weathered bronze skin, "
-        "battle-hardened Israelite armor, calculating loyal expression"
-    ),
-    "Hiram": (
-        "Phoenician king of Tyre, dark beard, fine Phoenician robes, "
-        "seafaring cosmopolitan bearing, trade partner of Solomon"
-    ),
-    "Queen_of_Sheba": (
-        "African queen of extraordinary beauty, very dark rich skin, "
-        "elaborate gold and jeweled robes from southern Arabia/Africa, "
-        "gold crown, highly intelligent assessing gaze"
-    ),
-    "Rehoboam": (
-        "young Hebrew king, early 40s, bronze-olive skin, dark beard, "
-        "royal robes, arrogant and foolish expression"
-    ),
-    "Jeroboam": (
-        "northern Israelite leader, dark beard, bronze skin, "
-        "Israelite robes, ambitious determined bearing"
-    ),
-    "Ahab": (
-        "Israelite king, dark beard, royal northern Israelite armor and robes, "
-        "bronze-olive skin, weak and indecisive expression dominated by Jezebel"
+        "dignified Hebrew king of Judah, dark beard with gray, devout careworn face, "
+        "royal robes with crown, spreading a scroll before the Lord, "
+        "biblical King Hezekiah, painterly realism"
     ),
     "Sennacherib": (
-        "Assyrian king, full black oiled beard in tight Assyrian curls, "
-        "elaborate Assyrian armor and royal robes, pointed war helmet, "
-        "arrogant conquering expression"
+        "imperious Assyrian emperor, square-cut tightly curled beard — the Assyrian signature look, "
+        "hard cruel eyes, tall conical Assyrian crown, embroidered robes with rosettes and gold ornaments, "
+        "biblical King Sennacherib, painterly realism"
     ),
     "Manasseh": (
-        "Judean king crowned at twelve — boy king in early scenes, "
-        "adult in later scenes, dark beard, royal robes, "
-        "idolatrous darkened expression"
+        "Hebrew king with cruel hardened features, royal Judean robes "
+        "with subtle pagan ornamentation, biblical King Manasseh, painterly realism"
+    ),
+    "Josiah": (
+        "young Hebrew king with passionate righteous expression, "
+        "royal robes with crown, biblical King Josiah, painterly realism"
+    ),
+    "Jeremiah": (
+        "aged weeping Hebrew prophet, tear-streaked face, deep grief, white beard, "
+        "plain torn prophet's robes, sometimes sackcloth, wooden yoke around neck in enacted prophecies, "
+        "biblical Jeremiah, painterly realism"
+    ),
+    "Zedekiah": (
+        "weak-featured final Hebrew king, hunted look, tattered royal robes, "
+        "biblical King Zedekiah, painterly realism"
+    ),
+
+    # ── Exilic Era ────────────────────────────────────────────────────────────
+    "Nebuchadnezzar": (
+        "imposing Babylonian emperor, long luxurious curled beard (longer and more flowing than Assyrian), "
+        "commanding eyes, cylindrical Babylonian crown with rosettes, "
+        "embroidered polychrome royal robes, "
+        "biblical King Nebuchadnezzar, painterly realism"
+    ),
+    "Nebuchadnezzar_mad": (
+        "Babylonian king reduced to madness in field, wild matted long hair like eagle feathers, "
+        "overgrown fingernails like bird claws, crawling in field grass, "
+        "ragged royal remnants still visible, biblical Nebuchadnezzar madness, painterly realism, restrained"
+    ),
+    "Daniel": (
+        "aged Hebrew statesman in Babylonian court, distinguished Hebrew features, "
+        "intelligent serene eyes, white beard, fine but dignified Persian official robes, "
+        "biblical Daniel, painterly realism"
+    ),
+    "Daniel_young": (
+        "young Hebrew nobleman, distinctive Hebrew features amid Babylonian court, "
+        "intelligent serene eyes, dark beard, fine Babylonian-Persian court robes, "
+        "worn with Hebrew dignity, biblical young Daniel, painterly realism"
+    ),
+    "Shadrach": (
+        "young Hebrew nobleman in the Babylonian court, distinct Hebrew features, "
+        "fine court robes, courageous calm expression, "
+        "biblical Shadrach, painterly realism"
+    ),
+    "Meshach": (
+        "young Hebrew nobleman in the Babylonian court, distinct Hebrew features, "
+        "fine court robes, courageous calm expression, "
+        "biblical Meshach, painterly realism"
+    ),
+    "Abednego": (
+        "young Hebrew nobleman in the Babylonian court, distinct Hebrew features, "
+        "fine court robes, courageous calm expression, "
+        "biblical Abednego, painterly realism"
+    ),
+    "Ezekiel": (
+        "Hebrew priest-prophet in exile, dark beard with gray, intense visionary eyes, "
+        "white linen ephod under prophet's mantle, biblical Ezekiel, painterly realism"
+    ),
+    "Belshazzar": (
+        "decadent Babylonian co-regent, weak features, "
+        "elaborate royal dress dishevelled in feast, biblical Belshazzar, painterly realism"
+    ),
+    "Darius_Mede": (
+        "older Median-Persian ruler, white beard, troubled gracious face, "
+        "long flowing Persian royal robes with Median tiara soft cap, "
+        "biblical King Darius the Mede, painterly realism"
+    ),
+    "Cyrus": (
+        "imposing Persian emperor, dignified Persian features, characteristic curled beard, "
+        "Persian imperial royal robes with crown, biblical King Cyrus the Great, painterly realism"
+    ),
+
+    # ── Post-Exilic Era ───────────────────────────────────────────────────────
+    "Zerubbabel": (
+        "dignified Hebrew governor of the returned exiles, descendant of David, "
+        "official but not royal robes, biblical Zerubbabel, painterly realism"
+    ),
+    "Ezra": (
+        "aged Hebrew scribe-priest, distinguished scholar's bearing, white beard, "
+        "priestly robes, holding a large scroll, biblical Ezra the scribe, painterly realism"
+    ),
+    "Nehemiah": (
+        "middle-aged Hebrew official, dignified capable face, "
+        "Persian court robes initially, working clothes with sword during wall-building, "
+        "biblical Nehemiah, painterly realism"
+    ),
+    "Esther": (
+        "strikingly beautiful young Hebrew queen in the Persian court, "
+        "dark flowing hair, intelligent gentle eyes, "
+        "elaborate Persian queen's robes layered with gold and lapis, ornate Persian crown, "
+        "biblical Queen Esther, painterly realism, restrained"
+    ),
+    "Mordecai": (
+        "distinguished older Hebrew man at the Persian king's gate, "
+        "dark gray-streaked beard, intelligent watchful eyes, modest Hebrew robes, "
+        "biblical Mordecai, painterly realism"
+    ),
+    "Ahasuerus": (
+        "imposing Persian emperor, characteristic curled hair and beard, "
+        "elaborate Persian imperial robes embroidered with gold, high Persian crown, "
+        "golden ceremonial scepter, biblical King Ahasuerus, painterly realism"
+    ),
+    "Haman": (
+        "Persian noble of Agagite descent, cold proud cruel features, "
+        "elaborate Persian noble's robes second only to the king, "
+        "biblical Haman, painterly realism"
+    ),
+    "Malachi": (
+        "older Hebrew prophet, dignified bearing, plain prophet's robes, "
+        "the last prophet of the Old Testament era, biblical Malachi, painterly realism"
+    ),
+    "Haggai": (
+        "older Hebrew prophet, dignified bearing, prophet's mantle, "
+        "biblical Haggai, painterly realism"
+    ),
+    "Zechariah_prophet": (
+        "younger Hebrew prophet with visionary eyes, prophet's robes, "
+        "biblical Zechariah post-exilic prophet, painterly realism"
+    ),
+    "Naaman": (
+        "powerful Syrian general, Aramean features, commanding presence, "
+        "fine Syrian military dress with chariot armor, "
+        "visible white leprous patches on skin, biblical Naaman, painterly realism, restrained"
+    ),
+    "Job": (
+        "Middle Eastern man of Uz, prosperous appearance in early scenes, "
+        "same man in ash heap with torn robes and skin sores in suffering scenes, "
+        "dignified resilient expression even in anguish, biblical Job, painterly realism"
+    ),
+    "Jonah": (
+        "Hebrew prophet, middle-aged, dark beard, olive skin, plain prophet's robes, "
+        "stubborn expression; dripping wet and pale after the great fish, "
+        "biblical Jonah, painterly realism"
+    ),
+    "Abigail": (
+        "wise dignified beautiful Hebrew woman, fine matron robes, intelligent kind eyes, "
+        "provisions on donkeys nearby, biblical Abigail, painterly realism"
     ),
 }
 
 # ══════════════════════════════════════════════════════════════════════════════
-# LEVEL 3 — SUPERNATURAL ENTITIES
+# PART 3 — SUPERNATURAL BEINGS & DIVINE REPRESENTATION
 # ══════════════════════════════════════════════════════════════════════════════
+
 SUPERNATURAL_ENTITIES: dict[str, str] = {
+    "God_presence": (
+        "diffuse warm divine light from above, glowing cloud, no figure visible, "
+        "sacred presence implied through light and cloud, painterly realism"
+    ),
+    "Angel_of_Lord": (
+        "luminous brilliant white-gold figure, back-lit and partially obscured by divine glory, "
+        "face not clearly visible, tall imposing presence, "
+        "biblical Angel of the Lord, painterly realism, sacred restraint"
+    ),
     "Angel": (
-        "luminous figure in dazzlingly white robes, face almost too bright to look at directly, "
-        "tall imposing presence, warm golden-white radiance emanating from within, "
-        "no cartoon wings — subtle light suggests divine nature, "
-        "ancient Middle Eastern human form but unmistakably otherworldly"
+        "tall luminous male figure in shining white linen robes, "
+        "ageless beautiful severe face, radiant inner light, "
+        "not cherubic putti, not feminine with halo — tall and severe, "
+        "biblical angel, painterly realism"
     ),
     "Angel_warrior": (
-        "massive warrior figure in white and light armor, drawn blazing sword, "
+        "massive warrior figure in white and light, drawn blazing sword, "
         "overwhelming physical presence, golden-white light, guardian stance, "
-        "no fantasy armor — ancient divine warrior aesthetic"
+        "biblical angel of the Lord with sword drawn, painterly realism, sacred"
     ),
     "Cherubim": (
-        "monumental supernatural creatures with four faces (human, lion, ox, eagle), "
-        "four wings spread wide, gleaming bronze bodies, wheels within wheels of fire beside them, "
-        "unearthly amber and white glow, Ezekiel's vision aesthetic, "
-        "ancient Near Eastern throne guardian imagery"
+        "biblical cherubim, four-faced (human, lion, ox, eagle), four wings, "
+        "feet like burnished bronze, awesome and strange, NOT Renaissance cherubs, "
+        "painterly realism, sacred restraint"
     ),
     "Seraphim": (
-        "magnificent six-winged creatures above the divine throne, "
-        "two wings covering face, two covering feet, two in flight, "
-        "blazing brilliant white-gold, voices that shake the foundations, "
-        "Isaiah's Temple vision aesthetic"
+        "biblical seraphim, six-winged celestial beings, "
+        "two wings covering face, two covering feet, two flying, "
+        "burning with divine fire, painterly realism, sacred restraint"
+    ),
+    "Fourth_in_furnace": (
+        "luminous mysterious figure in the midst of furnace flames with three Hebrew youths, "
+        "surrounded by fire but untouched, glowing white-gold, face not clearly visible, "
+        "biblical fourth figure in the fiery furnace, painterly realism, sacred"
+    ),
+    "Ancient_of_Days": (
+        "awesome enthroned figure clothed in pure white robes, hair like pure wool, "
+        "face obscured by divine light, throne of flame, river of fire flowing before, "
+        "biblical Ancient of Days vision, painterly realism, sacred restraint"
     ),
     "Burning_Bush": (
-        "single thorn bush fully engulfed in pure golden-white fire, "
-        "fire burning but not consuming — leaves intact within the flames, "
-        "supernatural light pouring from within the bush, "
-        "rocky Sinai wilderness, late afternoon, sacred ground, "
-        "pair of sandals on ground before it"
+        "desert thornbush engulfed in flame yet unconsumed, "
+        "leaves and branches visible through the holy fire, "
+        "biblical burning bush at Sinai, painterly realism, sacred"
     ),
-    "Pillar_of_Fire": (
-        "towering column of supernatural fire ascending from earth to sky at night, "
-        "enormous scale dwarfing the camp below, amber-orange base transitioning to pure white above, "
-        "two million Israelites in its light, desert night sky, stars behind"
+    "Pillar_Cloud": (
+        "massive vertical pillar of glowing white cloud rising into the sky "
+        "above a wilderness camp, biblical pillar of cloud by day, painterly realism, sacred"
     ),
-    "Pillar_of_Cloud": (
-        "towering column of dense luminous white cloud descending from sky to earth by day, "
-        "dazzling white top, dark thunderous base, "
-        "leading two million Israelites across desert, massive scale"
+    "Pillar_Fire": (
+        "massive vertical pillar of bright flame rising into the night sky "
+        "above a wilderness camp, biblical pillar of fire by night, painterly realism, sacred"
     ),
-    "Glory_of_God": (
-        "blinding golden-white cloud filling interior of temple or tabernacle, "
-        "priests unable to stand, prostrate on floor, "
-        "no visible form — only overwhelming radiant light and thick cloud, "
-        "smoke and fire at the edges"
+    "Glory_cloud": (
+        "massive luminous golden cloud of divine glory filling an ancient temple sanctuary, "
+        "priests stepping back unable to stand, biblical Glory of the Lord filling Solomon's Temple, "
+        "painterly realism, sacred"
     ),
-    "Angel_of_Death": (
-        "unseen presence moving through Egyptian darkness at midnight, "
-        "no literal figure shown — only doorposts with dark lamb's blood, "
-        "lights going out in Egyptian homes, pale death in the air, "
-        "Hebrew homes glowing with lamplight from within, protected"
+    "Serpent_Eden": (
+        "beautiful subtle iridescent serpent creature with intelligent eyes, "
+        "coiled around ancient tree branch in lush garden, "
+        "biblical serpent in Eden before the curse, painterly realism, restrained sacred imagery"
     ),
-    "Divine_Throne": (
-        "ancient of days seated on high exalted throne, vast heavenly court, "
-        "ten thousand times ten thousand serving him, "
-        "throne blazing with fire, wheels of fire, river of fire flowing, "
-        "Daniel's vision aesthetic — no face of God shown, only overwhelming radiant presence"
+    "Chariot_of_Fire": (
+        "flaming celestial chariot drawn by flaming horses, descending from tearing sky, "
+        "no figure of God within it, biblical chariot of fire taking Elijah, painterly realism, sacred restraint"
+    ),
+    "Writing_on_Wall": (
+        "disembodied human hand appearing in midair, "
+        "writing mysterious letters of fire on a white plaster wall, no arm or body attached, "
+        "biblical writing on the wall at Belshazzar's feast, painterly realism, sacred"
+    ),
+    "Jacob_Ladder": (
+        "luminous golden staircase rising from earth into starlit heavens, "
+        "angelic figures ascending and descending on it, "
+        "biblical Jacob's ladder dream vision, painterly realism, sacred, restrained"
     ),
 }
 
 # ══════════════════════════════════════════════════════════════════════════════
-# LEVEL 4 — NATION AND CULTURE PROFILES
+# PART 4 — NATION AND PEOPLE PROFILES
 # ══════════════════════════════════════════════════════════════════════════════
+
 NATION_STYLE: dict[str, str] = {
     "Israelites": (
-        "ancient Semitic people, olive to bronze skin tones, dark hair, dark eyes, "
+        "ancient Semitic people, olive to medium-brown skin tones, dark hair, dark eyes, "
         "men in undyed or earth-toned rough wool and linen robes with fringed edges (tzitzit), "
-        "leather sandals, men typically bearded, women with hair covered, "
+        "leather sandals, men typically full-bearded (never shaved), women with hair covered, "
         "plain functional clothing — no gold embroidery except priests and royalty, "
         "Bronze Age to Iron Age tools, clay pottery, goatskin water bags, "
-        "simple stone and mud-brick homes in hill country, olive groves and vineyards, "
-        "architecture: rough hewn limestone, no dressed stone except Jerusalem"
+        "rough hewn limestone, no dressed stone except Jerusalem"
     ),
     "Egyptians": (
         "ancient North African Mediterranean people, warm bronze-copper skin tones, dark eyes, "
-        "men: clean-shaven (or small neat kohl-lined beards for officials), white linen kilts (shendyt), "
-        "gold pectoral collars for officials, blue-and-gold nemes headdresses for royalty, "
-        "women: white linen sheath dresses, heavy kohl eye makeup, elaborate wigs and gold jewelry, "
-        "massive sandstone and granite architecture, colonnaded temples covered in hieroglyphs, "
-        "painted statuary, obelisks, sphinx, Nile river setting, palm trees, papyrus, "
-        "New Kingdom 18th-19th dynasty aesthetic"
+        "men clean-shaven or with neat short kohl-lined hair, white linen kilts (shendyt), "
+        "elaborate gold pectoral collars, women in sheer white linen sheath dresses, heavy kohl eyes, "
+        "massive sandstone temples with lotus and papyrus columns, hieroglyphic-covered walls, "
+        "New Kingdom 18th-19th dynasty aesthetic, Nile river, obelisks, sphinxes"
     ),
     "Philistines": (
-        "Sea Peoples of Aegean origin settled in Canaan coastal plain, "
-        "slightly lighter Mediterranean complexion than Israelites, "
-        "distinctive armor: bronze scale armor, feathered or ridged helmets (no horns), "
-        "iron weapons — iron swords, spears, chariots (technological advantage), "
-        "fine Mycenaean-influenced pottery and architecture, "
-        "five city-states: Gaza, Ashdod, Ashkelon, Gath, Ekron, "
-        "more urban and cosmopolitan than Israelites"
-    ),
-    "Babylonians": (
-        "Mesopotamian people, olive-bronze skin, dark hair, "
-        "men: full beards oiled and tightly curled in rings, "
-        "elaborate embroidered robes in deep blues, reds, and golds, "
-        "tall conical or tiara-shaped headdresses for officials, "
-        "women: elaborate hairstyles with gold pins, layered robes, heavy jewelry, "
-        "massive ziggurat architecture, blue-glazed Ishtar Gate tiles, "
-        "hanging gardens, processional ways lined with lions and dragons (mushhushshu), "
-        "cuneiform clay tablets, lapis lazuli and gold decoration everywhere, "
-        "Neo-Babylonian empire aesthetic (605-539 BC)"
+        "Sea Peoples of Aegean origin on Canaan coastal plain, "
+        "slightly lighter Mediterranean complexion, often beardless (smooth-shaven, unusual for region), "
+        "DISTINCTIVE FEATHERED HELMETS — tall row of feathers or stiff bristles on top, "
+        "bronze scale armor, round shields with bosses, iron weapons — technological advantage, "
+        "Aegean-influenced pottery and architecture, five city-states"
     ),
     "Assyrians": (
-        "northern Mesopotamian empire, bronze-olive skin, dark hair, "
-        "men: thick full beards tightly curled, "
-        "heavy scale armor, pointed iron helmets, large decorated shields, "
-        "iron weapons and war machines (siege towers, battering rams), "
-        "elaborate bas-relief palace walls carved with battle scenes, "
-        "human-headed winged bull guardians (lamassu) at palace gates, "
-        "brutal efficient military machine aesthetic, "
-        "robes in earthy tones with fringe, royal robes in purple and gold, "
-        "Neo-Assyrian empire aesthetic (900-600 BC)"
+        "most fearsome visual identity, square-cut TIGHTLY CURLED black beards — the signature look, "
+        "heavy ornate robes covered in rosettes, conical bronze helmets with cheek-pieces, "
+        "massive iron-tipped spears, large rectangular wicker shields, "
+        "winged-bull lamassu statues at palace gates, "
+        "massive stone fortifications, relief-carved walls of conquests"
+    ),
+    "Babylonians": (
+        "similar Mesopotamian base to Assyrians but more LUXURIOUS, "
+        "longer more flowing curled beards (less tight than Assyrian), "
+        "polychrome glazed brick architecture — brilliant Ishtar Gate blue and gold, "
+        "hanging gardens, great stepped ziggurat of Marduk, cylinder seal motifs"
     ),
     "Persians": (
-        "Iranian plateau people, olive to medium-tan skin, dark hair, "
-        "men: neatly trimmed full beards (not tightly curled like Babylonians), "
-        "elaborate embroidered court robes in cream, crimson, and purple, "
-        "tall cidaris crown for king, tiara hats for nobles, "
-        "Persian-style columns with bull-headed capitals at Persepolis, "
-        "marble palace floors, gold and silver vessels, "
-        "notably tolerant and cosmopolitan compared to Assyria/Babylon, "
-        "Achaemenid Persian empire aesthetic (550-330 BC)"
+        "Median-Persian dress, long flowing robes very different from Mesopotamian, "
+        "soft caps (tiaras) for nobles, curled hair and beards (wave-like not tightly curled), "
+        "generally lighter complexion than Mesopotamians, more polished and modern for the era, "
+        "Persepolis — massive columned audience halls, double-bull capital columns, "
+        "processions of subjected peoples in relief"
     ),
     "Canaanites": (
-        "original inhabitants of the land, closely related Semitic people to Israelites, "
-        "olive-bronze skin, dark hair, similar basic clothing to Israelites but more colorful, "
-        "walled city-states on hilltops with mudbrick walls, "
-        "Baal and Asherah worship — standing stones (masseboth), wooden poles (asherah poles), "
-        "bronze and iron tools, "
-        "Canaanite cities: Jericho, Ai, Gibeon, Hazor, Megiddo, "
-        "Late Bronze Age to Iron Age I aesthetic"
-    ),
-    "Arameans": (
-        "Semitic people north and northeast of Israel (modern Syria), "
-        "olive skin, dark hair, similar to Israelites but distinct culture, "
-        "Damascus as major city, frequent conflict and trade with Israel, "
-        "Iron Age city-state culture, chariots and cavalry"
+        "similar Mediterranean features to Hebrews but more colorful layered robes, "
+        "Baal and Asherah religious iconography — standing stones, wooden poles, "
+        "walled hill city-states, Late Bronze Age to Iron Age I"
     ),
     "Moabites": (
-        "Semitic people east of Dead Sea, closely related to Israelites, "
-        "olive-bronze skin, dark hair, simple pastoral culture, "
-        "Mesa Stele writing, similar clothing to Israelites"
+        "similar to Hebrews, cousin nation, slightly more colorful robes, "
+        "east of Dead Sea, pastoral culture"
+    ),
+    "Arameans": (
+        "Semitic people north of Israel, modern Syria region, olive skin, dark hair, "
+        "Damascus as major city, chariots and cavalry, similar to Israelites but distinct culture"
+    ),
+    "Edomites": (
+        "cousin nation to Hebrews, descendants of Esau, slightly more rugged, "
+        "mountain-dwellers south of Dead Sea, reddish desert tones in clothing"
     ),
 }
 
 # ══════════════════════════════════════════════════════════════════════════════
-# LEVEL 5 — GEOGRAPHIC LOCATION BIBLE
+# PART 5 — GEOGRAPHIC LOCATION BIBLE
 # ══════════════════════════════════════════════════════════════════════════════
+
 LOCATION_BIBLE: dict[str, str] = {
     "Garden_of_Eden": (
-        "impossibly lush primordial garden, towering ancient trees with golden fruit, "
-        "crystal clear river branching four ways, flowers in every color, "
-        "soft eternal golden light filtering through canopy, "
-        "no thorns, no imperfection — paradise before the fall, "
-        "warm amber light, glowing in perpetual golden hour"
+        "lush primeval paradise garden, four rivers flowing outward, "
+        "trees heavy with golden fruit, peaceful wild animals, "
+        "soft golden eternal light, central glowing Tree of Life, "
+        "biblical Garden of Eden, painterly realism"
     ),
-    "Ancient_Mesopotamia": (
-        "flat alluvial plain between great rivers Tigris and Euphrates, "
-        "mud-brick cities with massive ziggurats rising from flat horizon, "
-        "palm trees lining canals, irrigated fields, "
-        "Ur and Haran — prosperous Bronze Age Mesopotamian city-states, "
-        "dense urban life, merchants, temples, cuneiform inscriptions everywhere"
+    "Ur_Chaldees": (
+        "ancient Mesopotamian city of mudbrick flat-roofed houses, "
+        "great ziggurat of the moon god rising in the distance, "
+        "biblical Ur of the Chaldees, painterly realism"
     ),
-    "Canaan_Hill_Country": (
-        "undulating limestone hill country, ancient olive groves on terraced hillsides, "
-        "scattered sheep grazing on dry grass, stone walls, "
-        "small village clusters of mudbrick houses, ancient wells, "
-        "dry and rocky terrain softened by scrub vegetation, "
-        "warm Mediterranean light, dust in the air"
+    "Mamre": (
+        "cluster of ancient massive oak trees at Mamre, "
+        "patriarch's goat-hair tents pitched nearby, "
+        "biblical oaks of Mamre, painterly realism"
     ),
-    "Negev_Desert": (
-        "vast arid desert, cracked earth and scattered stones, "
-        "occasional dry riverbed (wadi), sparse thorn bushes, "
-        "enormous sky, heat shimmer on the horizon, "
-        "nomadic tent camps with goat-hair black tents, camels resting"
+    "Sodom_Gomorrah": (
+        "prosperous ancient walled cities of the plain consumed by fire and burning sulfur "
+        "falling from a darkened sky, towering pillar of smoke and flame, "
+        "biblical destruction of Sodom and Gomorrah, painterly realism, restrained"
     ),
-    "Egypt_Nile_Valley": (
-        "lush green Nile flood plain cutting through desert, "
-        "black fertile soil, papyrus reeds, date palms, "
-        "massive temple complexes of New Kingdom Egypt — Karnak, Luxor, "
-        "colossal stone statues and obelisks, Nile barges, "
-        "mud-brick slave quarters beside stone temple walls"
+    "Mount_Moriah": (
+        "high wooded hill in the land of Canaan, stone altar at summit, "
+        "wood arranged upon it, ram caught in thicket nearby, "
+        "biblical Mount Moriah, painterly realism"
     ),
-    "Sinai_Wilderness": (
-        "dramatic red-brown granite mountain wilderness, "
-        "Mount Sinai — towering dark peak wreathed in cloud, "
-        "vast rocky plains, narrow canyons, "
-        "no vegetation except sparse thorns, "
-        "overwhelming silence and scale, "
-        "bleached bone color with deep red-ochre rock"
+    "Egypt_Nile": (
+        "ancient Egypt, the Nile flowing through desert, distant pyramids already a thousand years old, "
+        "massive temple complexes with lotus-pillar courtyards, hieroglyphic walls, "
+        "slave brick-making operations, sphinxes flanking processional ways, "
+        "biblical Egypt, painterly realism"
+    ),
+    "Sinai": (
+        "massive desert mountain rising from a barren plain, "
+        "wrapped in thick dark cloud, lightning flashing from within, fire on the summit, "
+        "smoke pouring out, trembling and terrible, "
+        "biblical Mount Sinai in the giving of the Law, painterly realism"
+    ),
+    "Red_Sea": (
+        "wide sea miraculously parted, towering walls of water on either side, "
+        "dry seabed exposed below, fish visible swimming in the water walls, "
+        "biblical Red Sea crossing, painterly realism"
     ),
     "Tabernacle": (
-        "portable sacred tent complex at center of desert camp, "
-        "white linen curtain enclosure, bronze altar of burnt offering at entrance, "
-        "inner golden lampstand and table of showbread visible through parted curtain, "
-        "ark of the covenant in the inner Holy of Holies, "
-        "incense smoke rising, cloud of glory above"
+        "biblical Tabernacle in the wilderness, portable sanctuary tent with wooden frame, "
+        "layered curtains, white linen outer court fence, golden lampstand glowing inside, "
+        "cloud of glory hovering above, vast desert camp surrounding, "
+        "painterly realism"
+    ),
+    "Canaan_Hills": (
+        "hilly Levantine landscape, ancient olive groves on terraced hillsides, "
+        "scattered ancient stone-walled villages on hilltops, "
+        "biblical land of Canaan, painterly realism"
     ),
     "Jordan_River": (
-        "wide muddy spring-flooded Jordan River cutting through green valley, "
-        "willow and tamarisk trees on banks, "
-        "east bank: dry hills of Moab and Gilead, "
-        "west bank: green Canaan hill country, "
-        "crossing point — the threshold between wilderness and promise"
+        "swift Jordan river miraculously dammed, dry riverbed exposed, "
+        "water piled up on the upstream side, biblical crossing of the Jordan, painterly realism"
     ),
     "Jericho": (
-        "ancient walled city on oasis in Jordan Valley, "
-        "impressive mudbrick defensive walls, spring of water, "
-        "oldest city in the world — flat desert plain all around, "
-        "palm trees within the walls, fragile beauty before the fall"
+        "ancient circular walled city in the Jordan valley, massive mudbrick walls, "
+        "palm tree groves nearby, oasis, city of palms, "
+        "biblical Jericho, painterly realism"
     ),
-    "Jerusalem": (
-        "ancient city of Jerusalem on hilltop, "
-        "City of David: compact stone buildings on narrow ridge above Kidron Valley, "
-        "Temple Mount: massive hewn limestone platform, "
-        "Solomon's Temple: white limestone and gold cedar-lined interior, "
-        "city walls of cut stone, Eastern Gate, Pool of Siloam, "
-        "Kidron Valley below, Mount of Olives to east, "
-        "Hinnom Valley to west and south"
+    "Jerusalem_Davidic": (
+        "ancient Jerusalem on its hilltop, City of David compact stone buildings "
+        "on narrow ridge above Kidron Valley, early fortifications, "
+        "biblical Jerusalem in David's time, painterly realism"
+    ),
+    "Jerusalem_Solomon": (
+        "ancient Jerusalem on its hilltop, Solomon's First Temple at the northern end "
+        "gleaming with gold and white limestone, walled city descending the slopes, "
+        "biblical Jerusalem in the time of Solomon, painterly realism"
+    ),
+    "Jerusalem_ruins": (
+        "Jerusalem in ruins after Babylonian destruction, charred walls, "
+        "burned Temple, rubble and ash, smoke still rising, "
+        "biblical Jerusalem after 586 BC, painterly realism"
     ),
     "Solomon_Temple": (
-        "magnificent First Temple of Jerusalem, "
-        "white limestone exterior with gold-leafed cedar interior, "
-        "two great bronze pillars (Jachin and Boaz) at entrance, "
-        "ten bronze basins, sea of cast bronze, "
-        "inner Holy of Holies overlaid in pure gold, "
-        "two golden cherubim with wings spanning the room, "
-        "incense smoke, golden lampstands glowing"
+        "biblical Solomon's Temple, white limestone walls overlaid with gold, "
+        "twin bronze pillars Jachin and Boaz at the entrance, cedar courtyard with golden ornamentation, "
+        "the great bronze sea on twelve bronze oxen, golden lampstands glowing, "
+        "biblical First Temple, painterly realism, sacred"
     ),
-    "Philistia_Coast": (
-        "Mediterranean coastal plain of ancient Philistia, "
-        "sandy coastline, olive groves, vineyards, "
-        "five fortified city-states, Philistine-style mudbrick and stone architecture, "
-        "Greek-influenced pottery and culture, iron weapons"
+    "Valley_Elah": (
+        "wide flat valley between two hills, Hebrews on one side, Philistines on the other, "
+        "stream running through the middle, biblical Valley of Elah, painterly realism"
     ),
-    "Northern_Kingdom_Samaria": (
-        "rolling hills of Ephraim and Manasseh, "
-        "capital city of Samaria on hilltop, "
-        "fertile agricultural land, vineyards, olive groves, "
-        "mixed Israelite and Canaanite culture, Baal worship sites, "
-        "Phoenician-influenced architecture in royal Samaria"
+    "Mount_Carmel": (
+        "coastal mountain ridge with sweeping views to the Mediterranean Sea, "
+        "scrub forest and rocky outcrops, biblical Mount Carmel, painterly realism"
+    ),
+    "Samaria": (
+        "capital of the northern kingdom on hilltop, Ahab's palace, "
+        "Phoenician-influenced architecture, ivory decorations, "
+        "biblical Samaria, painterly realism"
     ),
     "Babylon": (
-        "massive ancient city of Babylon on Euphrates River, "
-        "triple-walled defensive circuit, "
-        "Ishtar Gate with blue-glazed tiles and golden dragons (mushhushshu), "
-        "Processional Way lined with lion bas-reliefs, "
-        "massive Esagila ziggurat (Tower of Babel), "
-        "hanging gardens, royal palace of Nebuchadnezzar, "
-        "enormous scale — largest city in the ancient world"
+        "legendary ancient Babylon, massive walls wider than chariots, "
+        "Ishtar Gate in brilliant blue glazed brick with golden bulls and dragons, "
+        "great ziggurat of Marduk rising in stages, hanging gardens cascading from terraces, "
+        "Euphrates flowing through stone channels in the heart of the city, "
+        "biblical Babylon, painterly realism"
     ),
-    "Exile_Chebar_River": (
-        "flat Babylonian plain beside canal (Chebar River), "
-        "Hebrew exile community: reed huts and small mudbrick homes, "
-        "date palms, distant ziggurat visible on horizon, "
-        "grey-blue sky, foreign land, the weight of displacement, "
-        "cooking fires, children playing in foreign dust"
+    "Chebar_exile": (
+        "Babylonian canal (Chebar River), willow trees on banks, "
+        "Hebrew exile community of reed huts and mudbrick homes, "
+        "date palms, distant ziggurat on horizon, the weight of displacement, "
+        "painterly realism"
     ),
     "Persian_Susa": (
-        "magnificent Persian palace of Susa (Apadana), "
-        "towering columns with bull-headed capitals, "
-        "polished marble floors, gold and silver vessels, "
-        "hanging purple and linen drapes, "
-        "vast reception halls, gardens with exotic trees, "
-        "opulent wealth beyond any city of Israel"
+        "magnificent Persian palace complex at Susa, marble columns, "
+        "brilliant glazed brick walls, hanging tapestries, gold ornamentation, "
+        "biblical Susa of Esther's day, painterly realism"
     ),
     "Second_Temple": (
-        "rebuilt Jerusalem Temple on same Mount Moriah foundation, "
-        "smaller and less ornate than Solomon's First Temple — visibly humbler, "
-        "plain hewn limestone, no gold overlay, "
-        "same site but the glory has not yet returned, "
-        "surrounded by rubble and rebuilding Jerusalem"
+        "rebuilt Jerusalem Temple on same foundation, "
+        "visibly smaller and less ornate than Solomon's First Temple — humble stone, "
+        "no gold overlay, surrounded by rubble and rebuilding Jerusalem, "
+        "biblical Second Temple, painterly realism"
+    ),
+    "Bethlehem": (
+        "small hill town south of Jerusalem, stone houses, olive groves, sheep folds, "
+        "night road to Bethlehem, single bright star rising on horizon, "
+        "biblical Bethlehem, painterly realism"
+    ),
+    "Nineveh": (
+        "massive walled Assyrian capital, towering city mound, "
+        "palaces guarded by colossal winged-bull lamassu sculptures, "
+        "biblical Nineveh, painterly realism"
+    ),
+    "Noah_Ark": (
+        "massive boxy wooden ark, three decks, single door in the side, "
+        "pitch-blackened exterior, no mast or sail, biblical Noah's ark, painterly realism"
+    ),
+}
+
+# ══════════════════════════════════════════════════════════════════════════════
+# PART 6 — KEY STRUCTURES
+# ══════════════════════════════════════════════════════════════════════════════
+
+STRUCTURES: dict[str, str] = {
+    "Ark_Covenant": (
+        "biblical Ark of the Covenant, golden chest with two sculpted golden cherubim "
+        "with wings stretched forward on the lid, golden carrying poles through side rings, "
+        "glowing with sacred presence, painterly realism, sacred"
+    ),
+    "Fiery_furnace": (
+        "massive ancient Mesopotamian industrial furnace, brick-walled, "
+        "intense white-hot flames roaring from the opening and bursting from the top, "
+        "biblical fiery furnace of Babylon, painterly realism"
+    ),
+    "Lions_den": (
+        "deep stone pit with heavy stone covering the opening, "
+        "magnificent Persian lions visible inside, Persian royal seals on the stone, "
+        "shaft of light from above, painterly realism"
+    ),
+    "Tower_Babel": (
+        "massive stepped ziggurat tower under construction, scaffolding climbing its sides, "
+        "brick-making operations at the base, distinct from Egyptian pyramid (stepped vs smooth), "
+        "biblical Tower of Babel on the plain of Shinar, painterly realism"
+    ),
+    "Patriarchal_tent": (
+        "low wide black goat-hair tent, open sides for ventilation, "
+        "fabric panels rolled up, cluster of tents for the patriarch's household, "
+        "flocks of sheep nearby, painterly realism"
+    ),
+    "Ark_Noah": (
+        "massive boxy wooden ark, pitch-blackened exterior, three decks, "
+        "single door in the side, single window near the top, "
+        "no mast or sail or oars — approximately 450 feet long, "
+        "visually gigantic scale, animals approaching in pairs, "
+        "biblical Noah's ark, painterly realism"
     ),
 }
 
@@ -711,31 +881,31 @@ LOCATION_BIBLE: dict[str, str] = {
 # ══════════════════════════════════════════════════════════════════════════════
 
 EMOTION_STYLE: dict[str, str] = {
-    "awe":            "divine golden light breaking through darkness, volumetric rays, vast scale",
-    "dark_and_tense": "deep shadow and smoke, storm clouds, blood-red sky at horizon, high contrast",
-    "dramatic":       "high contrast directional light, deep shadow, intense focal moment, shallow DOF",
-    "hopeful":        "warm sunrise light, soft golden hour glow, open horizon, optimistic framing",
-    "solemn":         "muted warm tones, single torch or fire light, heavy atmosphere, still composition",
-    "mysterious":     "deep shadow, flickering torchlight, desert night, starlit sky, hidden forms",
-    "triumphant":     "golden light, wide epic scope, raised banners, crowds, warm triumphant palette",
+    "awe":            "divine golden light breaking through darkness, volumetric god-rays, vast scale, sacred haze",
+    "dark_and_tense": "deep shadow and smoke, storm clouds, blood-red sky at horizon, high contrast chiaroscuro",
+    "dramatic":       "high contrast directional light, deep shadow, Caravaggio chiaroscuro, intense focal moment",
+    "hopeful":        "warm sunrise light, soft golden hour glow, open horizon, optimistic framing, warm honey tones",
+    "solemn":         "muted warm tones, single oil lamp or torch light, heavy atmosphere, still composition",
+    "mysterious":     "deep shadow, flickering torchlight, desert night, starlit sky, hidden forms in darkness",
+    "triumphant":     "golden light, wide epic scope, raised banners, crowds, warm triumphant honey-gold palette",
     "epic_grandeur":  "sweeping aerial perspective, monumental architecture, vast landscape, awe-inspiring scale",
-    "grief":          "grey cold tones, hunched figures, ash and smoke, tears visible, broken forms",
-    "supernatural":   "unearthly amber and white light, impossible radiance, reality bending at edges",
+    "grief":          "grey cold tones, hunched figures, ash and smoke, tears on weathered faces, broken forms",
+    "supernatural":   "unearthly luminous amber and white, impossible radiance, diffuse sacred haze, god-rays",
 }
 
 CHAPTER_ENVIRONMENT: dict[int, str] = {
-    1:  "primordial ancient earth, Garden of Eden, pre-flood wilderness, early human settlements",
-    2:  "post-flood new world, ancient Mesopotamian city-state, Canaan rolling hills, desert trade routes",
-    3:  "Canaan hill country, Haran in Mesopotamia, trade caravans, Nile delta Egypt grain stores",
+    1:  "primordial ancient earth, Garden of Eden, pre-flood wilderness, early Bronze Age human settlements",
+    2:  "post-flood new world, ancient Mesopotamian city-state of Ur, Canaan rolling hills, desert trade routes",
+    3:  "Canaan hill country, Haran in northern Mesopotamia, trade caravans, Nile delta Egypt grain stores",
     4:  "New Kingdom Egypt, mud-brick slave quarters, Nile River valley, Sinai peninsula desert",
     5:  "Sinai wilderness, desert canyons, stone mountains, Tabernacle tent complex, plains of Moab",
-    6:  "Canaan hill country, Jordan River valley, walled ancient cities, wheat fields, Philistine coast",
+    6:  "Canaan hill country, Jordan River valley, walled ancient Canaanite cities, wheat fields, Philistine coast",
     7:  "Shiloh Tabernacle, Philistine cities, Judean wilderness caves, early Jerusalem fortifications",
-    8:  "Jerusalem city of David, David's palace, Temple Mount preparation, Israelite capital at its height",
-    9:  "Jerusalem at peak glory, massive hewn stone Temple, Phoenician-influenced architecture, Solomon's palace",
-    10: "Northern Israelite hill towns, Samaria, Mount Carmel, Sinai wilderness, Zarephath coastal town",
+    8:  "Jerusalem city of David, David's palace, Temple Mount, Israelite capital at its height",
+    9:  "Jerusalem at peak glory, Solomon's First Temple, Phoenician-influenced architecture, Solomon's palace",
+    10: "Northern Israelite hill towns, Samaria, Mount Carmel, Sinai wilderness, Phoenician coastal town Zarephath",
     11: "Assyrian siege warfare, Babylon approaching, Jerusalem walls, burning ancient cities, Judean hills",
-    12: "Neo-Babylonian empire, massive ziggurat city, plain of Dura, Persian palace architecture",
+    12: "Neo-Babylonian empire, massive ziggurat city of Babylon, plain of Dura, Persian palace architecture",
     13: "Chebar River exile community, Babylonian streets, vision of ruined Jerusalem, heavenly throne room",
     14: "Persian palace of Susa, road from Babylon to Jerusalem, Jerusalem ruins, Second Temple construction",
     15: "post-exilic Jerusalem, Second Temple precinct, rebuilt city walls, Bethlehem road at night",
@@ -749,15 +919,14 @@ CHAPTER_COLOR_GRADE: dict[int, str] = {
         "deep midnight blues with brilliant white starlight for Abraham's covenant, "
         "red-orange hellfire for Sodom, warm intimate lamplight for Isaac and Rebekah",
     3:  "warm Canaan golds for Jacob's journey, deep midnight blue for Jabbok wrestling, "
-        "rich Egyptian linen whites and painted gold for Joseph's rise, "
-        "earthy ochre for the caravan scenes",
+        "rich Egyptian linen whites and painted gold for Joseph's rise, earthy ochre for caravans",
     4:  "bleached oranges and browns for Egyptian slavery, deep Nile blues for Moses' birth, "
         "Egyptian palace gold and lapis lazuli, blood red for the plagues, "
         "turquoise and white for the Red Sea crossing",
     5:  "sun-bleached desert tones darkening as Sinai approaches, "
         "smoky blacks and deep storm blues with sudden orange-red fire for the theophany, "
         "warm gold and linen white for Tabernacle interiors, dusty muted for forty years",
-    6:  "harder, more weathered — Bronze Age to early Iron Age palette, "
+    6:  "harder more weathered — Bronze Age to early Iron Age palette, "
         "warm harvest gold for Ruth, dark oppressive tones for the dark end of Judges",
     7:  "late Iron Age village settings — lamplight yellows for Samuel's calling, "
         "deep cave shadows for David's wilderness years, dark Philistine battlefield at Mount Gilboa",
@@ -777,14 +946,15 @@ CHAPTER_COLOR_GRADE: dict[int, str] = {
         "the dry bones valley in bleached bone-white under grey sky",
     14: "Persian palace in opulent gold-crimson, road to Jerusalem in dusty warm ochre, "
         "Jerusalem ruins in grey rubble, new altar in warm firelight against the ruins",
-    15: "muted, domestic, human-scale — fragile warmth of post-exilic community, "
+    15: "muted domestic human-scale — fragile warmth of post-exilic community, "
         "Second Temple in humble grey stone, Esther's court in opulent gold-crimson, "
         "closing in deep silent blue before the star rises over Bethlehem",
 }
 
 # ══════════════════════════════════════════════════════════════════════════════
-# LEVEL 6 — SECTION-LEVEL SCENE DESCRIPTIONS
+# PART 6 (continued) — SECTION-LEVEL SCENE DESCRIPTIONS
 # ══════════════════════════════════════════════════════════════════════════════
+
 SECTION_VISUAL: dict[str, str] = {
 
     # ── Chapter 1: Creation to the Flood ──────────────────────────────────────
@@ -792,252 +962,243 @@ SECTION_VISUAL: dict[str, str] = {
         "vast cosmic void, infinite black space with faintest blue mist, "
         "single beam of warm golden light beginning to pierce the darkness, "
         "volumetric light rays, infinite darkness before creation, "
-        "deep navy to gold gradient, cinematic wide shot"
+        "deep navy to gold gradient, cinematic wide shot, sacred restraint"
     ),
     "The Creation": (
         "first light of creation bursting through cosmic darkness, divine golden radiance, "
         "waters separating from sky, mountains rising from primordial sea, "
-        "sun rising for the first time, stars being set in place, "
+        "sun rising for the first time over the new world, "
         "silhouette of man being formed from red desert clay and dust, no visible face of God, "
         "radiant golden-white light pouring from unseen divine presence"
     ),
     "Adam and Eve": (
-        "lush primordial Garden of Eden at eternal golden hour, "
-        "towering ancient trees heavy with glowing fruit, "
+        "lush primeval paradise garden, four rivers flowing outward, "
+        "towering ancient trees heavy with glowing fruit, central Tree of Life glowing softly, "
         "two silhouettes walking hand in hand through tall grass, "
-        "river flowing crystal clear, every flower in bloom, paradise before the fall"
+        "peaceful wild animals nearby, soft golden eternal light"
     ),
     "The Fall": (
-        "coiled serpent on bark of ancient tree, iridescent scales, intelligent gleaming eye, "
-        "woman's hand reaching toward glowing forbidden fruit, "
-        "golden light filtering through leaves, "
-        "two figures crouched hidden among large leaves, ashamed and afraid, "
-        "dramatic shadows as golden garden light dims"
+        "beautiful iridescent serpent creature with intelligent gleaming eye coiled in ancient tree, "
+        "woman's hand reaching toward glowing forbidden fruit (fig or pomegranate, not apple), "
+        "golden garden light beginning to dim at the edges, "
+        "two figures crouched hidden among large leaves, ashamed and afraid"
     ),
     "Cain and Abel": (
         "two stone altars side by side in barren field at dusk, "
-        "one altar with smoke rising straight to heaven, "
-        "other smoke blowing sideways in wind, "
-        "two brothers — one kneeling in prayer, one standing in silent rage, "
-        "shadow of violence in the air"
+        "one altar with smoke rising straight to heaven, other smoke blowing sideways in wind, "
+        "one brother kneeling in prayer, one standing in dark silent rage, "
+        "shadow of violence in the air, warm golden sunset behind"
     ),
     "Corruption of Mankind": (
         "aerial shot of ancient sprawling city at dusk, smoke rising from many fires, "
-        "vaguely Mesopotamian mud-brick architecture, figures in corruption and violence, "
+        "Mesopotamian mud-brick architecture, figures in corruption and violence below, "
         "crumbling civilization, foreboding darkness gathering on horizon"
     ),
     "Noah and the Flood": (
-        "elderly patriarch with enormous grey-white beard on hillside, "
-        "gazing at sky as first dark storm clouds gather, "
-        "enormous wooden ark on mountain slope, animals approaching in pairs, "
-        "rain beginning to fall, last sunlight before the deluge"
+        "aged patriarch Noah on hillside gazing at sky as first dark storm clouds gather, "
+        "enormous pitch-blackened wooden ark on mountain slope, no mast or sail, "
+        "animals approaching in pairs, last sunlight before the deluge, "
+        "rain beginning to fall, golden hour giving way to storm"
     ),
     "The Covenant with Noah": (
         "brilliant full rainbow arching across clearing sky over fresh wet landscape, "
-        "golden hour after the storm, Noah kneeling at stone altar, "
-        "dove returning with fresh olive branch, green world reborn after flood"
+        "golden hour after the storm, Noah kneeling at simple stone altar, "
+        "white dove returning with fresh olive branch, green world reborn"
     ),
     "The Tower of Babel": (
-        "vast flat plain of Shinar at dawn, "
-        "massive ziggurat rising from flat horizon, thousands of workers, scaffolding, "
-        "confusion breaking out below — people gesturing, unable to understand each other, "
-        "the great project abandoned"
+        "vast flat plain of Shinar at dawn, massive stepped ziggurat under construction, "
+        "scaffolding climbing its sides, brick-making operations at base, "
+        "distinct from Egyptian pyramids (stepped not smooth), "
+        "confusion breaking out — people gesturing, unable to understand each other"
     ),
     "Closing Transition": (
         "lone elderly man standing at gate of ancient Mesopotamian city at dawn, "
         "gazing at vast desert ahead, stars still bright overhead, "
-        "hopeful and mysterious, the call going out"
+        "the call going out, hopeful and mysterious"
     ),
 
     # ── Chapter 2: Abraham — Father of Nations ────────────────────────────────
     "The Calling of Abraham": (
-        "bustling ancient Mesopotamian marketplace of Ur, merchants, scribes, soldiers, "
-        "great ziggurat temple in background, "
-        "elderly man standing at edge of city gates at night, vast desert ahead, "
-        "stars brilliant overhead, a single figure answering a call"
+        "bustling ancient Mesopotamian marketplace of Ur, great ziggurat in background, "
+        "elderly Abraham in striped mantle at edge of city gates at night, "
+        "vast desert ahead, stars brilliant overhead"
     ),
     "The Covenant": (
-        "vast desert sky at night, infinite stars stretching to every horizon, "
-        "single small silhouette of elderly man with head tilted back gazing upward, "
-        "covenant promise of descendants as countless as stars, Canaan desert"
+        "vast desert sky at night, infinite stars stretching to horizon, "
+        "single small silhouette of elderly Abraham with head tilted back gazing upward, "
+        "descendants promised as countless as the stars, starlit covenant in Canaan desert"
     ),
     "The Three Visitors": (
-        "three robed travelers approaching Bedouin-style black goat-hair tent "
-        "under ancient terebinth oak trees at Mamre, midday heat, "
-        "heat shimmer on the plains, sacred hospitality, "
-        "three mysterious luminous figures"
+        "three luminous robed travelers approaching black goat-hair tent "
+        "under ancient massive oak trees at Mamre, midday heat shimmer, "
+        "three mysterious figures, sacred hospitality, Abraham running to meet them"
     ),
     "Sodom and Gomorrah": (
-        "twin ancient walled cities consumed by fire and burning sulfur from sky, "
+        "twin ancient walled cities consumed by fire and burning sulfur falling from darkened sky, "
         "massive columns of black smoke rising to heaven, "
-        "fleeing figures, Lot's wife looking back as pillar of salt, "
-        "Abraham watching from distant hilltop, smoke of the land like a furnace"
+        "fleeing figures, distant pale pillar-of-salt figure looking back, "
+        "Abraham watching from hilltop, smoke of the land like a furnace"
     ),
     "The Birth of Isaac": (
-        "elderly woman holding newborn baby in her arms, face streaked with tears of joy, "
-        "soft warm candlelit interior of desert tent, intimate miraculous birth, "
-        "Sarah's ancient face transformed by impossible joy"
+        "elderly Sarah holding newborn baby in her arms, face streaked with tears of joy, "
+        "soft warm lamplight interior of desert tent, intimate miraculous birth, "
+        "her ancient face transformed by impossible joy"
     ),
     "The Binding of Isaac": (
-        "elderly man with raised knife over bound young son on stone altar, "
-        "ram caught by horns in thicket nearby, "
-        "angel's hand reaching from above to stop the blade, "
-        "Mount Moriah, dramatic golden light from above"
+        "elderly Abraham with raised knife over bound teenage Isaac on stone altar, "
+        "wood arranged beneath, ram caught by horns in thorny thicket nearby, "
+        "angel's hand reaching from above to stop the blade, Mount Moriah, "
+        "dramatic golden light descending from above"
     ),
     "Sarah and Rebekah": (
-        "aged patriarch kneeling at entrance of stone burial cave of Machpelah, "
-        "head bowed in grief, mourning Sarah, "
-        "young woman with water jar on shoulder approaching stone well surrounded by sheep, "
-        "golden hour light, Rebekah at the well"
+        "aged Abraham kneeling at entrance of stone burial cave of Machpelah, mourning Sarah, "
+        "beautiful young Rebekah with water jar on shoulder approaching stone well "
+        "surrounded by sheep, golden hour, Rebekah at the well"
     ),
     "Jacob and Esau": (
-        "pregnant woman kneeling in prayer, hand on swollen belly, Rebekah at prayer, "
-        "two sons at tent camp — one ruddy and rough-clothed hunter returning with game, "
-        "one smooth and thoughtful, holding a bowl of red stew, tense family scene"
+        "two brothers at tent camp — powerfully built hairy Esau returning with game, "
+        "smooth-faced thoughtful Jacob holding bowl of red stew, tense family scene, "
+        "Rebekah praying for her unborn twins"
     ),
     "Jacob's Ladder": (
-        "young man sleeping on open ground with single stone as pillow, "
-        "blazing stairway of light ascending from earth to heaven, "
-        "angels ascending and descending, vast starry night sky, "
+        "Jacob sleeping on open ground with single stone as pillow, "
+        "luminous golden staircase ascending from earth to heaven, "
+        "angelic figures ascending and descending, vast starry night sky, "
         "Bethel, the gate of heaven"
     ),
     "Jacob Leah Rachel": (
-        "young woman approaching stone well surrounded by sheep, golden hour, "
-        "man rolling great stone from well mouth with one arm, "
+        "strikingly beautiful young Rachel approaching stone well surrounded by sheep, "
+        "Jacob rolling great stone from well mouth with one arm, "
         "uncle Laban's household, seven years of labor for love"
     ),
     "Jacob Wrestles God": (
-        "lone man at edge of moonlit Jabbok River at night, absolute isolation, "
+        "lone Jacob at edge of moonlit Jabbok River at night, absolute isolation, "
         "two figures locked in intense struggle at river's edge in darkness, "
-        "dawn light breaking on horizon, limping man at first light"
+        "dawn light breaking on horizon, Jacob limping at first light"
     ),
     "The Reconciliation": (
-        "man limping across open plain bowing to ground repeatedly, "
-        "two brothers embracing with tears in open Canaanite land, "
-        "Israel and Esau reconciled"
+        "Jacob limping across open plain bowing to ground repeatedly, "
+        "Jacob and Esau embracing with tears in open Canaanite land"
     ),
     "Joseph and His Brothers": (
-        "teenage boy in elaborate multi-colored striped robe walking through tall grass, "
-        "brothers watching from distance with cold jealous expressions, "
-        "young man thrown into empty stone cistern, "
-        "camel caravan passing in distance toward Egypt"
+        "teenage Joseph in ornate many-colored long-sleeved striped tunic "
+        "walking through tall grass, brothers watching from distance with cold jealous expressions, "
+        "young man thrown into empty stone cistern, camel caravan passing toward Egypt"
     ),
     "Joseph in Egypt": (
-        "young Hebrew man in fine Egyptian linen standing in colonnaded Egyptian villa, "
-        "young man kneeling in Egyptian prison, hands bound, face resolute and trusting"
+        "young Joseph in fine Egyptian vizier dress, white linen kilt, gold collar of office, "
+        "kohl-lined eyes, distinctly Hebrew features under Egyptian dress, "
+        "same man kneeling in Egyptian prison, hands bound, face resolute and trusting"
     ),
     "Dreams of Pharaoh": (
         "two Egyptian officials in dim prison cell, troubled expressions, "
-        "young Hebrew man standing before seated Pharaoh on great gold throne, "
-        "interpreting the dream of seven fat and seven thin cows"
+        "Joseph standing before seated Pharaoh on great gold throne, "
+        "interpreting the dream of seven fat and seven gaunt cows by the Nile"
     ),
     "The Brothers Return": (
-        "ten travel-worn Hebrew brothers in dusty robes bowing low before Egyptian official "
-        "on raised dais, great grain stores of Egypt around them, "
-        "dramatic reunion building"
+        "ten travel-worn Hebrew brothers in dusty robes bowing low before Egyptian vizier "
+        "on raised dais, great grain stores of Egypt around them"
     ),
     "Jacob Comes to Egypt": (
-        "vast caravan of Hebrew families, flocks, tents, and wagons "
-        "moving across desert from Canaan into Egypt's eastern delta, "
-        "epic wide shot, dust rising, hope and fear mixed, Goshen ahead"
+        "vast caravan of Hebrew families, flocks, tents, and wagons moving across desert "
+        "from Canaan into Egypt's eastern delta, epic wide shot, dust rising, Goshen ahead"
     ),
 
     # ── Chapter 3: Moses — Deliverer of Israel ────────────────────────────────
     "The Birth of Moses": (
-        "Egyptian soldiers patrolling Hebrew slave quarters at night, torches in hand, "
-        "Hebrew mother placing woven papyrus basket in Nile reeds at dawn, "
-        "Pharaoh's daughter walking to the riverside with her servants"
+        "Egyptian soldiers patrolling Hebrew slave quarters at night, torches, "
+        "Hebrew mother Jochebed placing woven papyrus basket in Nile reeds at dawn, "
+        "Pharaoh's daughter walking to the riverside with servants"
     ),
     "Moses Flees Egypt": (
-        "young Egyptian-raised man in royal linen, colonnaded palace, hieroglyphs on walls, "
+        "young Egyptian-raised Moses in royal linen, colonnaded palace, hieroglyphs on walls, "
         "same man in rough shepherd's cloak crossing empty Sinai desert, "
         "fugitive between two worlds"
     ),
     "The Burning Bush": (
-        "elderly shepherd with staff walking through rocky wilderness at foot of Sinai, "
-        "solitary shepherd before single burning bush that is not consumed — "
-        "fire burning but leaves intact within the flame, "
-        "sandals removed, face turned away, holy ground"
+        "elderly shepherd Moses walking through rocky Sinai wilderness, "
+        "solitary shepherd before single desert thornbush engulfed in flame yet unconsumed — "
+        "leaves and branches visible through the holy fire, "
+        "sandals removed on holy ground, face turned away"
     ),
     "Moses Returns": (
-        "two robed Hebrew brothers walking up vast Egyptian temple staircase, "
+        "Moses and Aaron walking up vast Egyptian temple staircase, "
         "dwarfed by colossal columns and statuary covered in hieroglyphs, "
-        "Moses and Aaron approaching Pharaoh's throne room"
+        "approaching Pharaoh's throne room"
     ),
     "Let My People Go": (
-        "Hebrew elder standing before enthroned Pharaoh surrounded by guards and priests, "
+        "Moses and Aaron before enthroned Pharaoh surrounded by guards and priests, "
         "Aaron's staff becoming a serpent swallowing the magicians' serpents, "
         "battle of wills in the throne room of Egypt"
     ),
     "The Ten Plagues": (
         "Nile River running blood red from bank to bank, "
         "swarms of locusts blackening Egyptian sky over green crops, "
-        "hailfire falling on Egypt while Goshen is untouched, "
-        "three days of supernatural darkness over the land"
+        "hailstones with fire mingled falling on Egypt while Goshen is untouched, "
+        "three days of impenetrable supernatural darkness — Egyptians cannot see, "
+        "Hebrew quarter glowing with lamplight inside"
     ),
     "The Passover": (
-        "young Hebrew shepherd carrying spotless white lamb at dusk, "
-        "Hebrew family eating in robes with staffs ready, "
-        "blood of lamb painted on doorposts with hyssop branch, "
-        "dark empty Egyptian streets outside, angel of death passing over"
+        "blood of spotless lamb smeared on the lintel and side doorposts of humble Hebrew dwelling at night, "
+        "Hebrew family eating in robes with staffs ready, dark empty Egyptian streets outside, "
+        "Egyptian families in grief in their houses, angel of death passing as shadow over doorposts"
     ),
     "The Exodus": (
         "vast columns of Hebrews and their flocks walking through desert, "
-        "towering pillar of cloud rising before them by day, "
+        "massive vertical pillar of glowing white cloud rising before them by day, "
         "two million people moving as one body, epic wide shot, dust rising"
     ),
     "The Red Sea": (
-        "walls of water towering on both sides, "
-        "millions of Hebrews walking across dry seabed under stars, "
-        "Egyptian chariots pursuing at shore's edge, "
-        "sea wall beginning to collapse on the army"
+        "towering walls of water on both sides, dry seabed exposed below, "
+        "millions of Hebrews walking across under stars, "
+        "Egyptian chariots pursuing at shore's edge, sea wall beginning to collapse"
     ),
     "The Song of Moses": (
-        "elderly prophet on rocky eastern shore at dawn with arms raised toward sky, "
+        "elderly Moses on rocky eastern shore at dawn with arms raised toward sky, "
         "Miriam with tambourine leading women in dance, "
-        "triumphant celebration as Egypt lies drowned"
+        "triumphant celebration as Egypt lies drowned behind them"
     ),
 
     # ── Chapter 4: The Law and the Wilderness ─────────────────────────────────
     "The Mountain of God": (
         "vast Hebrew camp spread across desert plain at foot of towering Mount Sinai, "
-        "mountain wreathed in thick smoke and fire, lightning cracking summit, "
-        "two million Israelites forbidden to approach, watching from below"
+        "mountain wrapped in thick dark cloud, lightning cracking the summit, "
+        "fire and smoke, two million Israelites forbidden to approach, watching below"
     ),
     "The Ten Commandments": (
-        "vast smoking mountain seen from Hebrew camp below, sky split with lightning, "
-        "stone tablets held by aged weathered hands, "
-        "glowing carved divine text, mountain fire behind"
+        "two large stone tablets carved with ancient Hebrew letters "
+        "held in the aged weathered hands of Moses descending the smoking mountain, "
+        "sky split with lightning, mountain fire behind"
     ),
     "The Covenant in Blood": (
-        "old prophet reading aloud from scroll before vast assembled crowd at mountain's foot, "
+        "Moses reading aloud from scroll before vast assembled crowd at mountain's foot, "
         "stone altar, blood of covenant sprinkled on assembled people"
     ),
     "The Golden Calf": (
-        "golden idol gleaming in desert sun before dancing celebrating crowd, "
-        "Moses descending from smoke-covered mountain above, "
-        "two stone tablets in hand, righteous fury on his face"
+        "golden calf idol on stone pedestal gleaming in desert sun, "
+        "Hebrews dancing around it in pagan revelry, "
+        "Moses descending from smoke-covered mountain above, righteous fury on his face"
     ),
     "The Radiant Face": (
-        "aged prophet kneeling on rocky mountain summit, "
         "Moses descending with veil over radiant glowing face, "
-        "Israelites drawing back in fear, glory reflecting from his skin"
+        "Israelites drawing back in fear, glory reflecting from his skin, "
+        "face too bright to look at directly"
     ),
     "The Tabernacle": (
-        "Hebrew artisans working carefully with gold-overlaid wood and fine linen, "
+        "Hebrew artisans carefully working gold-overlaid wood and fine linen, "
         "intricate craftwork by Bezalel, "
-        "portable sanctuary's golden lampstand glowing inside linen tent, "
+        "portable sanctuary with golden lampstand (seven-branched menorah) glowing inside linen tent, "
         "cloud of glory hovering above, desert camp surrounding"
     ),
     "The Law": (
-        "aged priest in elaborate embroidered priestly robes — blue, purple, scarlet, gold — "
-        "breastplate of twelve stones, Aaron in full high priestly dress, "
-        "Tabernacle interior, incense rising"
+        "Aaron in full high priestly regalia — white linen ephod, blue robe "
+        "with golden bells and pomegranates on hem, ornate gold breastplate set with twelve stones, "
+        "gold turban with engraved plate, Tabernacle interior, incense rising"
     ),
     "The Twelve Spies": (
         "twelve men in dust-stained robes leaving vast camp at edge of wilderness, "
         "Caleb and Joshua carrying enormous cluster of grapes on pole between two men, "
-        "returning from the promised land with mixed reports"
+        "returning from Canaan with mixed reports"
     ),
     "Forty Years": (
         "endless desert stretching to horizon in every direction, "
@@ -1045,33 +1206,35 @@ SECTION_VISUAL: dict[str, str] = {
         "same landscape year after year, a generation dying in the wilderness"
     ),
     "Death of Miriam Aaron": (
-        "elderly prophetess lying still in desert tent, women mourning around her, Miriam's passing, "
-        "Aaron in high priestly robes on summit of Mount Hor, peaceful death on the mountain"
+        "aged Miriam lying still in desert tent, women mourning around her, "
+        "Aaron in full priestly robes on summit of Mount Hor, peaceful death"
     ),
     "Balak and Balaam": (
-        "worried Moabite king standing on high balcony overlooking vast Hebrew camp below his walls, "
-        "Aramean prophet on donkey on Moabite road, angel with drawn sword blocking the path"
+        "worried Moabite king on high balcony overlooking vast Hebrew camp below, "
+        "Balaam the Aramean diviner on donkey on Moabite road, "
+        "angel with drawn sword blocking the path"
     ),
     "The Farewell of Moses": (
-        "aged prophet with long dark-gray beard and staff standing before vast assembly of Hebrews "
-        "on plains of Moab, Jordan River valley visible in distance, Moses' final addresses to the nation"
+        "aged Moses with long flowing white beard and staff "
+        "standing before vast assembly of Hebrews on plains of Moab, "
+        "Jordan River valley visible in distance, final addresses to the nation"
     ),
     "The Death of Moses": (
-        "aged prophet climbing steep mountain path alone at sunrise, staff in hand, final ascent to Nebo, "
-        "solitary figure on summit gazing at sunlit promised land across Jordan far below, "
+        "aged Moses climbing steep mountain path alone at sunrise, staff in hand, final ascent, "
+        "solitary figure on summit of Mount Nebo gazing at sunlit promised land across Jordan far below, "
         "Canaan visible but unreachable"
     ),
 
-    # ── Chapter 5: The Promised Land ──────────────────────────────────────────
+    # ── Chapter 5: The Promised Land ──────────────────────────────────════════
     "Crossing the Jordan": (
-        "spring-flooded Jordan River running powerful and brown through valley, "
+        "spring-flooded Jordan River running powerful and brown, "
         "priests carrying gold Ark of Covenant stepping into the water, "
-        "river walls rising, millions crossing on dry ground"
+        "river dammed up, millions crossing on dry ground"
     ),
     "The Fall of Jericho": (
-        "Hebrew army marching silently around great ancient walled city of Jericho, "
-        "day after day, seven circuits on the seventh day, "
-        "massive stone walls collapsing in cloud of dust and rubble, trumpets sounding"
+        "Hebrew army marching silently around ancient circular walled city of Jericho day after day, "
+        "seven circuits on the seventh day, seven shofars (ram's horn trumpets) sounding, "
+        "massive mudbrick walls collapsing in cloud of dust and rubble"
     ),
     "The Conquest": (
         "Joshua's army in battle across Canaanite hill country, "
@@ -1079,9 +1242,8 @@ SECTION_VISUAL: dict[str, str] = {
         "Gibeonites in deliberately worn travel-clothes with moldy bread"
     ),
     "Dividing the Land": (
-        "older warrior sitting in tent with tribal elders around him, "
-        "large map of Canaan drawn on ground, "
-        "tribes receiving their inheritance by lot"
+        "older Joshua sitting in tent with tribal elders around him, "
+        "large map of Canaan on ground, tribes receiving their inheritance by lot"
     ),
     "Choose This Day": (
         "aged warrior Joshua standing before assembled nation at Shechem, "
@@ -1090,99 +1252,97 @@ SECTION_VISUAL: dict[str, str] = {
     ),
     "The Cycle of Judges": (
         "young generation of Hebrew children playing in village, oblivious to history, "
-        "the cycle beginning again — sin, oppression, cry for help, deliverance, peace, repeat"
+        "the cycle beginning again — sin, oppression, cry, deliverance, peace, repeat"
     ),
     "Deborah and Barak": (
-        "prophetess sitting under large date palm tree judging Israel, "
-        "Hebrew army routing Canaanite iron chariots in Kishon Valley flood, "
-        "Jael with tent peg"
+        "Deborah sitting under large date palm tree judging Israel, "
+        "Hebrew army routing Canaanite iron chariots in flooded Kishon Valley, "
+        "Jael with tent peg in her hand"
     ),
     "Gideon": (
-        "young Hebrew man hiding inside stone wine press secretly threshing wheat, "
-        "three hundred men with clay pots and torches surrounding night-time enemy camp, "
-        "chaos erupting in the darkness"
+        "young Hebrew farmer hiding inside stone wine press secretly threshing wheat, anxious, "
+        "three hundred men with clay jars and torches surrounding night-time enemy camp, "
+        "jars smashed simultaneously revealing 300 torches at once, chaos erupting"
     ),
     "Samson": (
-        "angelic figure standing in wheat field at sunset before Hebrew woman, no clear face, "
-        "giant muscular man with long dark hair pushing great stone pillars of crowded Philistine temple, "
-        "roof beginning to collapse"
+        "enormous Samson pushing great stone pillars of crowded Philistine temple, "
+        "his very long uncut dark hair flowing, roof beginning to collapse, "
+        "angel in wheat field at sunset before his mother in background"
     ),
     "Dark End of Judges": (
         "single oil lamp burning low in empty Hebrew village street at night, "
-        "tribal Israel in chaos, 'everyone did what was right in their own eyes', "
+        "tribal Israel in chaos, everyone doing what was right in their own eyes, "
         "darkest period, no king, no prophet"
     ),
     "The Book of Ruth": (
-        "woman gleaning grain in Judean barley field at golden harvest, "
+        "Ruth gleaning barley sheaves in ancient Judean field at golden harvest, "
         "Ruth and Naomi on dusty road, two women alone on long journey, "
-        "loyal companionship, Bethlehem ahead"
+        "Bethlehem ahead, loyal companionship"
     ),
 
     # ── Chapter 6: Samuel, Saul, and the First King ───────────────────────────
     "Hannah and Samuel": (
         "Hebrew family gathered at Shiloh Tabernacle for feast, "
-        "woman sitting alone at edge not eating, Hannah weeping silently at Tabernacle entrance, "
-        "lips moving in anguished prayer, oil lamps burning"
+        "Hannah sitting alone at edge weeping, lips moving in silent anguished prayer "
+        "at Tabernacle entrance, oil lamps burning"
     ),
     "Samuel Called": (
-        "small boy sleeping in priestly linen on low cot inside ancient sanctuary, "
+        "small boy Samuel sleeping in priestly linen on low cot inside ancient sanctuary, "
         "single oil lamp burning low, boy awakening in darkness, "
         "listening to unseen voice calling his name"
     ),
     "The Ark Captured": (
         "Hebrew warriors marching with gold Ark of Covenant onto Philistine battlefield, "
-        "Philistine victory, Eli falling backward from his chair at the news, "
+        "Philistine victory, aged Eli falling backward from his chair at the news, "
         "Ark carried into Philistine captivity"
     ),
     "Give Us a King": (
-        "aged prophet Samuel sitting before council of demanding Hebrew elders, "
-        "the last judge's sorrow, Israel's demand for a king like the nations around them"
+        "aged Samuel sitting before council of demanding Hebrew elders, "
+        "the last judge's sorrow, Israel's demand for a king like the nations"
     ),
     "Saul Anointed": (
-        "very tall young man in dusty travel clothes searching rocky hills for lost donkeys, "
+        "very tall young Saul in dusty travel clothes searching rocky hills for lost donkeys, "
         "Samuel privately anointing tall Saul with oil, "
         "Saul standing head and shoulders above every man around him"
     ),
     "The Fall of Saul": (
-        "king impatiently standing before stone altar, smoke rising, face conflicted, "
+        "Saul impatiently standing before stone altar, smoke rising, face conflicted, "
         "unlawful sacrifice at Gilgal, Samuel's arrival and rebuke, "
         "the kingdom taken from Saul"
     ),
     "The Boy in Bethlehem": (
-        "aged prophet walking with horn of oil into small Judean hill town at dawn, "
-        "Samuel before Jesse's seven sons, "
-        "youngest shepherd boy called in from the fields"
+        "aged Samuel walking with horn of oil into small Judean hill town at dawn, "
+        "Samuel before Jesse's sons, youngest shepherd David called in from the fields"
     ),
     "David and Goliath": (
-        "wide valley of Elah between two opposing armies on hilltops, "
-        "enormous Philistine warrior in full bronze armor, "
-        "small young shepherd boy with only sling and five smooth stones facing him"
+        "wide Valley of Elah between two opposing armies on hilltops, stream running through middle, "
+        "giant Philistine Goliath in full bronze scale armor with feathered Sea Peoples helmet, "
+        "towering nine feet above all others, "
+        "small ruddy young David with sling and five smooth stones facing him across the valley"
     ),
     "Jonathan and David": (
         "Hebrew women dancing in streets celebrating David's victory, tambourines raised, "
-        "Jonathan and David swearing covenant friendship, "
-        "prince giving young David his own robe and weapons"
+        "Jonathan giving David his own robe and weapons, swearing covenant friendship, "
+        "inseparable bond"
     ),
     "The Wilderness Years": (
-        "young man running across desert hills at dawn, David fleeing Saul, "
-        "caves of Engedi, desert strongholds, "
-        "David refusing to raise his hand against the Lord's anointed"
+        "David running across desert hills at dawn, caves of Engedi, "
+        "desert strongholds, David refusing to raise his hand against Saul in cave darkness"
     ),
     "Death of Samuel": (
-        "ancient prophet lying still in Hebrew home, all Israel mourning, "
-        "the last era of the judges ending, the silence of his absence"
+        "ancient Samuel lying still in Hebrew home, all Israel mourning, "
+        "the last era of the judges ending, his absence a profound silence"
     ),
     "The Witch of Endor": (
-        "king in disguise — humble cloak, hood pulled low — walking through dark hills at night, "
+        "Saul in disguise with cloak and hood pulled low walking through dark hills at night, "
         "ghostly apparition of Samuel rising from the ground, Saul's terror"
     ),
     "Mount Gilboa": (
         "mountainside battle at dawn, Hebrew warriors retreating up steep slopes, "
-        "King Saul and Jonathan falling in battle on Mount Gilboa, "
-        "crown in the dust"
+        "King Saul and Jonathan falling in battle on Mount Gilboa, crown in the dust"
     ),
     "David Crowned King": (
-        "young man being anointed by tribal elders in city of Hebron, "
+        "young David being anointed by tribal elders in city of Hebron, "
         "David taking Jerusalem the Jebusite fortress, "
         "united kingdom at last established"
     ),
@@ -1191,39 +1351,38 @@ SECTION_VISUAL: dict[str, str] = {
         "King David dancing before the Ark in the streets, crowd celebrating"
     ),
     "The Covenant with David": (
-        "king standing in richly appointed cedar-paneled palace, "
+        "David standing in richly appointed cedar-paneled palace, "
         "Nathan bringing the eternal covenant — David's throne forever"
     ),
     "David and Bathsheba": (
-        "king walking restlessly on high palace rooftop at evening, Jerusalem spread below, "
-        "moonlit night, figure bathing on rooftop below, temptation and fall"
+        "David walking restlessly on high palace rooftop at evening, Jerusalem spread below, "
+        "moonlit night, temptation and fall"
     ),
     "Nathan and the Lamb": (
-        "prophet in modest robes standing alone in king's throne room, "
-        "Nathan's parable of the ewe lamb, "
-        "David's anguished recognition: 'You are the man'"
+        "Nathan in modest robes standing alone in king's throne room, "
+        "parable of the ewe lamb, David's anguished recognition: 'You are the man'"
     ),
     "Absalom's Rebellion": (
-        "young woman in torn robes weeping at door, Tamar, "
-        "beautiful long-haired prince Absalom on horse fleeing through forest, "
-        "hair caught in oak branches, judgment coming"
+        "young woman Tamar in torn robes weeping at door, "
+        "strikingly handsome Absalom with very long thick dark hair on horse, "
+        "fleeing through forest, hair caught in oak branches, judgment coming"
     ),
     "The Old King": (
-        "aged king writing on parchment scroll by lamplight, lyre nearby, David's psalms, "
+        "aged David writing on parchment scroll by lamplight, Hebrew kinnor lyre nearby, "
         "old David on his deathbed giving final charge to young Solomon"
     ),
 
     # ── Chapter 7: Solomon and the Kingdom Divided ────────────────────────────
     "The Dream at Gibeon": (
         "vast hilltop altar at twilight, smoke rising from a thousand burnt offerings, "
-        "young king sleeping on stone floor beside smoking altar under open night sky full of stars"
+        "young Solomon sleeping on stone floor beside smoking altar under open night sky"
     ),
     "The Two Mothers": (
-        "two women in plain robes standing before young king Solomon on throne, "
-        "both reaching toward swaddled infant on low table, Solomon's wisdom revealed"
+        "two women in plain robes standing before young Solomon on throne, "
+        "both reaching toward swaddled infant on low table, Solomon's wisdom"
     ),
     "The Golden Age": (
-        "aerial wide shot of Jerusalem at golden hour, prosperous, surrounded by green hills, "
+        "aerial wide shot of Jerusalem at golden hour, prosperous and green, "
         "Solomon's reign at height, peace from Dan to Beersheba"
     ),
     "Building the Temple": (
@@ -1232,99 +1391,100 @@ SECTION_VISUAL: dict[str, str] = {
         "cedar pillars gleaming, craftsmen working under Hiram of Tyre"
     ),
     "The Temple Dedicated": (
-        "Jerusalem First Temple filled with thick golden cloud of divine glory, "
-        "priests prostrate on floor overwhelmed, unable to stand, "
-        "Solomon kneeling before the whole assembly, fire from heaven"
+        "Jerusalem First Temple filled with massive luminous golden cloud of divine glory, "
+        "priests prostrate on floor overwhelmed unable to stand, "
+        "Solomon kneeling before the whole assembly, fire from heaven consuming the offerings"
     ),
     "The Queen of Sheba": (
         "vast caravan of camels laden with spices, gold, and precious stones crossing desert at sunset, "
-        "Queen of Sheba at Solomon's court, breath taken away by his wisdom"
+        "regal Ethiopian Queen of Sheba at Solomon's court, breath taken away by his wisdom"
     ),
     "The Fall of Solomon": (
         "seven hundred foreign wives in elaborate robes in royal hall, "
-        "foreign altars on Mount of Olives, "
-        "Solomon's heart turning from God in old age"
+        "foreign altars on Mount of Olives, aged Solomon's heart turned from God"
     ),
     "The Kingdom Divided": (
-        "young Rehoboam sitting on his father's throne, listening to elders, "
-        "harsh foolish answer, ten northern tribes tearing away, "
+        "young Rehoboam sitting on his father Solomon's throne, listening to elders, "
+        "his harsh foolish answer, ten northern tribes tearing away, "
         "kingdom split forever at Shechem"
     ),
     "Ahab and Jezebel": (
-        "Ahab on northern throne in dark hall, Jezebel in elaborate Phoenician crimson beside him, "
-        "Israel's most wicked king and his Phoenician queen, "
-        "Baal worship spreading"
+        "Ahab on northern Israelite throne in dark hall, Jezebel in elaborate Phoenician crimson beside him, "
+        "Israel's most wicked king and his Phoenician queen, Baal worship spreading"
     ),
     "Elijah Appears": (
-        "wild-looking prophet in rough camel-hair garment and leather belt "
+        "wild Elijah in rough haircloth mantle and leather belt "
         "walking into luxurious palace throne room, "
-        "Elijah standing before Ahab, drought announced"
+        "Elijah standing before Ahab, three-year drought announced"
     ),
     "The Widow's Oil": (
         "Elijah at door of impoverished widow's mudbrick house in Zarephath, "
-        "drought landscape, widow's jar of oil that never ran dry"
+        "drought landscape, widow's jar of oil that never ran dry, miracle of provision"
     ),
     "Mount Carmel": (
-        "lone prophet before drenched stone altar on Mount Carmel, "
-        "fire falling from clear sky consuming the sacrifice and the water, "
+        "Elijah alone before drenched stone altar on Mount Carmel, "
+        "vertical bolt of brilliant white-gold fire descending from clear sky consuming the sacrifice, "
         "450 prophets of Baal watching"
     ),
     "The Still Small Voice": (
-        "prophet Elijah collapsed in cave entrance on Mount Sinai, "
-        "wind and earthquake and fire passing, then absolute stillness, "
+        "Elijah collapsed in cave entrance on Mount Sinai, "
+        "massive wind tearing rocks, earthquake shaking mountain, fire raging — "
+        "then utter quiet stillness, dust suspended, single leaf, prophet kneeling, "
         "the still small voice"
     ),
     "Naboth's Vineyard": (
         "green vineyard on hillside next to palace estate, Naboth's inheritance, "
         "Jezebel's false letter, Naboth stoned, "
-        "Elijah meeting Ahab in the vineyard: 'Have you murdered and also taken possession?'"
+        "Elijah confronting Ahab in the vineyard"
     ),
     "The Chariot of Fire": (
         "Elijah and Elisha walking together along dusty road at dawn, "
-        "fiery chariot of horses descending between them, whirlwind rising, "
-        "Elijah taken to heaven, Elisha watching with his cloak"
+        "flaming celestial chariot drawn by flaming horses descending between them, "
+        "whirlwind rising, Elijah taken to heaven, Elisha watching with his cloak"
     ),
 
     # ── Chapter 8: The Fall of the Kingdoms ──────────────────────────────────
     "Ministry of Elisha": (
-        "prophet walking dusty roads through Hebrew villages, "
-        "Elisha's miracles — floating axe head in Jordan, Shunammite woman's son raised, "
-        "healing of Syrian commander Naaman in Jordan River"
+        "completely bald Elisha walking dusty roads through Hebrew villages, "
+        "his miracles — floating axe head, Shunammite woman's son raised, "
+        "healing of Syrian general Naaman in Jordan River"
     ),
     "The Prophets Rise": (
-        "sun-darkened shepherd Amos in rough sheepskin walking into wealthy Samaria marketplace, "
+        "rough shepherd-prophet Amos sun-darkened in plain shepherd's robes "
+        "walking into wealthy northern Samaria marketplace, "
         "Hosea in northern Israel, Micah in Judean hills — voices crying against injustice"
     ),
     "Fall of Samaria": (
-        "massive disciplined Assyrian army marching in columns across northern plain, "
-        "banners, chariots, siege towers, "
-        "Assyrian siege works around Samaria's walls, northern kingdom's final days, 722 BC"
+        "massive disciplined Assyrian army marching in columns — square-cut curled black beards, "
+        "conical bronze helmets, heavy iron weapons — across northern plain, "
+        "siege works around Samaria's walls, northern kingdom's final days, 722 BC"
     ),
     "Isaiah in the Temple": (
         "young Isaiah in fine robes praying in Temple courtyard at dawn, "
-        "then the overwhelming throne room vision — seraphim with six wings above the throne, "
-        "young Isaiah prostrate: 'I am a man of unclean lips'"
+        "then the overwhelming vision — seraphim with six wings above the throne of fire, "
+        "two wings covering face, two covering feet, two flying, Isaiah prostrate: "
+        "'I am a man of unclean lips'"
     ),
     "Sennacherib at Gates": (
-        "Assyrian king Sennacherib in war camp surrounded by officers, "
-        "Assyrian army circling Jerusalem walls, herald shouting insults at defenders, "
-        "185,000 Assyrian soldiers struck down overnight, "
-        "Hezekiah's prayer answered"
+        "imperious Assyrian Sennacherib in war camp with officers, "
+        "Assyrian army with lamassu-bearing banners circling Jerusalem walls, "
+        "Rabshakeh herald shouting insults at defenders on rampart, "
+        "pale dawn over empty Assyrian camp — silent tents and abandoned weapons, "
+        "185,000 struck down overnight"
     ),
     "Darkness of Manasseh": (
-        "boy of twelve crowned on great throne, young Manasseh, "
-        "desecrated Temple with foreign altars, child sacrifice at Hinnom Valley, "
+        "boy Manasseh being crowned on great throne, "
+        "desecrated Temple with foreign altars, child sacrifice fires at Hinnom Valley, "
         "Judah's darkest reign"
     ),
     "The Found Book": (
-        "eight-year-old Josiah being crowned on throne, "
+        "young Josiah being crowned at age eight, "
         "high priest Hilkiah finding ancient Torah scroll in Temple, "
-        "young king Josiah tearing his robes in grief at what he hears, "
-        "the greatest reform in Judah's history"
+        "young king Josiah tearing his royal robes in grief at what he hears"
     ),
     "The Call of Jeremiah": (
-        "young Hebrew man alone in small village of Anathoth at dawn, "
-        "the reluctant prophet Jeremiah: 'I do not know how to speak, I am only a child'"
+        "young Jeremiah alone in small village of Anathoth at dawn, "
+        "the reluctant prophet: 'I do not know how to speak, I am only a child'"
     ),
     "The Final Days": (
         "massive Babylonian army under Nebuchadnezzar marching south, "
@@ -1332,86 +1492,87 @@ SECTION_VISUAL: dict[str, str] = {
         "city near its end"
     ),
     "The Temple Burns": (
-        "Jerusalem First Temple engulfed in orange fire and black smoke, "
-        "Babylonian soldiers watching, weeping captives bound in chains, "
-        "586 BC, the day of catastrophe"
+        "Jerusalem First Temple engulfed in orange fire and black smoke, 586 BC, "
+        "Babylonian soldiers watching, weeping captives bound in chains"
     ),
     "The Weeping Prophet": (
-        "older Jeremiah sitting alone in smoking ruins of Jerusalem at dusk, "
+        "aged Jeremiah sitting alone in smoking ruins of Jerusalem at dusk, "
         "head in hands, ash and broken stone all around, "
-        "Lamentations: 'Is it nothing to you, all who pass by?'"
+        "'Is it nothing to you, all who pass by?'"
     ),
 
     # ── Chapter 9: Daniel — Exile in Babylon ─────────────────────────────────
     "The Choice": (
         "line of young Hebrew nobles being inspected by Babylonian officials in palace courtyard, "
-        "Daniel and friends chosen, the choice not to defile themselves"
+        "Daniel and friends chosen, the choice not to defile themselves with the king's food"
     ),
     "The Statue Dream": (
-        "troubled emperor lying awake on his bed in darkness, "
-        "Daniel before Nebuchadnezzar interpreting the dream statue "
+        "troubled Nebuchadnezzar lying awake on his bed in darkness, "
+        "young Daniel before Nebuchadnezzar interpreting the dream statue "
         "of gold, silver, bronze, iron, and clay"
     ),
     "The Fiery Furnace": (
         "massive golden statue ninety feet tall on vast plain of Dura, glittering in sun, "
-        "three young Hebrews standing unbound and unharmed inside roaring furnace, "
-        "fourth mysterious figure walking with them"
+        "Shadrach, Meshach, and Abednego standing unbound and unharmed inside roaring furnace, "
+        "luminous mysterious fourth figure walking with them, face not clearly visible"
     ),
     "Madness of the King": (
-        "Nebuchadnezzar driven to madness, eating grass in open field, "
-        "hair grown long, nails like bird claws, "
-        "later restored and testifying about the God of heaven"
+        "Nebuchadnezzar driven to madness, wild matted long hair like eagle feathers, "
+        "overgrown fingernails like bird claws, eating grass in open field, "
+        "ragged royal remnants visible, later restored and testifying"
     ),
     "Ezekiel's Vision": (
-        "Hebrew priest Ezekiel sitting alone beside Chebar canal under vast Babylonian sky, "
-        "then the overwhelming vision — four living creatures with four faces, "
-        "wheels within wheels of fire, the throne of God, Ezekiel prostrate"
+        "Ezekiel sitting alone beside Chebar canal under vast Babylonian sky, "
+        "then the overwhelming vision — biblical cherubim, four faces, four wings, "
+        "feet like burnished bronze, wheels within wheels of fire, "
+        "the throne of God above them, Ezekiel prostrate"
     ),
     "The Strange Acts": (
-        "prophet Ezekiel kneeling on Babylonian street drawing Jerusalem's outline "
-        "on clay tablet on ground, "
-        "enacted prophecies — lying on his side, shaving his head"
+        "Ezekiel kneeling on Babylonian street drawing Jerusalem's outline "
+        "on clay tablet on ground, enacted prophecies — lying on his side, shaving his head"
     ),
     "The Glory Departs": (
-        "prophet lifted in vision, Ezekiel transported in spirit, "
-        "the glory of the Lord departing the Temple, "
-        "rising above the Mount of Olives and departing east"
+        "Ezekiel transported in vision, the glory of the Lord departing the Temple, "
+        "rising over the threshold, then over the east gate, then over the Mount of Olives, "
+        "leaving Jerusalem behind"
     ),
     "The Dry Bones": (
-        "prophet Ezekiel standing in vast valley covered with bleached bones as far as eye can see, "
-        "breath entering the bones, tendons forming, flesh covering, army rising to life"
+        "Ezekiel standing in vast valley covered with bleached bones as far as eye can see "
+        "under grey sky, breath entering the bones, tendons forming, flesh covering, "
+        "an army rising to life"
     ),
     "The Writing on the Wall": (
         "vast Babylonian banqueting hall, thousand lords at long tables, "
-        "ghostly disembodied hand writing glowing Aramaic script on white plaster wall, "
-        "Belshazzar's face going pale"
+        "disembodied human hand appearing in midair writing letters of fire "
+        "on white plaster wall — no arm or body attached — Belshazzar's face going pale"
     ),
     "Fall of Babylon": (
-        "city of Babylon at night, walls three hundred feet high, "
-        "Euphrates running through the heart of the city, "
-        "Persian army of Cyrus entering, Babylon fallen in one night, 539 BC"
+        "legendary ancient Babylon at night — Ishtar Gate in brilliant blue glazed brick, "
+        "great ziggurat of Marduk, Persian army of Cyrus entering, "
+        "Babylon fallen in one night, 539 BC"
     ),
     "The Lions Den": (
-        "aged Daniel kneeling in prayer in stone pit surrounded by calm lions, "
-        "shaft of light from above, "
-        "Darius at top of sealed pit calling down at dawn"
+        "aged Daniel kneeling in prayer in deep stone pit, "
+        "magnificent ancient Persian lions surrounding him with mouths peacefully shut, "
+        "shaft of light from above, Darius at top calling down at dawn"
     ),
     "Visions of Daniel": (
-        "aged Daniel writing by lamplight, Daniel's night visions, "
-        "the Ancient of Days on his blazing throne, ten thousand times ten thousand serving him, "
-        "one like a Son of Man approaching on the clouds"
+        "aged Daniel writing by lamplight, "
+        "the Ancient of Days on blazing throne, hair like pure wool, face obscured by divine light, "
+        "ten thousand times ten thousand serving him, "
+        "one like a Son of Man approaching on the clouds of heaven"
     ),
 
     # ── Chapter 10: The Return — Ezra, Nehemiah, Esther ──────────────────────
     "The Decree of Cyrus": (
-        "royal Persian scribe inscribing proclamation, "
-        "Cyrus issuing the decree in grand court, "
+        "imposing Cyrus issuing decree in grand Persian court, "
+        "royal scribe inscribing proclamation, "
         "Jewish elders weeping with joy as the news spreads"
     ),
     "The First Return": (
         "heads of Hebrew families gathering in Babylonian courtyard, scrolls open, "
         "great caravan of returning exiles setting out from Babylon toward Jerusalem, "
-        "the long road home"
+        "the long road home through the desert"
     ),
     "The Altar Rebuilt": (
         "Hebrew men carefully clearing rubble from ancient stone altar platform at dawn, "
@@ -1419,139 +1580,134 @@ SECTION_VISUAL: dict[str, str] = {
         "first sacrifice and first Feast of Tabernacles in the ruins"
     ),
     "The Foundation Laid": (
-        "Hebrew priests in white linen robes blowing trumpets at Temple foundation, "
+        "Hebrew priests in white linen robes blowing shofars at Temple foundation stones, "
         "old men who remembered Solomon's Temple weeping, "
         "young men shouting for joy, voices mingled"
     ),
     "The Long Pause": (
         "Samaritan elders approaching Hebrew leaders with accusations and opposition, "
-        "abandoned foundation silent for fifteen years, "
+        "abandoned foundation lying silent for fifteen years, "
         "Jerusalem ruins and quiet Temple Mount"
     ),
     "Haggai and Zechariah": (
-        "older prophet Haggai addressing builders and farmers in public square, "
-        "Zechariah with visions of lampstands and olive trees, "
+        "older Haggai addressing builders and farmers in public square, "
+        "younger Zechariah with visions of lampstands and olive trees, "
         "the prophets renewing courage to build"
     ),
     "Second Temple Complete": (
-        "completed Second Temple — visibly smaller and less ornate than Solomon's but standing, "
+        "completed Second Temple visibly smaller and less ornate than Solomon's but standing, "
         "old men who saw the First Temple weeping, young men shouting for joy, "
-        "voices mingled, 516 BC"
+        "voices mingled, 516 BC, humble triumph"
     ),
     "For Such a Time — Esther": (
-        "aerial of great Persian palace at Susa — marble pillars, gold-leafed walls, gardens, "
-        "young queen Esther in royal robes approaching king's throne room, "
-        "golden scepter extended toward her"
+        "aerial of great Persian palace at Susa — marble columns, gold-leafed walls, gardens, "
+        "beautiful Esther in elaborate Persian queen's robes "
+        "approaching king's throne room, golden scepter extended toward her"
     ),
     "Ezra Returns": (
-        "older scholar Ezra surrounded by ancient scrolls in Babylonian study, "
-        "Ezra reading the Law aloud in Jerusalem, people weeping as they hear it"
+        "aged Ezra surrounded by ancient scrolls in Babylonian study, "
+        "Ezra reading the Law aloud from wooden platform to thousands in Jerusalem, "
+        "people weeping as they hear it"
     ),
     "Walls of Jerusalem": (
-        "Nehemiah serving wine to Persian king at marble table, "
+        "Nehemiah serving wine to Ahasuerus at Persian marble table, "
         "Nehemiah surveying Jerusalem's broken walls by night on donkey, torchlight and rubble"
     ),
     "The Great Reading": (
         "vast public square inside rebuilt Jerusalem walls, people gathered at dawn, "
         "Ezra on wooden platform reading Torah scroll to thousands standing, "
-        "people weeping and celebrating at the same time"
+        "people weeping and celebrating simultaneously"
     ),
     "Malachi — Last Prophet": (
-        "Hebrew priests offering blemished and sickly animals on Second Temple altar, "
-        "Malachi's warning — turn back, the messenger is coming, the day of the Lord"
+        "Hebrew priests offering blemished sickly animals on Second Temple altar, "
+        "Malachi's final warning — turn back, the messenger is coming, the day of the Lord"
     ),
     "The Four Hundred Years": (
-        "aerial view of Jerusalem and Temple Mount through the passing centuries, "
-        "Hellenistic soldiers in Greek armor replacing Persian, then Roman legions, "
-        "four hundred years of silence, waiting"
+        "aerial view of Jerusalem and Temple Mount through passing centuries, "
+        "Hellenistic soldiers in Greek armor, then Roman legions, "
+        "four hundred years of prophetic silence, waiting"
     ),
     "Closing Transition": (
         "night road to Bethlehem, single bright star rising on horizon, "
-        "young couple on donkey approaching in the darkness, "
-        "the long silence about to break"
+        "young couple on donkey approaching in darkness, the long silence about to break"
     ),
 }
 
 
+# ══════════════════════════════════════════════════════════════════════════════
+# PROMPT BUILDER — Part 12 Template
+# ══════════════════════════════════════════════════════════════════════════════
+
 def build_prompt(section_title: str, chapter_num: int, emotion: str,
                  setting: str | None = None, key_figures: list[str] | None = None) -> str:
-    """Build a full image generation prompt for a specific section.
+    """Build a full image generation prompt following the Master Visual Bible template.
 
-    Template: [Scene Description], [Character Descriptions], [Emotion/Lighting],
-              [Environment Context], cinematic biblical documentary style,
-              [Base Style], [Inline Negative]
+    Template (Part 12):
+      [Character Description], [Action/Emotional State], [Environment],
+      [Time of Day/Lighting], [Atmospheric Details],
+      painterly realism, cinematic biblical drama, warm earth tones,
+      golden hour lighting, atmospheric depth, period accurate Middle Eastern,
+      [Base Style], [Inline Negative]
     """
     env    = CHAPTER_ENVIRONMENT.get(chapter_num, "ancient biblical landscape")
     emo    = EMOTION_STYLE.get(emotion, EMOTION_STYLE["solemn"])
     visual = SECTION_VISUAL.get(section_title, setting or "ancient Near Eastern cinematic scene")
 
-    # Inject character descriptions for visual consistency
+    # Inject exact character prompt fragments for visual consistency
     char_parts = []
     if key_figures:
         for fig in key_figures:
             if fig in CHARACTER_APPEARANCE:
-                char_parts.append(f"{fig}: {CHARACTER_APPEARANCE[fig]}")
-            elif fig in SECONDARY_CHARACTERS:
-                char_parts.append(f"{fig}: {SECONDARY_CHARACTERS[fig]}")
+                char_parts.append(CHARACTER_APPEARANCE[fig])
             else:
                 char_parts.append(fig)
 
     char_desc = ""
     if char_parts:
-        char_desc = "Characters — " + "; ".join(char_parts) + ". "
+        char_desc = "CHARACTERS — " + " | ".join(char_parts) + ". "
 
     return (
         f"{visual}, "
         f"{char_desc}"
         f"{emo}, "
         f"{env}, "
-        f"cinematic biblical documentary style, "
         f"{OT_BASE_STYLE}, "
         f"{OT_INLINE_NEGATIVE}"
     )
 
 
 def get_nation_context(chapter_num: int) -> str:
-    """Return the dominant nation style context for a chapter."""
+    """Return dominant nation style for a chapter."""
     chapter_nations = {
-        1: "Israelites",
-        2: "Israelites",
-        3: "Israelites",
-        4: "Egyptians",
-        5: "Israelites",
-        6: "Israelites",
-        7: "Israelites",
-        8: "Israelites",
-        9: "Israelites",
-        10: "Israelites",
-        11: "Israelites",
-        12: "Babylonians",
-        13: "Babylonians",
-        14: "Persians",
-        15: "Israelites",
+        4: "Egyptians", 12: "Babylonians", 13: "Babylonians",
+        14: "Persians", 15: "Persians",
     }
     nation = chapter_nations.get(chapter_num, "Israelites")
     return NATION_STYLE.get(nation, "")
 
 
 def get_location_context(section_title: str) -> str:
-    """Return location-specific visual context if available."""
+    """Return location-specific visual context if defined."""
     location_map = {
-        "Adam and Eve":      "Garden_of_Eden",
-        "The Fall":          "Garden_of_Eden",
-        "The Burning Bush":  "Sinai_Wilderness",
-        "The Mountain of God": "Sinai_Wilderness",
-        "The Ten Commandments": "Sinai_Wilderness",
-        "The Tabernacle":    "Tabernacle",
-        "Crossing the Jordan": "Jordan_River",
-        "The Fall of Jericho": "Jericho",
-        "The Temple Dedicated": "Solomon_Temple",
-        "Building the Temple": "Solomon_Temple",
-        "Fall of Babylon":   "Babylon",
-        "The Fiery Furnace": "Babylon",
-        "The Lions Den":     "Babylon",
+        "Adam and Eve":          "Garden_of_Eden",
+        "The Fall":              "Garden_of_Eden",
+        "The Burning Bush":      "Sinai",
+        "The Mountain of God":   "Sinai",
+        "The Ten Commandments":  "Sinai",
+        "The Tabernacle":        "Tabernacle",
+        "Crossing the Jordan":   "Jordan_River",
+        "The Fall of Jericho":   "Jericho",
+        "The Temple Dedicated":  "Solomon_Temple",
+        "Building the Temple":   "Solomon_Temple",
+        "Fall of Babylon":       "Babylon",
+        "The Fiery Furnace":     "Babylon",
+        "The Lions Den":         "Babylon",
         "For Such a Time — Esther": "Persian_Susa",
         "Second Temple Complete": "Second_Temple",
+        "Closing Transition":    "Bethlehem",
+        "David and Goliath":     "Valley_Elah",
+        "Mount Carmel":          "Mount_Carmel",
+        "The Sodom and Gomorrah": "Sodom_Gomorrah",
     }
     loc_key = location_map.get(section_title)
     if loc_key:
