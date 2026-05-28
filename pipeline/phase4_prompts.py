@@ -47,7 +47,10 @@ def _ot_prompt(scene: dict) -> str:
     emotion       = scene.get("emotion", "solemn")
     setting       = scene.get("visual_description")
     key_figures   = scene.get("key_figures")
-    return _ot_build_prompt(section_title, chapter_num, emotion, setting, key_figures)
+    narration     = scene.get("narration", "")
+    scene_number  = scene.get("scene_number", 0)
+    return _ot_build_prompt(section_title, chapter_num, emotion, setting, key_figures,
+                            narration, scene_number)
 
 
 def _heuristic_prompt(scene: dict) -> str:
@@ -63,6 +66,35 @@ def _heuristic_prompt(scene: dict) -> str:
     )
 
 
+_OT_STYLE_CONTEXT = """
+AESTHETIC TARGET: @TheBibleWalkReal YouTube channel — ultra-photorealistic cinematic photography,
+indistinguishable from a real high-budget film set photograph. NOT painterly, NOT illustrated.
+Looks like DSLR/cinema camera footage of real Middle Eastern actors in real Levantine landscapes.
+
+UNIVERSAL STYLE (append to every prompt):
+ultra photorealistic, hyperrealistic cinematic photograph, sharp focus, 8K resolution,
+shot on cinema camera, photographic depth of field, real Levantine rocky limestone landscape,
+authentic Israeli hill country, dramatic natural lighting, visible fabric texture (rough linen,
+coarse wool), realistic weathered skin with visible pores, dust on clothing and sandals,
+authentic period-accurate Middle Eastern, wide angle cinematic composition
+
+NEGATIVE (never include): painterly, illustration, painting, anime, cartoon, 3D render,
+modern clothing, modern technology, blonde Hebrews, European features on Israelites,
+Renaissance/Baroque/Victorian art styles, fantasy armor, electric lighting
+
+CHARACTER RULES:
+- Hebrew/Israelite men: olive to medium-brown Levantine/Semitic skin, dark hair, dark eyes
+- Women: modest, head-covered where appropriate, no modern makeup
+- Never depict God/The LORD as a human figure — only as light, fire, cloud, or divine phenomenon
+- Egyptians: darker North African/Egyptian features, period Egyptian dress
+- Philistines: Sea Peoples — feathered helmets (NOT horned), bronze armor
+
+EVERY PROMPT MUST: vary composition based on the narration (do not repeat same shot),
+include specific environment details matching the biblical time period and geography,
+specify exact lighting (time of day, light source), and match the emotional tone.
+"""
+
+
 def _ai_batch_prompts(scenes: list[dict]) -> list[str]:
     """Use Claude to generate richer prompts for a batch of scenes."""
     try:
@@ -75,33 +107,34 @@ def _ai_batch_prompts(scenes: list[dict]) -> list[str]:
 
     scenes_text = json.dumps(
         [{"scene": s["scene_number"],
+          "chapter_title": s.get("chapter_title", ""),
+          "section_title": s.get("section_title", ""),
           "narration": s["narration"],
           "emotion": s["emotion"],
-          "visual_description": s["visual_description"]}
+          "key_figures": s.get("key_figures", [])}
          for s in scenes],
         indent=2
     )
 
-    prompt = f"""You are a cinematic art director generating image generation prompts for a documentary film.
+    prompt = f"""You are a cinematic art director creating image prompts for "THE OLD TESTAMENT: A Cinematic Documentary."
+{_OT_STYLE_CONTEXT}
+For each scene below, write ONE ultra-detailed image generation prompt (Flux Dev / Stable Diffusion).
 
-For each scene below, write ONE ultra-detailed image prompt optimized for Flux/Stable Diffusion/DALL-E.
+CRITICAL: Each prompt must be UNIQUE and driven by the specific narration text.
+Do NOT write the same composition repeatedly. Vary: camera angle, subject, environment, time of day.
+The narration tells you exactly what biblical moment is happening — visualize THAT specific moment.
 
-Requirements:
-- Ultra realistic, cinematic film still
-- Dramatic lighting, high contrast
-- Emotionally immersive, historically grounded
-- 16:9 composition, no text, no watermarks
-- Avoid cartoon, anime, illustration styles
-- Include: subject, environment, lighting, mood, camera angle, film aesthetic
+Short title-card narrations (e.g. "Part 1", "The Book of Genesis") should show an establishing
+cinematic landscape appropriate to what follows — NOT a generic beam of light.
 
-Return ONLY a JSON array of strings — one prompt per scene, same order as input.
+Return ONLY a JSON array of strings — one prompt per scene, same order as input. No other text.
 
 Scenes:
 {scenes_text}"""
 
     message = client.messages.create(
         model=CLAUDE_MODEL,
-        max_tokens=4096,
+        max_tokens=8192,
         messages=[{"role": "user", "content": prompt}]
     )
 

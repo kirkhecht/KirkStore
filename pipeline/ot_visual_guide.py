@@ -1645,20 +1645,119 @@ SECTION_VISUAL: dict[str, str] = {
 # PROMPT BUILDER — Part 12 Template
 # ══════════════════════════════════════════════════════════════════════════════
 
-def build_prompt(section_title: str, chapter_num: int, emotion: str,
-                 setting: str | None = None, key_figures: list[str] | None = None) -> str:
-    """Build a full image generation prompt following the Master Visual Bible template.
+# Camera angle rotation — cycles per scene so consecutive frames differ visually
+_ANGLES = [
+    "wide establishing shot, low horizon line",
+    "medium shot, subject fills lower third",
+    "close-up on hands and face, shallow depth of field",
+    "low angle looking up, dramatic sky above",
+    "over-the-shoulder view, subject facing away toward distant landscape",
+    "aerial wide angle, vast landscape below",
+    "tight medium shot, strong side lighting",
+    "foreground rocks framing distant figure",
+]
 
-    Template (Part 12):
-      [Character Description], [Action/Emotional State], [Environment],
-      [Time of Day/Lighting], [Atmospheric Details],
-      ultra photorealistic, cinematic biblical drama, warm earth tones,
-      golden hour lighting, atmospheric depth, period accurate Middle Eastern,
-      [Base Style], [Inline Negative]
-    """
-    env    = CHAPTER_ENVIRONMENT.get(chapter_num, "ancient biblical landscape")
-    emo    = EMOTION_STYLE.get(emotion, EMOTION_STYLE["solemn"])
-    visual = SECTION_VISUAL.get(section_title, setting or "ancient Near Eastern cinematic scene")
+# Keyword → visual phrase mapping for narration-driven scene specificity
+_NARRATION_VISUALS: list[tuple[str, str]] = [
+    ("egypt",            "ancient Egypt, Nile delta, palm trees, mudbrick buildings"),
+    ("pharaoh",          "ancient Egyptian throne room, gilded columns, linen-robed court"),
+    ("nile",             "Nile river at flood, papyrus reeds, distant pyramids"),
+    ("pyramid",          "massive stone pyramid under construction, workers hauling stone"),
+    ("wilderness",       "barren desert wilderness, rocky terrain, sparse thorny scrub"),
+    ("sinai",            "Mount Sinai rocky summit, harsh desert plateau, storm clouds"),
+    ("tabernacl",        "portable wilderness tabernacle, linen courtyard fence, cloud pillar"),
+    ("burning bush",     "solitary desert thornbush burning with supernatural fire"),
+    ("red sea",          "vast body of water, dramatic sky, sandy shore"),
+    ("jordan",           "Jordan River crossing, Levantine landscape, spring vegetation"),
+    ("canaan",           "hilly Canaan landscape, ancient olive groves, stone terraces"),
+    ("jerusalem",        "ancient Jerusalem on hilltop, stone walls, Kidron valley below"),
+    ("temple",           "massive ancient stone temple, carved cedar pillars, bronze basin"),
+    ("babylon",          "Babylonian city, massive ziggurat temple, hanging gardens"),
+    ("exile",            "long column of Hebrew captives on dusty road, weeping women"),
+    ("persia",           "grand Persian palace, glazed tile walls, throne room"),
+    ("flood",            "dark storm-churned waters, rain sheeting down, chaos"),
+    ("ark",              "colossal wooden ark structure on dry land, animals approaching"),
+    ("rainbow",          "dramatic rainbow arching over flooded landscape, clearing sky"),
+    ("fire",             "supernatural consuming fire, dramatic night, ash and smoke"),
+    ("mountain",         "rocky mountain peak, steep trail, dramatic elevation and sky"),
+    ("shepherd",         "open rolling hillside pasture, scattered sheep on green slopes"),
+    ("harvest",          "ancient grain field, workers cutting wheat with bronze sickles"),
+    ("battle",           "ancient battlefield, bronze-armed soldiers in formation"),
+    ("king",             "ancient throne room, stone columns, gathered court"),
+    ("prophet",          "lone robed figure on rocky hilltop, speaking into wind"),
+    ("prayer",           "kneeling figure facing open sky, hands raised"),
+    ("covenant",         "stone altar, ceremonial fire, sacred landscape, solemn gathering"),
+    ("creation",         "primordial landscape taking shape, light breaking into darkness"),
+    ("garden",           "lush ancient garden, towering trees, flowing river, mist"),
+    ("serpent",          "ancient tree in garden, shadow, subtle coiled form"),
+    ("before",           "vast empty ancient landscape, no civilization, primordial earth"),
+    ("rise of",          "ancient region at its height, dramatic landscape vista"),
+    ("kingdom",          "ancient hilltop city, stone walls, distant plains"),
+    ("nation",           "large gathering of ancient people, desert camp, many tents"),
+    ("people",           "crowd of ancient Semitic people, period dress, sun-drenched"),
+    ("voice",            "lone figure in open landscape, looking upward, divine light"),
+    ("word",             "ancient scribe writing on parchment by torchlight"),
+    ("covenant",         "stone altar with sacred fire, two figures in solemn agreement"),
+    ("sacrifice",        "stone altar on rocky hilltop, smoke rising into dawn sky"),
+    ("angel",            "radiant figure in brilliant white light, rocky landscape"),
+    ("dream",            "figure sleeping on rocky ground, night sky above, moon"),
+    ("vision",           "ethereal light, rocky landscape, awestruck figure"),
+    ("weep",             "figure bowed low in grief, dust and ash, desolate landscape"),
+    ("praise",           "figures with arms raised toward dramatic sky, golden light"),
+    ("wander",           "long winding trail through rocky desert, distant figure walking"),
+    ("return",           "long road home, ancient city walls in distance, twilight"),
+    # Broad fallback for abstract/short narration that didn't hit a specific keyword
+    ("fall and rise",    "ancient walled city, dramatic sky, cycle of history"),
+    ("creator",          "vast primordial landscape, divine golden light on horizon"),
+    ("lord god",         "lone figure kneeling in awe, overwhelming golden divine light"),
+    ("the deep",         "infinite dark primordial ocean, first light touching water"),
+    ("refused",          "lone figure standing firm, desolate rocky landscape, storm"),
+    ("walked away",      "long empty road disappearing to horizon, ancient landscape"),
+    ("turned against",   "crowd of ancient figures in conflict, dusty ancient square"),
+    # Creation / divine phenomena
+    ("let there be",     "moment of creation, divine light splitting primordial darkness"),
+    ("in the beginning", "void before creation, primordial darkness, first light emerging"),
+    ("light",            "brilliant shaft of divine light piercing deep darkness, volumetric rays"),
+    ("darkness",         "total darkness, deep black sky, single distant torch or starlight"),
+    ("heavens",          "sweeping view of ancient night sky, brilliant stars, Milky Way arc"),
+    ("waters",           "primordial waters, misty ancient sea, horizon vanishing in haze"),
+    ("sea",              "ancient coastline, dramatic waves crashing on rocky shore"),
+    ("wind",             "figure in billowing robes on rocky hilltop, dramatic stormy sky"),
+    ("cloud",            "massive supernatural cloud, pillar of cloud, divine presence"),
+    ("dust",             "sun-baked dust road, ancient figure walking, heat haze"),
+    ("sword",            "ancient warrior raising bronze sword, battlefield"),
+    ("spear",            "bronze-tipped spear, ancient warrior in formation"),
+    ("wall",             "massive ancient stone city wall, gatehouse, heavy timber doors"),
+    ("gate",             "ancient stone city gate, crowded marketplace, stone arch"),
+    ("tent",             "ancient nomadic tent camp, goat-hair tents, desert plain"),
+    ("bread",            "ancient bread baking, clay oven, simple stone house interior"),
+    ("famine",           "parched cracked earth, wilted crops, gaunt figures"),
+    ("plague",           "devastated ancient landscape, dark sky, suffering crowds"),
+    ("cross",            "wide river crossing, figure wading, Levantine landscape"),
+    ("stone",            "ancient stone altar or monument, rocky hilltop"),
+    ("oil",              "ceremonial anointing, clay vessel of oil, solemn gathering"),
+    ("crown",            "ancient king being crowned, stone throne room, gathered nobles"),
+    ("bow",              "ancient archer with composite bow, desert landscape"),
+    ("ship",             "ancient wooden vessel on stormy sea, waves crashing"),
+    ("city",             "ancient walled city on hilltop, stone buildings, bustling"),
+    ("born",             "stone house interior, newborn, lamplight, women attending"),
+    ("died",             "mourning scene, figures in sackcloth, ancient burial preparation"),
+    ("sun",              "blazing Middle Eastern sun, heat haze, ancient arid landscape"),
+    ("moon",             "full moon over ancient Levantine landscape, silhouetted palm trees"),
+    ("star",             "night sky filled with stars, Milky Way arc, figure looking up"),
+]
+
+
+def build_prompt(section_title: str, chapter_num: int, emotion: str,
+                 setting: str | None = None, key_figures: list[str] | None = None,
+                 narration: str = "", scene_number: int = 0) -> str:
+    """Build a full image generation prompt following the Master Visual Bible template."""
+    env = CHAPTER_ENVIRONMENT.get(chapter_num, "ancient biblical landscape")
+    emo = EMOTION_STYLE.get(emotion, EMOTION_STYLE["solemn"])
+    angle = _ANGLES[scene_number % len(_ANGLES)]
+
+    # Primary visual: derive from narration for scene-specific variety
+    visual = _visual_from_narration(narration, section_title, setting)
 
     # Inject exact character prompt fragments for visual consistency
     char_parts = []
@@ -1674,13 +1773,35 @@ def build_prompt(section_title: str, chapter_num: int, emotion: str,
         char_desc = "CHARACTERS — " + " | ".join(char_parts) + ". "
 
     return (
-        f"{visual}, "
+        f"{visual}, {angle}, "
         f"{char_desc}"
         f"{emo}, "
         f"{env}, "
         f"{OT_BASE_STYLE}, "
         f"{OT_INLINE_NEGATIVE}"
     )
+
+
+def _visual_from_narration(narration: str, section_title: str,
+                            setting: str | None) -> str:
+    """Derive a scene-specific visual description from the narration text."""
+    import re
+    text = narration.lower().strip()
+
+    # Title cards — use section visual for establishing context
+    if len(text) < 12 or text in {"", ".", "...", "—"}:
+        return SECTION_VISUAL.get(section_title, setting or "ancient Near Eastern cinematic scene")
+
+    # Word-boundary keyword match → specific visual (longer/more specific first)
+    for keyword, visual_hint in _NARRATION_VISUALS:
+        if re.search(r"\b" + re.escape(keyword) + r"\b", text):
+            return visual_hint
+
+    # No keyword match: use section visual augmented with cleaned narration as context
+    base = SECTION_VISUAL.get(section_title, setting or "ancient Near Eastern landscape")
+    words = narration.split()
+    brief = " ".join(words[:10]).rstrip(".,;:—")
+    return f"{base} — {brief}"
 
 
 def get_nation_context(chapter_num: int) -> str:
