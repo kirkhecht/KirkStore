@@ -9,7 +9,7 @@ import json
 from pathlib import Path
 
 from .config import DIRS, IMAGE_BASE_STYLE, USE_AI_PROMPTS, ANTHROPIC_API_KEY, CLAUDE_MODEL
-from .utils import setup_logging, save_json
+from .utils import setup_logging, save_json, load_json
 
 log = setup_logging("phase4", "phase4.log")
 
@@ -178,6 +178,10 @@ def run(all_scenes: dict[int, list[dict]],
                 "duration":     s["duration"],
                 "narration":    s["narration"][:120],
             })
+
+        # Save enriched scene JSON back to disk so phase 8 picks up updated prompts
+        out_json = DIRS["scene_json"] / f"chapter_{ch_num:02d}_scenes.json"
+        save_json(scenes, out_json)
 
         # Per-chapter CSV
         out_csv = DIRS["image_prompts"] / f"chapter_{ch_num:02d}_prompts.csv"
