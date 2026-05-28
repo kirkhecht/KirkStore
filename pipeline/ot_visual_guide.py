@@ -31,52 +31,64 @@ EMOTION_STYLE: dict[str, str] = {
     "epic_grandeur": "sweeping aerial perspective, monumental architecture, vast landscape, awe-inspiring scale",
 }
 
-# ── Per-chapter environment descriptions ──────────────────────────────────────
+# ── Per-chapter environment descriptions (15-part structure) ──────────────────
 CHAPTER_ENVIRONMENT: dict[int, str] = {
-    1:  "primordial ancient earth, pre-historic wilderness, desert plains, early human settlements",
-    2:  "ancient Mesopotamian city-state, Canaan rolling hills, desert trade routes, Nile delta Egypt",
-    3:  "New Kingdom Egypt, mud-brick slave quarters, Nile River valley, Sinai peninsula desert",
-    4:  "Sinai wilderness, desert canyons, stone mountains, Tabernacle tent complex",
-    5:  "Canaan hill country, Jordan River valley, walled ancient cities, wheat fields",
-    6:  "ancient Israelite hill towns, Philistine coastal cities, Jerusalem early fortifications",
-    7:  "Jerusalem at peak glory, massive hewn stone Temple, Phoenician-influenced architecture, Mount Carmel",
-    8:  "Assyrian siege warfare, Babylon approaching, Jerusalem walls, burning ancient cities",
-    9:  "Neo-Babylonian empire, massive ziggurat city, Persian palace architecture, exile communities",
-    10: "Persian palace of Susa, ruined Jerusalem, Second Temple construction, Hellenistic period",
+    1:  "primordial ancient earth, Garden of Eden, pre-flood wilderness, early human settlements",
+    2:  "post-flood new world, ancient Mesopotamian city-state, Canaan rolling hills, desert trade routes",
+    3:  "Canaan hill country, Haran in Mesopotamia, trade caravans, Nile delta Egypt grain stores",
+    4:  "New Kingdom Egypt, mud-brick slave quarters, Nile River valley, Sinai peninsula desert",
+    5:  "Sinai wilderness, desert canyons, stone mountains, Tabernacle tent complex, plains of Moab",
+    6:  "Canaan hill country, Jordan River valley, walled ancient cities, wheat fields, Philistine coast",
+    7:  "Shiloh Tabernacle, Philistine cities, Judean wilderness caves, early Jerusalem fortifications",
+    8:  "Jerusalem city of David, David's palace, Temple Mount preparation, Israelite capital at its height",
+    9:  "Jerusalem at peak glory, massive hewn stone Temple, Phoenician-influenced architecture, Solomon's palace",
+    10: "Northern Israelite hill towns, Samaria, Mount Carmel, Sinai wilderness, Zarephath coastal town",
+    11: "Assyrian siege warfare, Babylon approaching, Jerusalem walls, burning ancient cities, Judean hills",
+    12: "Neo-Babylonian empire, massive ziggurat city, plain of Dura, Persian palace architecture",
+    13: "Chebar River exile community, Babylonian streets, vision of ruined Jerusalem, heavenly throne room",
+    14: "Persian palace of Susa, road from Babylon to Jerusalem, Jerusalem ruins, Second Temple construction",
+    15: "post-exilic Jerusalem, Second Temple precinct, rebuilt city walls, Bethlehem road at night",
 }
 
-# ── Per-chapter color grading guidance ────────────────────────────────────────
+# ── Per-chapter color grading guidance (15-part structure) ────────────────────
 CHAPTER_COLOR_GRADE: dict[int, str] = {
     1:  "deep navy and gold for cold open, expanding to warm golden full colour for creation, "
-        "saturated greens and soft golden hour for Eden, colour draining to muted tones for the fall",
-    2:  "sun-bleached desert ochres and warm whites for Abraham's journey, "
-        "deep midnight blues with brilliant white starlight for covenant, "
-        "red-orange hellfire for Sodom, warm intimate lamplight for family scenes",
-    3:  "bleached oranges and browns under harsh oppressive sun for slavery, "
-        "deep blues of the Nile contrasted with warm interior lamplight for Moses' birth, "
+        "saturated greens and soft golden hour for Eden, colour draining to muted tones for the fall, "
+        "storm grey and churning brown for the flood",
+    2:  "fresh post-flood greens giving way to sun-bleached desert ochres, "
+        "deep midnight blues with brilliant white starlight for Abraham's covenant, "
+        "red-orange hellfire for Sodom, warm intimate lamplight for Isaac and Rebekah",
+    3:  "warm Canaan golds for Jacob's journey, deep midnight blue for Jabbok wrestling, "
+        "rich Egyptian linen whites and painted gold for Joseph's rise, "
+        "earthy ochre for the caravan scenes",
+    4:  "bleached oranges and browns for Egyptian slavery, deep Nile blues for Moses' birth, "
         "Egyptian palace gold and lapis lazuli, blood red for the plagues, "
         "turquoise and white for the Red Sea crossing",
-    4:  "sun-bleached desert tones darkening as Sinai approaches, "
+    5:  "sun-bleached desert tones darkening as Sinai approaches, "
         "smoky blacks and deep storm blues with sudden orange-red fire for the theophany, "
-        "warm gold and linen white for Tabernacle interiors, "
-        "dusty muted tones for forty years of wandering",
-    5:  "harder, more weathered, grounded in war and survival — "
-        "Bronze Age to early Iron Age colour palette, "
+        "warm gold and linen white for Tabernacle interiors, dusty muted for forty years",
+    6:  "harder, more weathered — Bronze Age to early Iron Age palette, "
         "warm harvest gold for Ruth, dark oppressive tones for the dark end of Judges",
-    6:  "late Iron Age village settings shifting through military camps "
-        "into rising splendour of David's united kingdom — "
-        "deep cave shadows for wilderness years, triumphant warm gold for the Ark",
-    7:  "richest and most opulent in the documentary — Solomon's court in deep gold and crimson, "
-        "Queen of Sheba caravan in exotic jewel tones, "
-        "sharp contrast to Elijah's bleached wilderness and storm-grey Mount Carmel",
-    8:  "progressively darkening — Elisha's pastoral warmth giving way to "
-        "harsh desert Assyrian conquest, gathering shadow of Babylonian siege, "
-        "ending in ash grey and smoke black for Jerusalem's fall",
-    9:  "richest outside Solomon's Temple — Babylon is beautiful in foreign dangerous colours: "
-        "lapis lazuli blue tiles, gold leaf, deep purples; "
-        "the furnace in blinding white-orange; exile communities in warm earth tones",
-    10: "muted, domestic, human-scale — fragile warmth of the returning community, "
-        "Second Temple in humble grey stone, Esther's Persian court in opulent gold-crimson, "
+    7:  "late Iron Age village settings — lamplight yellows for Samuel's calling, "
+        "deep cave shadows for David's wilderness years, dark Philistine battlefield at Mount Gilboa",
+    8:  "triumphant warm gold for David's coronation and the Ark, "
+        "rooftop moonlit blue for Bathsheba, dark interior shadows for Absalom's rebellion",
+    9:  "richest and most opulent — Solomon's court in deep gold and crimson, "
+        "Temple interior in blinding white-gold, Queen of Sheba in exotic jewel tones, "
+        "darkening as Solomon falls and the kingdom splits",
+    10: "northern kingdom in cooler Phoenician blues and greys, "
+        "bleached desert tones for Elijah's wilderness, storm-grey and fire-orange for Mount Carmel, "
+        "intimate cave darkness for the still small voice",
+    11: "progressively darkening — Elisha's pastoral warmth giving way to harsh Assyrian conquest, "
+        "gathering shadow of Babylonian siege, ending in ash grey and smoke black",
+    12: "Babylon is beautiful in dangerous colours — lapis lazuli blue tiles, gold leaf, deep purples, "
+        "the furnace in blinding white-orange, Persian palace in cool marble whites and gold",
+    13: "Chebar River in muted exile browns and blues, vision sequences in unearthly amber and white, "
+        "the dry bones valley in bleached bone-white under grey sky",
+    14: "Persian palace in opulent gold-crimson, road to Jerusalem in dusty warm ochre, "
+        "Jerusalem ruins in grey rubble, new altar in warm firelight against the ruins",
+    15: "muted, domestic, human-scale — fragile warmth of post-exilic community, "
+        "Second Temple in humble grey stone, Esther's court in opulent gold-crimson, "
         "closing in deep silent blue before the star rises over Bethlehem",
 }
 
