@@ -28,6 +28,33 @@ import sys
 import time
 from pathlib import Path
 
+# ── Single-instance lockfile guard ────────────────────────────────────────────
+_LOCKFILE = Path("/tmp/kirkstore_pipeline.lock")
+
+def _acquire_lock() -> bool:
+    if _LOCKFILE.exists():
+        try:
+            pid = int(_LOCKFILE.read_text().strip())
+            if Path(f"/proc/{pid}").exists():
+                print(f"[pipeline] Already running as PID {pid} — exiting duplicate.", flush=True)
+                return False
+        except (ValueError, OSError):
+            pass
+    _LOCKFILE.write_text(str(os.getpid()))
+    return True
+
+def _release_lock() -> None:
+    try:
+        _LOCKFILE.unlink()
+    except OSError:
+        pass
+
+if not _acquire_lock():
+    sys.exit(0)
+
+import atexit
+atexit.register(_release_lock)
+
 # ── Load .env if present ───────────────────────────────────────────────────────
 _env_file = Path(__file__).parent / ".env"
 if _env_file.exists():
