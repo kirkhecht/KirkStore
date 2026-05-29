@@ -1184,7 +1184,7 @@ def main():
                 cost_spent += cost_per_image
                 generated += 1
                 print(f"  → saved ({out.stat().st_size // 1024}KB) | total cost: ~${cost_spent:.2f}")
-                time.sleep(3)  # polite delay to avoid rate limits
+                time.sleep(20)  # 20s between requests — quality over speed, no rate limits
                 break
             except Exception as exc:
                 msg = str(exc)
