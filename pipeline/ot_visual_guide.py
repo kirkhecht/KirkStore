@@ -1681,6 +1681,18 @@ _ANGLES = [
     "environmental portrait, character standing in rocky landscape, face turned three-quarters toward camera, bokeh background",
 ]
 
+# Nature/cosmic angles used when there are no human characters in a scene
+_NATURE_ANGLES = [
+    "wide cinematic frame, no people, pure environment",
+    "extreme macro close-up, no people, texture and detail",
+    "aerial bird's-eye view from high above, no people visible",
+    "low ground-level angle, looking up at the environment, no people",
+    "underwater perspective looking upward toward surface, no people",
+    "sweeping wide establishing shot, vast landscape, no human figures",
+    "space-view from orbit looking down at Earth or cosmos, no people",
+    "medium wide nature shot, raw environment without human presence",
+]
+
 # Keyword → visual phrase mapping for narration-driven scene specificity
 _NARRATION_VISUALS: list[tuple[str, str]] = [
     ("egypt",            "ancient Egypt, Nile delta, palm trees, mudbrick buildings"),
@@ -1711,14 +1723,16 @@ _NARRATION_VISUALS: list[tuple[str, str]] = [
     ("prophet",          "lone robed figure on rocky hilltop, speaking into wind"),
     ("prayer",           "kneeling figure facing open sky, hands raised"),
     ("covenant",         "stone altar, ceremonial fire, sacred landscape, solemn gathering"),
-    ("creation",         "primordial landscape taking shape, light breaking into darkness"),
+    ("creation",         "primordial landscape taking shape, light breaking into darkness, no people"),
     ("garden",           "lush ancient garden, towering trees, flowing river, mist"),
     ("serpent",          "ancient tree in garden, shadow, subtle coiled form"),
-    ("before",           "vast empty ancient landscape, no civilization, primordial earth"),
+    ("before",           "vast empty ancient landscape, no civilization, primordial earth, no people"),
     ("rise of",          "ancient region at its height, dramatic landscape vista"),
     ("kingdom",          "ancient hilltop city, stone walls, distant plains"),
     ("nation",           "large gathering of ancient people, desert camp, many tents"),
     ("people",           "crowd of ancient Semitic people, period dress, sun-drenched"),
+    ("came a voice",     "explosive burst of pure white-gold divine light erupting from absolute void darkness, first word spoken into the universe"),
+    ("into that silence","absolute pitch-black void on the verge of the first sound, total formless darkness, silence about to break"),
     ("voice",            "close-up of ancient person's face, eyes wide, looking upward in awe, open sky above"),
     ("word",             "ancient scribe writing on parchment, face focused by daylight from doorway"),
     ("covenant",         "stone altar with sacred fire, two figures in solemn agreement"),
@@ -1732,18 +1746,69 @@ _NARRATION_VISUALS: list[tuple[str, str]] = [
     ("return",           "long road home, ancient city walls in distance, twilight"),
     # Broad fallback for abstract/short narration that didn't hit a specific keyword
     ("fall and rise",    "ancient walled city, dramatic sky, cycle of history"),
-    ("creator",          "vast primordial Levantine landscape at golden hour, no human civilization"),
+    ("creator",          "vast primordial landscape at golden hour, no human civilization, no people"),
     ("lord god",         "close-up of ancient person's face turned upward in reverence, warm natural light"),
-    ("the deep",         "ancient rocky coastline, dark storm sea, dramatic clouds, spray on rocks"),
     ("refused",          "lone figure standing firm, desolate rocky landscape, storm"),
     ("walked away",      "long empty road disappearing to horizon, ancient landscape"),
     ("turned against",   "crowd of ancient figures in conflict, dusty ancient square"),
-    # Creation / divine phenomena
-    ("let there be",     "ancient landscape at the moment of sunrise, first rays of light breaking over limestone hills"),
-    ("in the beginning", "vast primordial wilderness, untouched ancient landscape, no buildings or roads"),
+    # ── Day 5 sea creatures — MUST come before "the deep" single-word fallback ─
+    ("leviathan",        "extreme close-up of massive sea creature eye and armored scale texture, dark deep ocean, ancient and terrifying"),
+    ("schools of fish",  "underwater shot, shafts of golden sunlight from above, hundreds of ancient fish swimming in formation"),
+    ("oceans, creatures","deep underwater shot, shafts of sunlight penetrating from above, hundreds of fish in formation, dark depths below"),
+    ("deep, things",     "dark ocean underwater shot, massive shadowed creatures, shafts of light from surface"),
+    ("wings unfurled",   "ancient large birds in flight, wings fully spread, viewed from below against dramatic sky, sunlit"),
+    ("birds rose",       "flock of large ancient birds soaring at altitude, low angle looking upward, sun behind outstretched wings"),
+    # ── Pre-creation void / darkness ──────────────────────────────────────────
+    ("only the deep",    "absolute pitch-black void, swirling dark mist over formless waters, no light, total darkness"),
+    ("the deep",         "absolute pitch-black void, no light, no form, pure infinite darkness, formless deep, total silence"),
+    ("vast. silent",     "pure black void, infinite darkness, not a single photon of light, total formlessness"),
+    ("formless",         "dark swirling cosmic void, no defined shapes, primordial chaos before creation, no light"),
+    ("void",             "absolute infinite darkness, no earth, no sky, no light whatsoever"),
+    ("nothing",          "absolute emptiness, pure black void, no earth, no sun, no light, no time"),
+    # ── Creation light (must come before generic "voice" keyword) ────────────
+    ("came a voice",     "explosive burst of pure white-gold divine light erupting from absolute void darkness, first word spoken into universe"),
+    ("into that silence","absolute pitch-black void on the verge of the first sound, total formless darkness, silence about to break"),
+    ("let there be",     "explosive burst of pure white light erupting from absolute darkness, first light in universe, divine radiance shattering void"),
+    ("light tore",       "blinding white-gold explosion of light shattering the primordial darkness, radiant energy radiating outward into void"),
+    ("first light",      "explosive burst of blinding white-gold light erupting from void, no sun yet, pure divine radiance"),
+    ("in the beginning", "pure black cosmic void, absolute darkness, before any form or light existed"),
+    # ── Days 1–2: Light separation, sky, atmosphere ───────────────────────────
+    ("light spread",     "swirling light and dark separating, primordial boundary forming, no people"),
+    ("second day",       "Earth seen from high orbit, vast blue-grey atmosphere forming as a canopy, swirling cloud systems"),
+    ("heavens opened",   "Earth from orbit, vast atmosphere curving against space, cloud formations over primordial ocean"),
+    ("sky stretched",    "Earth seen from high orbit, blue atmospheric arc against black space, cloud formations"),
+    ("firmament",        "Earth from orbit, atmosphere forming as a vast canopy above divided waters, deep space background"),
+    # ── Day 3: Land, mountains, vegetation ────────────────────────────────────
+    ("land rose",        "mountains erupting from retreating ocean seen from orbit, raw rock pushing upward, steam and mist"),
+    ("dry land",         "raw wet mountains emerging from primordial seas, seen from low orbit, rock and steam"),
+    ("mountains pushed", "craggy raw mountains seen from orbit, pushing upward through retreating chaotic waters"),
+    ("forests bloomed",  "macro close-up of first tiny ferns and moss growing on wet black volcanic rock, golden sunlight"),
+    ("first green",      "extreme macro of first plants — moss, tiny ferns — sprouting from moist dark earth, dewdrops"),
+    # ── Day 4: Sun, moon, stars (must come before single-word "heavens", "stars") ─
+    ("sun was set",      "extreme close-up of blazing solar surface, plasma eruptions, corona, intense white-gold fusion light"),
+    ("set ablaze",       "extreme close-up of sun's surface, solar flares, plasma arcs, overwhelming white-gold light"),
+    ("moon took",        "full moon from orbit close-up, cratered grey surface, Earth's blue atmosphere curving below"),
+    ("scattered across", "deep space high-resolution star field, countless glittering stars, cosmic nebulae, Milky Way"),
+    # ── Day 6: Land animals, creeping things ──────────────────────────────────
+    ("cattle on",        "prehistoric aurochs and wild horses on primordial green hill, Earth's atmospheric curve visible in background"),
+    ("wild beasts",      "ancient lion and massive prehistoric animals on sunlit green hilltop, Earth's curve on horizon, no people"),
+    ("creeping things",  "macro close-up ground shot: snake, beetle, millipede moving through wet moss and first ferns, sunlight"),
+    # ── Adam creation ──────────────────────────────────────────────────────────
+    ("dust of the earth","extreme macro close-up of red-brown moist clay soil, textured wet earth surface, soft golden light"),
+    ("reached down",     "large weathered aged hands reaching into wet red clay, gathering soil, macro detail"),
+    ("shaped it",        "massive ancient hands shaping wet red clay into human form, macro close-up, soft divine light"),
+    ("breathed into",    "extreme close-up of clay human face receiving breath, mist visible from nostrils, eyes just beginning to open"),
+    ("dust became",      "clay face transitioning from grey mud to warm human skin, eyes opening, first breath, macro portrait"),
+    ("adam awakened",    "close-up portrait of man's face emerging from clay earth, eyes opening for first time, awestruck expression"),
+    # ── Day 7: Rest ────────────────────────────────────────────────────────────
+    ("seventh day",      "wide tranquil landscape, soft twilight light, perfect finished world, no movement, complete silence"),
+    ("creator rested",   "vast peaceful completed world at twilight, soft golden light, total stillness, no people"),
+    ("work was finished","sweeping panoramic landscape, perfect world bathed in soft light, stillness and completion"),
+    # ── Single-word fallbacks (after all specific phrases above) ──────────────
+    ("heavens",          "deep space star field, cosmic nebulae, Milky Way arc, pure black space, no people"),
+    ("stars",            "deep space, countless stars, cosmic dust, Milky Way, pure black space background, no people"),
     ("light",            "warm golden sunlight breaking over rocky horizon, long shadows on ancient terrain"),
     ("darkness",         "ancient figure holding oil lamp at night, face lit from below, rocky surroundings"),
-    ("heavens",          "sweeping view of ancient night sky, brilliant stars, Milky Way arc"),
     ("waters",           "primordial waters, misty ancient sea, horizon vanishing in haze"),
     ("sea",              "ancient coastline, dramatic waves crashing on rocky shore"),
     ("wind",             "figure in billowing robes on rocky hilltop, dramatic stormy sky"),
@@ -1795,32 +1860,43 @@ def build_prompt(section_title: str, chapter_num: int, emotion: str,
     """Build a full image generation prompt following the Master Visual Bible template."""
     env = CHAPTER_ENVIRONMENT.get(chapter_num, "ancient biblical landscape")
     emo = EMOTION_STYLE.get(emotion, EMOTION_STYLE["solemn"])
-    angle = _ANGLES[scene_number % len(_ANGLES)]
 
     # Primary visual: derive from narration for scene-specific variety
     visual = _visual_from_narration(narration, section_title, setting)
 
-    # Inject exact character prompt fragments for visual consistency
-    char_parts = []
-    if key_figures:
-        for fig in key_figures:
+    # Determine if this scene has human characters
+    _skip = {"God", "Ark", "Israel", "Angel", "Angels", "Serpent", "the LORD", "The LORD"}
+    human_figs = [f for f in (key_figures or []) if f not in _skip]
+
+    if human_figs:
+        # Character scene — use face-forward angle and inject character descriptions
+        angle = _ANGLES[scene_number % len(_ANGLES)]
+        char_parts = []
+        for fig in human_figs[:2]:  # cap at 2 characters to keep prompt focused
             if fig in CHARACTER_APPEARANCE:
                 char_parts.append(CHARACTER_APPEARANCE[fig])
             else:
                 char_parts.append(fig)
-
-    char_desc = ""
-    if char_parts:
         char_desc = "CHARACTERS — " + " | ".join(char_parts) + ". "
-
-    return (
-        f"{visual}, {angle}, "
-        f"{char_desc}"
-        f"{emo}, "
-        f"{env}, "
-        f"{OT_BASE_STYLE}, "
-        f"{OT_INLINE_NEGATIVE}"
-    )
+        return (
+            f"{visual}, {angle}, "
+            f"{char_desc}"
+            f"{emo}, "
+            f"{env}, "
+            f"{OT_BASE_STYLE}, "
+            f"{OT_INLINE_NEGATIVE}"
+        )
+    else:
+        # No human characters — use nature/cosmic/environmental framing
+        angle = _NATURE_ANGLES[scene_number % len(_NATURE_ANGLES)]
+        return (
+            f"{visual}, {angle}, "
+            f"{emo}, "
+            f"{env}, "
+            f"ultra photorealistic, hyperrealistic cinematic photograph, sharp focus, 8K resolution, "
+            f"shot on cinema camera, photographic depth of field, natural lighting, "
+            f"no people, no human figures, no text, no watermarks"
+        )
 
 
 def _visual_from_narration(narration: str, section_title: str,
