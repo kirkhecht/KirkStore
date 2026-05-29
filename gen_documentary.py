@@ -35,8 +35,8 @@ for d in [AUDIO_DIR, CLIPS_DIR, OUTPUT_DIR]:
 IMAGE_DIRS = {"cold_open": COLD_OPEN_DIR, "creation": CREATION_DIR}
 
 # ── ElevenLabs config ───────────────────────────────────────────────────────────
-# George: British storyteller voice — warm, captivating, perfect for documentary
-VOICE_ID  = "JBFqnCBsd6RMkjVDRZzb"
+# David: Deep and Engaging Storyteller — emotional, mature, cinematic
+VOICE_ID  = "BNgbHR0DNeZixGQVzloa"
 EL_MODEL  = "eleven_multilingual_v2"
 SILENCE_PAD = 0.45   # seconds of silence added after each narration clip
 
