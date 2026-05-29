@@ -1088,34 +1088,30 @@ def generate_replicate(prompt, out_path, attempt=0):
 
 def generate_google(prompt, out_path, key, attempt=0):
     import requests, base64
+    # Use Nano Banana 2 (gemini-3.1-flash-image) — 1,000 RPD limit vs 70 for Imagen 4 Fast
     resp = requests.post(
-        f"https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-fast-generate-001:predict?key={key}",
+        f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-image:generateContent?key={key}",
         json={
-            "instances": [{"prompt": prompt}],
-            "parameters": {
-                "sampleCount": 1,
-                "aspectRatio": "16:9",
-                "safetyFilterLevel": "block_only_high",
-                "personGeneration": "allow_adult"
-            }
+            "contents": [{"parts": [{"text": prompt}]}],
+            "generationConfig": {"responseModalities": ["IMAGE"]}
         },
         timeout=90
     )
     if resp.status_code != 200:
         raise RuntimeError(resp.json().get("error", {}).get("message", resp.text[:200]))
     data = resp.json()
-    predictions = data.get("predictions", [])
-    if not predictions or "bytesBase64Encoded" not in predictions[0]:
-        raise RuntimeError(f"Unexpected response: {str(data)[:200]}")
-    img_bytes = base64.b64decode(predictions[0]["bytesBase64Encoded"])
-    out_path.write_bytes(img_bytes)
+    parts = data.get("candidates", [{}])[0].get("content", {}).get("parts", [])
+    img_data = next((p["inlineData"]["data"] for p in parts if "inlineData" in p), None)
+    if not img_data:
+        raise RuntimeError(f"No image in response: {str(data)[:200]}")
+    out_path.write_bytes(base64.b64decode(img_data))
 
 
 # ── Main ───────────────────────────────────────────────────────────────────────
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--api", choices=["replicate", "google"], default="replicate")
+    parser.add_argument("--api", choices=["replicate", "google"], default="google")
     parser.add_argument("--start", type=int, default=1, help="Start from scene number")
     parser.add_argument("--end", type=int, default=9999)
     parser.add_argument("--dry-run", action="store_true")
