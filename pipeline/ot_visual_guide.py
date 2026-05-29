@@ -925,7 +925,7 @@ EMOTION_STYLE: dict[str, str] = {
 }
 
 CHAPTER_ENVIRONMENT: dict[int, str] = {
-    1:  "primordial ancient earth, Garden of Eden, pre-flood wilderness, early Bronze Age human settlements",
+    1:  "primordial ancient earth, Garden of Eden, pre-flood wilderness",
     2:  "post-flood new world, ancient Mesopotamian city-state of Ur, Canaan rolling hills, desert trade routes",
     3:  "Canaan hill country, Haran in northern Mesopotamia, trade caravans, Nile delta Egypt grain stores",
     4:  "New Kingdom Egypt, mud-brick slave quarters, Nile River valley, Sinai peninsula desert",
@@ -996,11 +996,10 @@ SECTION_VISUAL: dict[str, str] = {
         "warm amber sunlight raking across rocky terrain, long shadows"
     ),
     "The Creation": (
-        "first light of creation bursting through cosmic darkness, divine golden radiance, "
-        "waters separating from sky, mountains rising from primordial sea, "
-        "sun rising for the first time over the new world, "
-        "silhouette of man being formed from red desert clay and dust, no visible face of God, "
-        "radiant golden-white light pouring from unseen divine presence"
+        "lush paradise garden of Eden at golden hour, towering ancient trees, "
+        "four rivers flowing outward from the center, abundant fruit on every tree, "
+        "wild animals living in peace, pristine wilderness untouched by time, "
+        "warm golden paradise light, no people"
     ),
     "Adam and Eve": (
         "lush primeval paradise garden, four rivers flowing outward, "
@@ -1831,6 +1830,28 @@ _NARRATION_VISUALS: list[tuple[str, str]] = [
     ("city",             "ancient walled city on hilltop, stone buildings, bustling"),
     ("born",             "dim ancient stone house interior, newborn, warm oil lamp light, women attending, dark fabric walls"),
     ("died",             "mourning figures in rough sackcloth, ash on faces, desolate ancient courtyard"),
+    # ── Eden garden — must come before generic "eat" / "garden" / "tree" fallbacks ──
+    ("adam was alone",     "young Middle Eastern man sitting alone in lush paradise garden, animals nearby but no human companion, solitary searching expression, golden Eden light, no Eve present"),
+    ("man to be alone",    "lone young man sitting among animals in paradise garden, peaceful animals all around but no human companion, melancholy solitude, Eden golden light"),
+    ("as adam slept",      "young Middle Eastern man lying in deep divine sleep on soft paradise grass, ethereal golden-white light hovering above him, face peaceful, supernatural stillness, Eden"),
+    ("adam slept",         "young Middle Eastern man in deep peaceful sleep in paradise garden, soft divine golden light above him, Eden, no one else present"),
+    ("formed a companion", "ethereal golden-white divine light swirling above sleeping man in Eden garden, the miracle of Eve's creation just beginning, supernatural and tender"),
+    ("bone of his bone",   "close-up of soft golden divine light and mist, the form of a woman just beginning to emerge, miraculous creation, Eden, warm radiance"),
+    ("flesh of his flesh",  "beautiful young Middle Eastern woman standing in soft golden divine light in Eden, newly created, face peaceful and full of wonder, paradise garden behind her"),
+    ("her name was eve",   "close-up portrait of Eve, beautiful young Middle Eastern woman, long dark wavy hair, olive skin, deep brown eyes, gentle wondering expression, paradise garden, soft golden light"),
+    ("name was eve",       "close-up portrait of Eve, beautiful young Middle Eastern woman, long dark wavy hair, olive skin, deep brown eyes, gentle wondering expression, paradise garden, soft golden light"),
+    ("placed adam",        "young Middle Eastern man walking reverently through lush paradise garden of Eden, towering trees and animals, golden afternoon light"),
+    ("god placed",         "lush paradise garden of Eden, young man walking among towering fruit trees and animals, golden afternoon light, no visible face of God"),
+    ("eat from any tree",  "lush paradise garden of Eden, towering trees heavy with abundant fruit of every kind, golden light, no people visible"),
+    ("eat from every",     "lush paradise garden, abundant fruit trees of every kind, glowing golden fruit hanging heavy, warm Eden light, no people"),
+    ("could eat from",     "lush paradise garden, abundant fruit trees of every kind, glowing fruit, warm Eden light, no people"),
+    ("any tree at all",    "paradise garden of Eden, fruit of every kind in overwhelming abundance, towering ancient trees, golden paradise light, no people"),
+    ("do not eat from",    "the Tree of Knowledge of Good and Evil in Eden garden, ripe forbidden fruit hanging heavy, beautiful but subtly ominous golden light"),
+    ("not eat from",       "close-up of forbidden fruit on ancient tree in lush garden, beautiful and ominous, Eden, single command written in the weight of the air"),
+    ("tree of life",       "magnificent ancient tree at the center of Eden, glowing softly with luminous golden-white light, fruit radiant, life itself made visible, no people"),
+    ("tree of the knowledge", "ancient tree in paradise garden, heavy with ripe forbidden fruit, beautiful yet subtly ominous, the tree of the knowledge of good and evil"),
+    ("knowledge of good",  "ancient tree with forbidden fruit in lush Eden garden, beautiful and ominous, the weight of a single divine command"),
+    ("except one",         "single ancient tree in paradise garden standing apart, its fruit beautiful but forbidden, ominous quality to the golden light, no people"),
     # Interior scenes
     ("cook",             "dark ancient tent interior with hanging fabric walls, woman cooking flatbread on clay griddle, warm fire glow on face, steam rising"),
     ("meal",             "ancient tent interior, figures reclining on rugs, clay bowls of food, warm oil lamp light, both faces visible"),
@@ -1867,6 +1888,29 @@ def build_prompt(section_title: str, chapter_num: int, emotion: str,
     # Determine if this scene has human characters
     _skip = {"God", "Ark", "Israel", "Angel", "Angels", "Serpent", "the LORD", "The LORD"}
     human_figs = [f for f in (key_figures or []) if f not in _skip]
+
+    # If the visual prompt itself explicitly names a specific human character, treat as human scene
+    # (handles cases where key_figures only lists 'God' but the scene is about Adam/Eve/etc.)
+    _human_indicators = [
+        "young Middle Eastern man", "young Middle Eastern woman",
+        "portrait of Eve", "portrait of Adam",
+        "lone man", "lone young man", "man sitting alone",
+    ]
+    if not human_figs and any(ind in visual for ind in _human_indicators):
+        # Try to extract named character from visual text or narration
+        _nar_lower = narration.lower()
+        for char_name in ["Eve", "Adam", "Cain", "Abel", "Noah", "Abraham", "Sarah", "Moses"]:
+            if (char_name in visual or char_name.lower() in visual
+                    or char_name.lower() in _nar_lower):
+                if char_name in CHARACTER_APPEARANCE:
+                    human_figs = [char_name]
+                    break
+        # If still no match but we have a human indicator, use generic approach
+        if not human_figs:
+            if "young Middle Eastern woman" in visual:
+                human_figs = ["Eve"]
+            elif "young Middle Eastern man" in visual:
+                human_figs = ["Adam"]
 
     if human_figs:
         # Character scene — use face-forward angle and inject character descriptions
