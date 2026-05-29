@@ -678,13 +678,158 @@ def assemble_documentary(clip_paths, final_out):
     print(f"\n✓ Final documentary: {final_out} ({size_mb:.1f} MB)")
 
 
+def submit_predictions(scenes_to_submit, replicate_token, state_file):
+    """
+    Submit all pending scenes to Replicate in one fast pass (~1-2s each).
+    Saves prediction IDs to a JSON state file so collect_results can poll them.
+    """
+    import json
+
+    # Load existing state
+    state = {}
+    if state_file.exists():
+        state = json.loads(state_file.read_text())
+
+    headers = {
+        "Authorization": f"Bearer {replicate_token}",
+        "Content-Type": "application/json",
+    }
+
+    submitted = 0
+    for scene_num, img_path, motion_prompt in scenes_to_submit:
+        key = str(scene_num)
+        raw_path = RAW_AI_DIR / f"{scene_num:03d}_raw.mp4"
+
+        if raw_path.exists():
+            print(f"  [{scene_num:03d}] Raw clip exists, skipping")
+            continue
+        if key in state and state[key].get("status") in ("processing", "succeeded"):
+            print(f"  [{scene_num:03d}] Already submitted ({state[key].get('status')}), skipping")
+            continue
+
+        img_b64 = base64.b64encode(open(img_path, 'rb').read()).decode()
+        data_uri = f"data:image/jpeg;base64,{img_b64}"
+
+        resp = requests.post(
+            "https://api.replicate.com/v1/models/minimax/video-01-live/predictions",
+            headers=headers,
+            json={"input": {"prompt": motion_prompt, "first_frame_image": data_uri, "prompt_optimizer": False}},
+            timeout=30,
+        )
+        if resp.status_code not in (200, 201):
+            print(f"  [{scene_num:03d}] ✗ Submit error {resp.status_code}: {resp.text[:200]}")
+            continue
+
+        pred = resp.json()
+        pred_id = pred["id"]
+        state[key] = {"pred_id": pred_id, "status": "processing"}
+        state_file.write_text(json.dumps(state, indent=2))
+        print(f"  [{scene_num:03d}] Submitted → {pred_id}")
+        submitted += 1
+        time.sleep(0.5)  # gentle rate limiting
+
+    print(f"\nSubmitted {submitted} new predictions. State saved to {state_file}")
+    return state
+
+
+def collect_results(replicate_token, state_file):
+    """
+    Poll all in-flight Replicate predictions. Download and mux completed ones.
+    Designed to run in short bursts (< 8 minutes) — call repeatedly until all done.
+    """
+    import json
+
+    if not state_file.exists():
+        print("No state file found. Run --submit-only first.")
+        return
+
+    state = json.loads(state_file.read_text())
+    headers = {"Authorization": f"Bearer {replicate_token}"}
+
+    pending = [(k, v) for k, v in state.items() if v.get("status") == "processing"]
+    print(f"\nPolling {len(pending)} in-flight predictions...")
+
+    for key, info in pending:
+        scene_num = int(key)
+        pred_id = info["pred_id"]
+        raw_path = RAW_AI_DIR / f"{scene_num:03d}_raw.mp4"
+        clip_path = AI_CLIPS_DIR / f"{scene_num:03d}.mp4"
+        audio_path = AUDIO_DIR / f"{scene_num:03d}.mp3"
+
+        if raw_path.exists():
+            state[key]["status"] = "downloaded"
+            state_file.write_text(json.dumps(state, indent=2))
+            continue
+
+        poll_url = f"https://api.replicate.com/v1/predictions/{pred_id}"
+        try:
+            r = requests.get(poll_url, headers=headers, timeout=15)
+            if r.status_code != 200:
+                print(f"  [{scene_num:03d}] Poll error {r.status_code}")
+                continue
+            pred_status = r.json().get("status")
+            output = r.json().get("output")
+        except Exception as e:
+            print(f"  [{scene_num:03d}] Poll exception: {e}")
+            continue
+
+        if pred_status == "succeeded" and output:
+            video_url = output[0] if isinstance(output, list) else str(output)
+            print(f"  [{scene_num:03d}] Succeeded → downloading...")
+            try:
+                urllib.request.urlretrieve(video_url, str(raw_path))
+                size_mb = raw_path.stat().st_size / 1024 / 1024
+                state[key]["status"] = "downloaded"
+                state_file.write_text(json.dumps(state, indent=2))
+                print(f"  [{scene_num:03d}] Downloaded ({size_mb:.1f} MB)")
+            except Exception as e:
+                print(f"  [{scene_num:03d}] Download error: {e}")
+        elif pred_status == "failed":
+            err = r.json().get("error", "unknown")
+            print(f"  [{scene_num:03d}] ✗ Failed: {err}")
+            state[key]["status"] = "failed"
+            state_file.write_text(json.dumps(state, indent=2))
+        else:
+            print(f"  [{scene_num:03d}] Still {pred_status}...")
+
+    # Mux all downloaded raw clips that don't have final clips yet
+    print(f"\nMuxing downloaded clips...")
+    muxed = 0
+    for key, info in state.items():
+        if info.get("status") not in ("downloaded", "succeeded"):
+            continue
+        scene_num = int(key)
+        raw_path = RAW_AI_DIR / f"{scene_num:03d}_raw.mp4"
+        clip_path = AI_CLIPS_DIR / f"{scene_num:03d}.mp4"
+        audio_path = AUDIO_DIR / f"{scene_num:03d}.mp3"
+
+        if clip_path.exists() or not raw_path.exists() or not audio_path.exists():
+            continue
+
+        audio_dur = get_audio_duration(audio_path) + 0.45
+        print(f"  [{scene_num:03d}] Muxing ({audio_dur:.2f}s)...")
+        try:
+            make_animated_clip(raw_path, audio_path, clip_path, audio_dur)
+            print(f"  [{scene_num:03d}] ✓ Clip ready")
+            muxed += 1
+        except Exception as e:
+            print(f"  [{scene_num:03d}] ✗ Mux error: {e}")
+
+    # Summary
+    done = sum(1 for i in range(1, 111) if (AI_CLIPS_DIR / f"{i:03d}.mp4").exists())
+    still_processing = sum(1 for v in state.values() if v.get("status") == "processing")
+    print(f"\nSummary: {done}/110 clips ready | {still_processing} still processing on Replicate | {muxed} newly muxed")
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--test",            type=int, default=0,   help="Only process first N scenes")
     parser.add_argument("--start",           type=int, default=1,   help="Start at scene N (1-indexed)")
     parser.add_argument("--end",             type=int, default=110, help="End at scene N")
-    parser.add_argument("--skip-replicate",  action="store_true",   help="Skip Replicate calls, re-render clips only")
+    parser.add_argument("--skip-replicate",  action="store_true",   help="Skip Replicate calls, reuse raw clips")
     parser.add_argument("--assemble-only",   action="store_true",   help="Skip to final assembly only")
+    parser.add_argument("--submit-only",     action="store_true",   help="Submit all predictions to Replicate (fast, no polling)")
+    parser.add_argument("--collect-only",    action="store_true",   help="Poll Replicate, download+mux completed predictions")
     args = parser.parse_args()
 
     env = load_env()
@@ -692,13 +837,33 @@ def main():
     if not replicate_token and not args.skip_replicate and not args.assemble_only:
         sys.exit("REPLICATE_API_TOKEN not in .env")
 
-    scenes = SCENES
-    if args.test:
-        scenes = SCENES[:args.test]
-    elif args.start != 1 or args.end != 110:
-        scenes = SCENES[args.start - 1 : args.end]
+    state_file = OUTPUT_DIR / "replicate_state.json"
 
+    # ── Submit-only mode: fire all predictions to Replicate (fast) ───────────────
+    if args.submit_only:
+        scenes_to_submit = []
+        for i, (dir_key, filename, narration, motion_prompt) in enumerate(SCENES):
+            scene_num = i + 1
+            img_path = IMAGE_DIRS[dir_key] / filename
+            if img_path.exists():
+                scenes_to_submit.append((scene_num, img_path, motion_prompt))
+        print(f"\nSubmitting {len(scenes_to_submit)} scenes to Replicate...")
+        submit_predictions(scenes_to_submit, replicate_token, state_file)
+        return
+
+    # ── Collect-only mode: poll + download + mux completed predictions ───────────
+    if args.collect_only:
+        collect_results(replicate_token, state_file)
+        return
+
+    # ── Assemble-only mode ───────────────────────────────────────────────────────
     if not args.assemble_only:
+        scenes = SCENES
+        if args.test:
+            scenes = SCENES[:args.test]
+        elif args.start != 1 or args.end != 110:
+            scenes = SCENES[args.start - 1 : args.end]
+
         print(f"\n{'='*60}")
         print(f"  AI Animation Pipeline — {len(scenes)} scenes")
         print(f"{'='*60}")
@@ -719,28 +884,23 @@ def main():
 
             print(f"\n  [{scene_num:03d}] {filename}")
 
-            # Phase 1: AI animation via Replicate
             if not args.skip_replicate and not raw_path.exists():
                 try:
                     call_replicate(img_path, motion_prompt, raw_path, replicate_token)
                 except Exception as e:
                     print(f"    ✗ Replicate error: {e}")
-                    # Fall back to Ken Burns if Replicate fails
-                    print(f"    → Skipping scene {scene_num} (no fallback — keep existing clip)")
                     continue
             elif raw_path.exists():
                 print(f"    → Raw AI clip exists, skipping Replicate call")
             else:
-                if not raw_path.exists():
-                    print(f"    ✗ --skip-replicate set but no raw clip at {raw_path}")
-                    continue
+                print(f"    ✗ --skip-replicate set but no raw clip at {raw_path}")
+                continue
 
-            # Phase 2: Mux animated clip with audio
             if clip_path.exists():
                 print(f"    → Final clip exists, skipping mux")
                 continue
 
-            audio_dur = get_audio_duration(audio_path) + 0.45  # match gen_documentary.py silence pad
+            audio_dur = get_audio_duration(audio_path) + 0.45
             print(f"    → Muxing (audio dur: {audio_dur:.2f}s)...")
             try:
                 make_animated_clip(raw_path, audio_path, clip_path, audio_dur)
