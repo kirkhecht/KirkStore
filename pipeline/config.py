@@ -68,7 +68,7 @@ IMAGE_WIDTH          = 1344   # legacy/unused — nano-banana-2 uses aspect_rati
 IMAGE_HEIGHT         = 768
 IMAGE_STEPS          = 28
 IMAGE_GUIDANCE       = 3.5
-IMAGE_BATCH_WORKERS  = 2
+IMAGE_BATCH_WORKERS  = 3
 
 # ── Narration pacing (ElevenLabs typical) ─────────────────────────────────────
 DEFAULT_WPM = 150
