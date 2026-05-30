@@ -92,7 +92,7 @@ CONTENT = [
 
     ("title", 2, "THE COVENANT WITH GOD", ""),
     ("scene", 19, "019_years_passed.jpg",             "Years passed. Abram grew old. The promise seemed impossible.",                                                         "zoom_out"),
-    ("scene", 20, "020_sarai_barren.jpg",             "He had no children. Sarai was barren.",                                                                               "zoom_in"),
+    ("scene", 20, "020_sarai_barren.jpg",             "[sighs] He had no children. Sarai was barren.",                                                                               "zoom_in"),
     ("scene", 21, "021_do_not_be_afraid.jpg",         "But God came to Abram in a vision. 'Do not be afraid. I am your shield.'",                                           "zoom_out"),
     ("scene", 22, "022_what_can_you_give.jpg",        "Abram asked — what can you give me, since I have no child?",                                                          "pan_right"),
     ("scene", 23, "023_count_the_stars.jpg",          "God took him outside and said — look at the sky. Count the stars.",                                                   "zoom_in"),
@@ -118,7 +118,7 @@ CONTENT = [
     ("scene", 41, "041_return_next_year.jpg",           "'I will return to you at this time next year. And your wife Sarah will have a son.'",                               "zoom_in"),
     ("scene", 42, "042_sarah_listening.jpg",           "Sarah was listening at the tent entrance behind them.",                                                               "pan_right"),
     ("scene", 43, "043_sarah_ninety.jpg",              "She was ninety years old.",                                                                                           "zoom_out"),
-    ("scene", 44, "044_sarah_laughed.jpg",             "She laughed to herself.",                                                                                             "zoom_in"),
+    ("scene", 44, "044_sarah_laughed.jpg",             "She laughed to herself. [laughs]",                                                                                             "zoom_in"),
     ("scene", 45, "045_anything_too_hard.jpg",         "The Lord asked — why did Sarah laugh? Is anything too hard for the Lord?",                                           "zoom_out"),
     ("scene", 46, "046_yes_you_did.jpg",               "Sarah said, 'I did not laugh.' But the Lord said — 'Yes, you did.'",                                                "pan_right"),
 
@@ -147,13 +147,13 @@ CONTENT = [
     ("scene", 66, "066_sarah_conceived.jpg",           "Sarah conceived. At ninety years old.",                                                                              "zoom_out"),
     ("scene", 67, "067_bore_a_son.jpg",                "She bore a son.",                                                                                                    "zoom_in"),
     ("scene", 68, "068_named_isaac.jpg",               "Abraham named him Isaac — which means: he laughs.",                                                                  "pan_right"),
-    ("scene", 69, "069_sarah_said.jpg",                "Sarah said — God has brought me laughter. Everyone who hears about this will laugh with me.",                        "zoom_out"),
+    ("scene", 69, "069_sarah_said.jpg",                "Sarah said — God has brought me laughter. [laughs] Everyone who hears about this will laugh with me.",                        "zoom_out"),
     ("scene", 70, "070_who_would_have_said.jpg",       "Who would have said that Sarah would nurse children? Yet I have borne him a son in his old age.",                    "zoom_in"),
     ("scene", 71, "071_abraham_hundred.jpg",           "Abraham was one hundred years old when Isaac was born.",                                                             "zoom_out"),
     ("scene", 72, "072_trouble_entered.jpg",           "But not long after, trouble entered the tent.",                                                                      "pan_right"),
     ("scene", 73, "073_hagar_son_mocking.jpg",         "Sarah saw Hagar's son Ishmael mocking Isaac.",                                                                      "zoom_in"),
     ("scene", 74, "074_send_them_away.jpg",            "She told Abraham — send that woman and her son away.",                                                               "zoom_out"),
-    ("scene", 75, "075_hard_thing.jpg",                "It was a hard thing. But God told Abraham — listen to what Sarah says.",                                             "zoom_in"),
+    ("scene", 75, "075_hard_thing.jpg",                "It was a hard thing. [sighs] But God told Abraham — listen to what Sarah says.",                                             "zoom_in"),
     ("scene", 76, "076_hagar_desert.jpg",              "Hagar and Ishmael went into the desert. And God was with the boy.",                                                  "pan_right"),
 
     ("title", 6, "THE BINDING OF ISAAC", ""),
@@ -177,7 +177,7 @@ CONTENT = [
     ("scene", 94, "094_lord_will_provide.jpg",         "He called that place — The Lord Will Provide. And so the saying arose.",                                             "zoom_in"),
 
     ("title", 7, "REBEKAH — WIFE OF ISAAC", ""),
-    ("scene", 95, "095_sarah_died.jpg",                "Sarah died at one hundred and twenty-seven years old. Abraham mourned deeply for her.",                              "zoom_out"),
+    ("scene", 95, "095_sarah_died.jpg",                "[sighs] Sarah died at one hundred and twenty-seven years old. Abraham mourned deeply for her.",                              "zoom_out"),
     ("scene", 96, "096_cave_of_machpelah.jpg",         "He bought a field and a cave from the Hittites at Machpelah to bury her.",                                          "pan_right"),
     ("scene", 97, "097_swear_to_me.jpg",               "Then Abraham called his oldest servant. 'Swear you will not get a wife for my son from the Canaanites.'",           "zoom_in"),
     ("scene", 98, "098_go_to_my_homeland.jpg",         "You will go to my homeland. And find a wife for Isaac from among my own people.",                                    "zoom_out"),
@@ -210,7 +210,7 @@ CONTENT = [
     ("scene",123, "123_voice_is_jacobs.jpg",           "Isaac said — the voice is Jacob's. But the hands are Esau's.",                                                       "zoom_in"),
     ("scene",124, "124_isaac_blessed_jacob.jpg",       "He was deceived. He blessed Jacob with Esau's blessing.",                                                            "pan_right"),
     ("scene",125, "125_esau_discovered.jpg",           "Esau came in — and discovered it too late.",                                                                         "zoom_out"),
-    ("scene",126, "126_esau_wept.jpg",                 "He wept. He raged. He said — my brother has stolen from me twice.",                                                  "zoom_in"),
+    ("scene",126, "126_esau_wept.jpg",                 "He wept. He raged. [sighs] He said — my brother has stolen from me twice.",                                                  "zoom_in"),
 
     ("title", 9, "JACOBS DREAM AT BETHEL", ""),
     ("scene",127, "127_esau_hated_jacob.jpg",          "Esau hated Jacob for what he had done. He planned to kill him.",                                                     "zoom_out"),
@@ -221,7 +221,7 @@ CONTENT = [
     ("scene",132, "132_i_am_the_god.jpg",              "The Lord stood above it and said — I am the God of Abraham and Isaac.",                                              "pan_right"),
     ("scene",133, "133_land_i_give_you.jpg",           "The land you lie on — I give to you and your descendants.",                                                          "zoom_out"),
     ("scene",134, "134_i_will_be_with_you.jpg",        "And I will be with you wherever you go.",                                                                            "zoom_in"),
-    ("scene",135, "135_jacob_woke_in_awe.jpg",         "Jacob woke in awe. 'Surely the Lord is in this place. How awesome is this place.'",                                 "zoom_out"),
+    ("scene",135, "135_jacob_woke_in_awe.jpg",         "[gasps] Jacob woke in awe. 'Surely the Lord is in this place. How awesome is this place.'",                                 "zoom_out"),
     ("scene",136, "136_bethel.jpg",                    "He set the stone upright as a pillar and poured oil over it. He called the place Bethel — House of God.",           "pan_right"),
 
     ("title",10, "JACOB — LEAH AND RACHEL", ""),
@@ -272,7 +272,7 @@ CONTENT = [
     ("scene",177, "177_reuben_said_no.jpg",            "Reuben — the oldest — said no. Throw him in the pit but do not kill him. He planned to rescue Joseph later.",       "zoom_in"),
     ("scene",178, "178_stripped_and_pit.jpg",          "They stripped Joseph of his beautiful coat. They threw him in the pit.",                                             "zoom_out"),
     ("scene",179, "179_sold_to_traders.jpg",           "A caravan of Ishmaelite traders passed by. The brothers sold Joseph for twenty pieces of silver.",                   "zoom_in"),
-    ("scene",180, "180_jacob_wept.jpg",                "They dipped his coat in goat's blood and took it back to their father. Jacob wept for years.",                       "pan_right"),
+    ("scene",180, "180_jacob_wept.jpg",                "They dipped his coat in goat's blood and took it back to their father. Jacob wept for years. [sighs]",                       "pan_right"),
 
     ("title",13, "JOSEPH IN EGYPT", ""),
     ("scene",181, "181_traders_to_egypt.jpg",          "The traders brought Joseph down to Egypt.",                                                                          "zoom_out"),
@@ -290,7 +290,7 @@ CONTENT = [
     ("scene",193, "193_cupbearer_baker.jpg",           "Two of Pharaoh's servants were thrown into prison — the cupbearer and the baker.",                                   "zoom_in"),
     ("scene",194, "194_each_had_a_dream.jpg",          "Each of them had a dream the same night. Each dream had a meaning.",                                                 "zoom_out"),
     ("scene",195, "195_joseph_interpreted.jpg",        "Joseph interpreted their dreams. To the cupbearer — in three days you will be restored. Remember me.",               "zoom_in"),
-    ("scene",196, "196_cupbearer_forgot.jpg",          "The cupbearer was restored. But he forgot Joseph. Joseph remained in prison for two more years.",                     "pan_right"),
+    ("scene",196, "196_cupbearer_forgot.jpg",          "The cupbearer was restored. But he forgot Joseph. [sighs] Joseph remained in prison for two more years.",                     "pan_right"),
 
     ("title",14, "PHARAOHS DREAMS", ""),
     ("scene",197, "197_pharaoh_had_a_dream.jpg",       "Then Pharaoh had a dream.",                                                                                          "zoom_out"),
@@ -310,10 +310,10 @@ CONTENT = [
     ("scene",211, "211_famine_began.jpg",              "Then the famine began. It spread over the whole world.",                                                              "zoom_in"),
     ("scene",212, "212_jacob_sent_sons.jpg",           "Jacob heard there was grain in Egypt and sent his sons.",                                                             "pan_right"),
     ("scene",213, "213_brothers_bowed.jpg",            "Joseph's brothers came and bowed down before him with their faces to the ground.",                                   "zoom_out"),
-    ("scene",214, "214_joseph_recognized.jpg",         "Joseph recognized them. They did not recognize him. He wept in secret.",                                             "zoom_in"),
+    ("scene",214, "214_joseph_recognized.jpg",         "Joseph recognized them. They did not recognize him. [sighs] He wept in secret.",                                             "zoom_in"),
     ("scene",215, "215_he_tested_them.jpg",            "He tested them. He accused them. He watched their hearts.",                                                          "zoom_out"),
     ("scene",216, "216_could_not_control.jpg",         "Finally — he could not control himself. He wept so loudly the Egyptians heard.",                                    "pan_right"),
-    ("scene",217, "217_i_am_joseph.jpg",               "I am Joseph. Is my father still alive?",                                                                             "zoom_in"),
+    ("scene",217, "217_i_am_joseph.jpg",               "I am Joseph. [sighs] Is my father still alive?",                                                                             "zoom_in"),
     ("scene",218, "218_jacob_comes_to_egypt.jpg",      "Jacob came to Egypt. Joseph rode out to meet him. He held his father and wept.",                                    "zoom_out"),
 
 ]
