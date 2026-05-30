@@ -62,13 +62,16 @@ USE_AI_PROMPTS    = bool(ANTHROPIC_API_KEY)
 
 # ── Replicate / image generation ──────────────────────────────────────────────
 REPLICATE_API_KEY    = os.getenv("REPLICATE_API_KEY", "")
-IMAGE_MODEL          = "google/nano-banana-2"   # primary model for all image generation
-IMAGE_KONTEXT_MODEL  = "google/nano-banana-2"   # same model handles reference images via 'image' param
-IMAGE_WIDTH          = 1344   # legacy/unused — nano-banana-2 uses aspect_ratio instead
+IMAGE_MODEL          = "google/nano-banana-2"   # legacy — now using Google direct API
+IMAGE_KONTEXT_MODEL  = "google/nano-banana-2"
+IMAGE_WIDTH          = 1344
 IMAGE_HEIGHT         = 768
 IMAGE_STEPS          = 28
 IMAGE_GUIDANCE       = 3.5
 IMAGE_BATCH_WORKERS  = 3
+
+# ── Google AI Studio (direct image generation) ────────────────────────────────
+GOOGLE_AI_STUDIO_KEY = os.getenv("GOOGLE_AI_STUDIO_KEY", "")
 
 # ── Narration pacing (ElevenLabs typical) ─────────────────────────────────────
 DEFAULT_WPM = 150

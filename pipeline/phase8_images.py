@@ -1,23 +1,33 @@
 """
 Phase 8 — Image Generation
-Generates one cinematic image per scene using Nano Banana 2 (Google) via Replicate.
-For scenes with named characters, passes the canonical portrait as a reference image
-so the model maintains face and identity consistency across all scenes.
+Generates one cinematic image per scene using Google Gemini (gemini-2.5-flash-image)
+directly via the Google AI Studio API, falling back to Nano Banana on rate limits.
 Fully resumable — skips already-generated images.
 Writes images to project/images/chapter_XX/scene_XXXX.jpg
 """
+import base64
 import os
 import time
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
-from .config import (DIRS, REPLICATE_API_KEY, IMAGE_BATCH_WORKERS)
+import requests
+
+from .config import DIRS, GOOGLE_AI_STUDIO_KEY, IMAGE_BATCH_WORKERS
 from .utils import setup_logging
 
 log = setup_logging("phase8", "phase8.log")
 
-_MODEL = "google/nano-banana-2"
+_IMAGEN_MODEL    = "imagen-4.0-ultra-generate-001"
+_FLASH_IMAGE_URL = (
+    "https://generativelanguage.googleapis.com/v1beta/models/"
+    "gemini-2.5-flash-image:generateContent"
+)
+_IMAGEN_URL = (
+    "https://generativelanguage.googleapis.com/v1beta/models/"
+    f"{_IMAGEN_MODEL}:predict"
+)
 
 # Non-human / collective — no portrait reference
 _NO_REF = {"God", "Ark", "Israel", "Angel", "Angels", "Serpent", "the LORD", "The LORD"}
@@ -40,7 +50,7 @@ def _portrait_path(name: str) -> Path:
     return DIRS["char_refs"] / f"{safe}.jpg"
 
 
-def _find_reference_portrait(scene: dict) -> Path | None:
+def _find_reference_portrait(scene: dict) -> tuple[Path | None, str | None]:
     """Return a portrait path to use as character reference, or None."""
     section = (scene.get("section_title") or scene.get("chapter_title") or "").lower()
     for fig in (scene.get("key_figures") or []):
@@ -55,19 +65,53 @@ def _find_reference_portrait(scene: dict) -> Path | None:
 
 
 def _build_scene_prompt(scene: dict, primary_char: str | None) -> str:
-    """Build the scene prompt, prepending a character label if using a reference image."""
     base = scene.get("image_prompt", "ancient Near Eastern cinematic scene")
-
     if primary_char:
-        # Tell the model who the reference image shows so it can apply consistency
         return f"The reference image shows {primary_char}. {base}"
     return base
 
 
-def _generate_one(scene: dict) -> tuple[dict, bool, str]:
-    """Generate a single image. Uses portrait reference when available."""
-    import replicate
+def _call_nano_banana(prompt: str, key: str, timeout: int = 90) -> bytes:
+    resp = requests.post(
+        f"{_FLASH_IMAGE_URL}?key={key}",
+        json={
+            "contents": [{"parts": [{"text": prompt}]}],
+            "generationConfig": {"responseModalities": ["image"]},
+        },
+        timeout=timeout,
+    )
+    if resp.status_code == 429:
+        raise RuntimeError("RATE_LIMIT")
+    if resp.status_code != 200:
+        raise RuntimeError(resp.json().get("error", {}).get("message", resp.text[:200]))
+    parts = resp.json().get("candidates", [{}])[0].get("content", {}).get("parts", [])
+    for p in parts:
+        if "inlineData" in p:
+            return base64.b64decode(p["inlineData"]["data"])
+    raise RuntimeError("EMPTY")
 
+
+def _call_imagen(prompt: str, key: str, timeout: int = 120) -> bytes:
+    resp = requests.post(
+        f"{_IMAGEN_URL}?key={key}",
+        json={
+            "instances": [{"prompt": prompt}],
+            "parameters": {"sampleCount": 1, "aspectRatio": "16:9"},
+        },
+        timeout=timeout,
+    )
+    if resp.status_code == 429:
+        raise RuntimeError("RATE_LIMIT")
+    if resp.status_code != 200:
+        raise RuntimeError(resp.json().get("error", {}).get("message", resp.text[:200]))
+    preds = resp.json().get("predictions", [])
+    if not preds:
+        raise RuntimeError("EMPTY")
+    return base64.b64decode(preds[0]["bytesBase64Encoded"])
+
+
+def _generate_one(scene: dict, key: str) -> tuple[dict, bool, str]:
+    """Generate a single image using Google AI Studio directly."""
     ch  = scene["chapter"]
     num = scene["scene_number"]
     out = _image_path(ch, num)
@@ -78,63 +122,49 @@ def _generate_one(scene: dict) -> tuple[dict, bool, str]:
     out.parent.mkdir(parents=True, exist_ok=True)
 
     portrait, char_name = _find_reference_portrait(scene)
+    prompt = _build_scene_prompt(scene, char_name)
+
+    # Try Imagen 4 Ultra first (30 RPD limit), fall back to Nano Banana
+    try:
+        data = _call_imagen(prompt, key)
+        out.write_bytes(data)
+        return scene, True, "imagen"
+    except RuntimeError as e:
+        if "RATE_LIMIT" not in str(e):
+            log.debug("sc%04d: Imagen failed (%s), falling back to Nano Banana",
+                      num, str(e)[:80])
 
     for attempt in range(5):
-        fh = None
         try:
-            prompt = _build_scene_prompt(scene, char_name)
-            inp = {
-                "prompt":        prompt,
-                "aspect_ratio":  "16:9",
-                "output_format": "jpg",
-            }
-            if portrait:
-                fh = open(portrait, "rb")
-                inp["image"] = fh
-
-            output = replicate.run(_MODEL, input=inp)
-            url = str(output[0]) if isinstance(output, list) else str(output)
-            urllib.request.urlretrieve(url, out)
-            return scene, True, ""
-
-        except Exception as exc:
-            msg = str(exc)
-            if "429" in msg or "throttled" in msg.lower() or "rate limit" in msg.lower():
-                wait = 15 * (2 ** attempt)
+            data = _call_nano_banana(prompt, key)
+            out.write_bytes(data)
+            return scene, True, "nano_banana"
+        except RuntimeError as e:
+            msg = str(e)
+            if "RATE_LIMIT" in msg:
+                wait = min(60, 15 * (attempt + 1))
                 time.sleep(wait)
                 continue
-            if portrait and attempt == 0:
-                log.warning("sc%04d: image-ref call failed (%s) — retrying without reference",
-                            scene["scene_number"], msg[:80])
-                portrait = None
-                char_name = None
-                continue
             return scene, False, msg
-        finally:
-            if fh:
-                fh.close()
 
     return scene, False, "rate limit retries exhausted"
 
 
 def run(all_scenes: dict[int, list[dict]]) -> dict[int, list[dict]]:
     """Generate images for all scenes. Fully resumable."""
-    log.info("=== Phase 8: Image Generation (Nano Banana 2) ===")
+    log.info("=== Phase 8: Image Generation (Google AI Studio) ===")
 
-    os.environ["REPLICATE_API_TOKEN"] = REPLICATE_API_KEY
+    key = GOOGLE_AI_STUDIO_KEY
+    if not key:
+        log.error("GOOGLE_AI_STUDIO_KEY not set — cannot generate images")
+        return all_scenes
 
     flat = [s for scenes in all_scenes.values() for s in scenes]
     total   = len(flat)
     already = sum(1 for s in flat if _image_path(s["chapter"], s["scene_number"]).exists())
     needed  = total - already
 
-    with_ref = sum(
-        1 for s in flat
-        if not _image_path(s["chapter"], s["scene_number"]).exists()
-        and _find_reference_portrait(s)[0] is not None
-    )
-    log.info("Total: %d | Done: %d | Remaining: %d  (%d with character reference, %d text-only)",
-             total, already, needed, with_ref, needed - with_ref)
+    log.info("Total: %d | Done: %d | Remaining: %d", total, already, needed)
 
     if needed == 0:
         log.info("All images present — nothing to do.")
@@ -146,7 +176,7 @@ def run(all_scenes: dict[int, list[dict]]) -> dict[int, list[dict]]:
     start = time.time()
 
     with ThreadPoolExecutor(max_workers=IMAGE_BATCH_WORKERS) as pool:
-        futures = {pool.submit(_generate_one, s): s for s in todo}
+        futures = {pool.submit(_generate_one, s, key): s for s in todo}
         for future in as_completed(futures):
             scene, ok, msg = future.result()
             done += 1
