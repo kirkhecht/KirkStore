@@ -497,36 +497,86 @@ def load_env():
     return env
 
 
-def generate_google(prompt, out_path, key):
-    for attempt in range(6):
-        resp = requests.post(
-            f"https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key={key}",
-            json={
-                "instances": [{"prompt": prompt}],
-                "parameters": {
-                    "sampleCount": 1,
-                    "aspectRatio": "16:9",
-                    "safetyFilterLevel": "block_only_high",
-                    "personGeneration": "allow_adult"
-                }
+def _imagen_predict(model_id, prompt, key, timeout=90):
+    """Call an Imagen predict-endpoint model. Returns raw bytes or raises."""
+    resp = requests.post(
+        f"https://generativelanguage.googleapis.com/v1beta/models/{model_id}:predict?key={key}",
+        json={
+            "instances": [{"prompt": prompt}],
+            "parameters": {
+                "sampleCount": 1,
+                "aspectRatio": "16:9",
+                "safetyFilterLevel": "block_only_high",
+                "personGeneration": "allow_adult",
             },
-            timeout=60
-        )
-        if resp.status_code == 429:
-            wait = min(60, 15 * (attempt + 1))  # cap at 60s
-            print(f"      Rate limited, waiting {wait}s...")
+        },
+        timeout=timeout,
+    )
+    if resp.status_code == 429:
+        raise RuntimeError("RATE_LIMIT")
+    if resp.status_code != 200:
+        raise RuntimeError(resp.json().get("error", {}).get("message", resp.text[:200]))
+    preds = resp.json().get("predictions", [])
+    if not preds:
+        raise RuntimeError("EMPTY")
+    return base64.b64decode(preds[0]["bytesBase64Encoded"])
+
+
+def _nano_banana_generate(prompt, key, timeout=90):
+    """Call Nano Banana (gemini-2.5-flash-image) via generateContent. Returns raw bytes or raises."""
+    resp = requests.post(
+        f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent?key={key}",
+        json={
+            "contents": [{"parts": [{"text": prompt}]}],
+            "generationConfig": {"responseModalities": ["image"]},
+        },
+        timeout=timeout,
+    )
+    if resp.status_code == 429:
+        raise RuntimeError("RATE_LIMIT")
+    if resp.status_code != 200:
+        raise RuntimeError(resp.json().get("error", {}).get("message", resp.text[:200]))
+    parts = resp.json().get("candidates", [{}])[0].get("content", {}).get("parts", [])
+    for p in parts:
+        if "inlineData" in p:
+            return base64.b64decode(p["inlineData"]["data"])
+    raise RuntimeError("EMPTY")
+
+
+def generate_google(prompt, out_path, key):
+    """Try Imagen 4 Ultra first (best quality, 30 RPD), fall back to Nano Banana (500 RPD)."""
+    for attempt in range(5):
+        try:
+            data = _imagen_predict("imagen-4.0-ultra-generate-001", prompt, key)
+            out_path.write_bytes(data)
+            return
+        except RuntimeError as e:
+            err = str(e)
+            if "RATE_LIMIT" in err:
+                print(f"      Ultra rate limited — falling back to Nano Banana")
+                break
+            elif "EMPTY" in err:
+                time.sleep(8)
+                continue
+            else:
+                print(f"      Ultra error: {err[:100]}, retrying...")
+                time.sleep(8)
+                continue
+
+    # Fallback: Nano Banana (gemini-2.5-flash-image)
+    for attempt in range(5):
+        try:
+            data = _nano_banana_generate(prompt, key)
+            out_path.write_bytes(data)
+            print(f"      (used Nano Banana fallback)")
+            return
+        except RuntimeError as e:
+            err = str(e)
+            wait = min(60, 15 * (attempt + 1))
+            print(f"      Nano Banana attempt {attempt+1} failed ({err[:60]}), waiting {wait}s...")
             time.sleep(wait)
-            continue
-        if resp.status_code != 200:
-            raise RuntimeError(resp.json().get("error", {}).get("message", resp.text[:200]))
-        predictions = resp.json().get("predictions", [])
-        if not predictions:
-            # Safety filter — wait briefly and retry
-            time.sleep(10)
-            continue
-        out_path.write_bytes(base64.b64decode(predictions[0]["bytesBase64Encoded"]))
-        return
-    raise RuntimeError(f"Failed after 6 attempts")
+
+    raise RuntimeError("All models failed after retries")
 
 
 def main():
