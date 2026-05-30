@@ -29,12 +29,23 @@ CINEMATIC = (
 ADAM = (
     "Adam: athletic Middle Eastern man, warm olive tan skin, dark wavy black hair, "
     "strong Levantine features, prominent nose, dark brown eyes, early 30s, "
-    "no clothing, dignified and noble bearing"
+    "wearing simple ancient linen garment, dignified and noble bearing"
 )
 EVE = (
     "Eve: beautiful Middle Eastern woman, warm olive tan skin, long dark wavy black hair, "
     "almond-shaped dark brown eyes, strong Levantine features, early 20s, "
-    "no clothing, ethereally beautiful and graceful"
+    "wearing simple ancient linen garment, ethereally beautiful and graceful"
+)
+# Versions used in early Eden scenes (before the Fall) — same but described modestly
+ADAM_EDEN = (
+    "Adam: athletic Middle Eastern man, warm olive tan skin, dark wavy black hair, "
+    "strong Levantine features, prominent nose, dark brown eyes, early 30s, "
+    "in the Garden of Eden, dignified and noble bearing"
+)
+EVE_EDEN = (
+    "Eve: beautiful Middle Eastern woman, warm olive tan skin, long dark wavy black hair, "
+    "almond-shaped dark brown eyes, strong Levantine features, early 20s, "
+    "in the Garden of Eden, ethereally beautiful and graceful"
 )
 EDEN = (
     "lush ancient Eden garden, towering trees with golden light filtering through canopy, "
@@ -400,26 +411,26 @@ SCENES = [
 
     (46, "046_greatly_increase_pain.jpg",
      "To Eve, God said: I will greatly increase your pain in childbearing.",
-     "Eve receiving her judgment — "
-     + EVE + " — her expression one of sorrow and acceptance, "
-     "hands at her side, the weight of the curse beginning to fall, "
-     "the garden around her less vibrant than before, "
-     "divine light now carrying judgment alongside grace. " + CINEMATIC),
+     "Eve standing alone in the garden, solemn expression of deep sorrow and acceptance — "
+     + EVE + " — hands folded, tears on her cheeks, "
+     "the garden around her dim and still, golden light fading to amber, "
+     "a moment of profound sadness and resignation, sacred and sorrowful atmosphere. " + CINEMATIC),
 
     (47, "047_cursed_is_the_ground.jpg",
      "To Adam: Cursed is the ground because of you. Through painful toil you will eat of it.",
-     "Adam standing in what was once paradise, now seeing thorns and thistles beginning to appear — "
-     + ADAM + " — looking down at the ground as the earth itself changes, "
-     "the first thorn visible pushing through perfect soil, "
-     "the curse of labor beginning, "
-     "the garden's perfection cracking. " + CINEMATIC),
+     "Adam kneeling and looking down at the earth, expression of solemn grief — "
+     + ADAM + " — a single thorn visible in the soil before him, "
+     "the garden around him less vibrant, the sky heavier, "
+     "the weight of consequence visible on his face, "
+     "dramatic cinematic light. " + CINEMATIC),
 
     (48, "048_sweat_of_your_brow.jpg",
      "By the sweat of your brow you will eat your food,",
-     "Adam with hands rough and open, looking at them as if seeing them differently — "
-     + ADAM + " — these hands that once simply reached for fruit now destined for labor, "
-     "Eden garden visible but somehow further away, "
-     "the weight of toil beginning to fall on his broad shoulders. " + CINEMATIC),
+     "Adam standing with open hands, gazing at them contemplatively — "
+     + ADAM + " — his expression carrying the weight of a new reality, "
+     "Eden garden softly visible behind him, "
+     "strong capable hands now destined for hard labor, "
+     "warm dramatic light. " + CINEMATIC),
 
     (49, "049_dust_you_shall_return.jpg",
      "For dust you are, and to dust you shall return.",
