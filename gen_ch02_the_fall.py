@@ -497,31 +497,36 @@ def load_env():
     return env
 
 
-def generate_google(prompt, out_path, key, attempt=0):
-    resp = requests.post(
-        f"https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key={key}",
-        json={
-            "instances": [{"prompt": prompt}],
-            "parameters": {
-                "sampleCount": 1,
-                "aspectRatio": "16:9",
-                "safetyFilterLevel": "block_only_high",
-                "personGeneration": "allow_adult"
-            }
-        },
-        timeout=60
-    )
-    if resp.status_code == 429:
-        wait = 60 * (attempt + 1)
-        print(f"      Rate limited, waiting {wait}s...")
-        time.sleep(wait)
-        return generate_google(prompt, out_path, key, attempt + 1)
-    if resp.status_code != 200:
-        raise RuntimeError(resp.json().get("error", {}).get("message", resp.text[:200]))
-    predictions = resp.json().get("predictions", [])
-    if not predictions:
-        raise RuntimeError(f"No predictions: {str(resp.json())[:200]}")
-    out_path.write_bytes(base64.b64decode(predictions[0]["bytesBase64Encoded"]))
+def generate_google(prompt, out_path, key):
+    for attempt in range(6):
+        resp = requests.post(
+            f"https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key={key}",
+            json={
+                "instances": [{"prompt": prompt}],
+                "parameters": {
+                    "sampleCount": 1,
+                    "aspectRatio": "16:9",
+                    "safetyFilterLevel": "block_only_high",
+                    "personGeneration": "allow_adult"
+                }
+            },
+            timeout=60
+        )
+        if resp.status_code == 429:
+            wait = min(60, 15 * (attempt + 1))  # cap at 60s
+            print(f"      Rate limited, waiting {wait}s...")
+            time.sleep(wait)
+            continue
+        if resp.status_code != 200:
+            raise RuntimeError(resp.json().get("error", {}).get("message", resp.text[:200]))
+        predictions = resp.json().get("predictions", [])
+        if not predictions:
+            # Safety filter — wait briefly and retry
+            time.sleep(10)
+            continue
+        out_path.write_bytes(base64.b64decode(predictions[0]["bytesBase64Encoded"]))
+        return
+    raise RuntimeError(f"Failed after 6 attempts")
 
 
 def main():
@@ -565,8 +570,8 @@ def main():
         else:
             print(f"       ✗ All attempts failed for scene {scene_num}\n")
 
-        # Gentle rate limiting — Imagen 4 Standard: 70 RPD, ~8.6s per image
-        time.sleep(9)
+        # Rate limiting — Imagen 4 Standard: 70 RPD, 10 RPM
+        time.sleep(15)
 
     done = sum(1 for _, fn, _, _ in SCENES if (OUT_DIR / fn).exists())
     print(f"\nDone. {done}/{len(SCENES)} images in {OUT_DIR}/")
