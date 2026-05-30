@@ -39,46 +39,45 @@ SERPENT = (
 
 # Eve — pre-fall (scenes 002-032): plain white linen dress, Middle Eastern
 EVE = (
-    "Eve: beautiful ancient Middle Eastern woman, warm olive tan skin, long flowing dark wavy "
-    "black hair past her shoulders, almond-shaped dark brown eyes, high cheekbones, full lips, "
-    "strong ancient Levantine features, slender graceful frame, early 20s, "
+    "Eve: ancient Middle Eastern woman, warm olive tan skin, long dark wavy black hair past her shoulders, "
+    "almond-shaped dark brown eyes, Levantine features, ordinary natural appearance, early 20s, "
     "wearing a simple sleeveless ankle-length plain white linen dress loosely draped, "
     "plain woven fabric not fur not leather, barefoot"
 )
 
 # Eve — fig-leaf period (scenes 033-049)
 EVE_FIG = (
-    "Eve: beautiful ancient Middle Eastern woman, warm olive tan skin, long flowing dark wavy "
-    "black hair, almond-shaped dark brown eyes, strong Levantine features, early 20s, "
+    "Eve: ancient Middle Eastern woman, warm olive tan skin, long dark wavy black hair, "
+    "almond-shaped dark brown eyes, Levantine features, ordinary natural appearance, early 20s, "
     "wearing a hastily sewn garment of large broad green fig leaves covering her body, "
     "ancient biblical era"
 )
 
 # Eve — after God clothes them (scenes 050-055)
 EVE_SKIN = (
-    "Eve: beautiful ancient Middle Eastern woman, warm olive tan skin, long dark wavy black hair, "
-    "dark brown eyes, strong Levantine features, early 20s, "
+    "Eve: ancient Middle Eastern woman, warm olive tan skin, long dark wavy black hair, "
+    "dark brown eyes, Levantine features, ordinary natural appearance, early 20s, "
     "wearing a simple rough-hewn animal skin wrap dress, belted at the waist, ancient biblical era"
 )
 
-# Adam — pre-fall (scenes 002-032): white linen kilt, Middle Eastern
+# Adam — pre-fall (scenes 002-032): linen tunic, Middle Eastern, ordinary build
 ADAM = (
-    "Adam: strong athletic ancient Middle Eastern man, warm olive tan skin, short dark wavy black hair, "
-    "prominent strong nose, square jaw, dark brown eyes, muscular build, early 30s, "
-    "wearing a simple plain white linen kilt wrap around his waist, plain woven fabric, barefoot"
+    "Adam: ancient Middle Eastern man, warm olive tan skin, dark wavy black hair, "
+    "prominent nose, dark brown eyes, ordinary average build not muscular not idealized, early 30s, "
+    "wearing a simple plain rough linen tunic, plain woven fabric, barefoot"
 )
 
 # Adam — fig-leaf period (scenes 033-049)
 ADAM_FIG = (
-    "Adam: strong athletic ancient Middle Eastern man, warm olive tan skin, dark wavy black hair, "
-    "prominent nose, dark brown eyes, muscular build, early 30s, "
-    "wearing a crude woven fig leaf kilt around his waist, ancient biblical era"
+    "Adam: ancient Middle Eastern man, warm olive tan skin, dark wavy black hair, "
+    "prominent nose, dark brown eyes, ordinary average build not muscular, early 30s, "
+    "wearing a crude woven fig leaf garment around his waist, ancient biblical era"
 )
 
 # Adam — after God clothes them (scenes 050-055)
 ADAM_SKIN = (
-    "Adam: strong athletic ancient Middle Eastern man, warm olive tan skin, dark wavy black hair, "
-    "prominent nose, dark brown eyes, muscular build, early 30s, "
+    "Adam: ancient Middle Eastern man, warm olive tan skin, dark wavy black hair, "
+    "prominent nose, dark brown eyes, ordinary average build not muscular, early 30s, "
     "wearing a simple belted animal skin tunic, ancient biblical era"
 )
 
