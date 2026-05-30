@@ -577,9 +577,7 @@ def main():
     cmd = [
         "ffmpeg", "-y", "-f", "concat", "-safe", "0",
         "-i", str(list_file),
-        "-c:v", "libx264", "-preset", "slow", "-crf", "16",
-        "-pix_fmt", "yuv420p",
-        "-c:a", "aac", "-b:a", "192k",
+        "-c", "copy",
         "-movflags", "+faststart",
         str(FINAL_OUT),
     ]
