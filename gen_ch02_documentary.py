@@ -291,6 +291,21 @@ def main():
     if r2.returncode == 0:
         print(f"✓ Web version: {web_out} ({web_out.stat().st_size/1024/1024:.1f} MB)")
 
+    story_out = Path("project/documentary/stories/02_the_fall.mp4")
+    story_out.parent.mkdir(parents=True, exist_ok=True)
+    print(f"Encoding story file (02_the_fall.mp4)...")
+    r3 = subprocess.run([
+        "ffmpeg", "-y", "-i", str(FINAL_OUT),
+        "-c:v", "libx264", "-b:v", "600k", "-preset", "fast",
+        "-c:a", "aac", "-b:a", "128k",
+        "-movflags", "+faststart",
+        str(story_out),
+    ], capture_output=True, text=True)
+    if r3.returncode == 0:
+        print(f"✓ {story_out} ({story_out.stat().st_size/1_000_000:.1f} MB)")
+    else:
+        print(f"✗ Story encode failed: {r3.stderr[-200:]}")
+
 
 if __name__ == "__main__":
     main()

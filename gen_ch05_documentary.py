@@ -280,6 +280,21 @@ def main():
     else:
         print(f"720p encode error: {r.stderr[-200:]}")
 
+    story_out = Path("project/documentary/stories/05_the_tower_of_babel.mp4")
+    story_out.parent.mkdir(parents=True, exist_ok=True)
+    print(f"Encoding story file (05_the_tower_of_babel.mp4)...")
+    r2 = subprocess.run([
+        "ffmpeg", "-y", "-i", str(FINAL_OUT),
+        "-c:v", "libx264", "-b:v", "600k", "-preset", "fast",
+        "-c:a", "aac", "-b:a", "128k",
+        "-movflags", "+faststart",
+        str(story_out),
+    ], capture_output=True, text=True)
+    if r2.returncode == 0:
+        print(f"✓ {story_out} ({story_out.stat().st_size/1_000_000:.1f} MB)")
+    else:
+        print(f"✗ Story encode failed: {r2.stderr[-200:]}")
+
 
 if __name__ == "__main__":
     main()

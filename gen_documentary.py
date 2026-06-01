@@ -396,6 +396,22 @@ def main():
     size_mb = output_file.stat().st_size / 1_048_576
     print(f"\n  ✓ Done: {output_file}  ({size_mb:.1f} MB)")
 
+    if not args.test:
+        story_out = Path("project/documentary/stories/01_in_the_beginning.mp4")
+        story_out.parent.mkdir(parents=True, exist_ok=True)
+        print(f"  Encoding story file (01_in_the_beginning.mp4)...")
+        r2 = subprocess.run([
+            "ffmpeg", "-y", "-i", str(output_file),
+            "-c:v", "libx264", "-b:v", "600k", "-preset", "fast",
+            "-c:a", "aac", "-b:a", "128k",
+            "-movflags", "+faststart",
+            str(story_out),
+        ], capture_output=True, text=True)
+        if r2.returncode == 0:
+            print(f"  ✓ {story_out} ({story_out.stat().st_size/1_000_000:.1f} MB)")
+        else:
+            print(f"  ✗ Story encode failed: {r2.stderr[-200:]}")
+
 
 if __name__ == "__main__":
     main()

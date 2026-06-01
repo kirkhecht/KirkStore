@@ -324,25 +324,29 @@ TITLES = [(item[1], item[2], item[3]) for item in CONTENT if item[0] == "title"]
 TOTAL_SCENES = len(SCENES)
 
 
-SRT_DIR = Path("project/documentary/stories/subtitles")
+SRT_DIR    = Path("project/documentary/stories/subtitles")
+STORIES_DIR = Path("project/documentary/stories")
 
-# Which scenes belong to each story delivery file
-STORY_SCENE_RANGES = {
-    "06_calling_of_abram.mp4":        (1,   18),
-    "07_covenant_with_god.mp4":       (19,  34),
-    "08_the_three_visitors.mp4":      (35,  46),
-    "09_sodom_and_gomorrah.mp4":      (47,  64),
-    "10_birth_of_isaac.mp4":          (65,  76),
-    "11_binding_of_isaac.mp4":        (77,  94),
-    "12_rebekah_wife_of_isaac.mp4":   (95,  106),
-    "13_jacob_and_esau.mp4":          (107, 126),
-    "14_jacobs_dream_at_bethel.mp4":  (127, 136),
-    "15_jacob_leah_and_rachel.mp4":   (137, 150),
-    "16_jacob_wrestles_with_god.mp4": (151, 162),
-    "17_joseph_and_his_brothers.mp4": (163, 180),
-    "18_joseph_in_egypt.mp4":         (181, 196),
-    "19_pharaohs_dreams.mp4":         (197, 218),
+# (title_card_num, scene_start, scene_end) for per-story assembly
+STORY_ASSEMBLY = {
+    "06_calling_of_abram.mp4":        (1,   1,   18),
+    "07_covenant_with_god.mp4":       (2,   19,  34),
+    "08_the_three_visitors.mp4":      (3,   35,  46),
+    "09_sodom_and_gomorrah.mp4":      (4,   47,  64),
+    "10_birth_of_isaac.mp4":          (5,   65,  76),
+    "11_binding_of_isaac.mp4":        (6,   77,  94),
+    "12_rebekah_wife_of_isaac.mp4":   (7,   95,  106),
+    "13_jacob_and_esau.mp4":          (8,   107, 126),
+    "14_jacobs_dream_at_bethel.mp4":  (9,   127, 136),
+    "15_jacob_leah_and_rachel.mp4":   (10,  137, 150),
+    "16_jacob_wrestles_with_god.mp4": (11,  151, 162),
+    "17_joseph_and_his_brothers.mp4": (12,  163, 180),
+    "18_joseph_in_egypt.mp4":         (13,  181, 196),
+    "19_pharaohs_dreams.mp4":         (14,  197, 218),
 }
+
+# scene ranges for SRT generation (subset of STORY_ASSEMBLY)
+STORY_SCENE_RANGES = {k: (v[1], v[2]) for k, v in STORY_ASSEMBLY.items()}
 
 
 def load_env():
@@ -654,6 +658,40 @@ def main():
 
     size_mb = FINAL_OUT.stat().st_size / 1_000_000
     print(f"\n✓ {FINAL_OUT} ({size_mb:.1f} MB)")
+
+    # ── Phase 3b: Per-story assembly for mix_audio.py ─────────────────────────
+    print(f"\n{'='*60}")
+    print(f"  Phase 3b: Assembling individual story files")
+    print(f"{'='*60}")
+    STORIES_DIR.mkdir(parents=True, exist_ok=True)
+    story_list_file = OUTPUT_DIR / "story_concat_list.txt"
+    for story_name, (tc_num, sc_start, sc_end) in STORY_ASSEMBLY.items():
+        story_out = STORIES_DIR / story_name
+        tc_path   = TCARDS_DIR / f"tc_{tc_num:02d}.mp4"
+        story_clips = []
+        if tc_path.exists():
+            story_clips.append(tc_path)
+        for sn in range(sc_start, sc_end + 1):
+            cp = CLIPS_DIR / f"{sn:03d}.mp4"
+            if cp.exists():
+                story_clips.append(cp)
+        if len(story_clips) < 2:
+            print(f"  ✗ Not enough clips for {story_name}, skipping")
+            continue
+        story_list_file.write_text("\n".join(f"file '{p.resolve()}'" for p in story_clips))
+        r = subprocess.run([
+            "ffmpeg", "-y", "-f", "concat", "-safe", "0",
+            "-i", str(story_list_file),
+            "-c:v", "libx264", "-b:v", "600k", "-preset", "fast",
+            "-c:a", "aac", "-b:a", "128k",
+            "-movflags", "+faststart",
+            str(story_out),
+        ], capture_output=True, text=True)
+        if r.returncode == 0:
+            mb = story_out.stat().st_size / 1_000_000
+            print(f"  ✓ {story_name} ({mb:.1f} MB)")
+        else:
+            print(f"  ✗ {story_name}: {r.stderr[-200:]}")
 
     # ── Phase 4: SRT subtitle files ───────────────────────────────────────────
     print(f"\n{'='*60}")
