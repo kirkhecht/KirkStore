@@ -1,11 +1,11 @@
-# Generated pipeline outputs
-project/documentary/clips/
-project/documentary/tcards/
-project/documentary/audio/
-project/documentary/*.mp4
-project/documentary/stories/*.mp4
-project/documentary/stories/subtitles/
-project/images/
+# Generated pipeline outputs — ignore everything under project/ except the final mixed files
+project/*
+!project/documentary/
+project/documentary/*
+!project/documentary/stories/
+project/documentary/stories/*
+!project/documentary/stories/mixed/
+!project/documentary/stories/mixed/*.mp4
 
 # Audio source files (large binaries — keep local only)
 audio/
