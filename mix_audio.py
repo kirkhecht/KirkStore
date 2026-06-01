@@ -20,7 +20,7 @@ SFX_DIR     = Path("project/audio/sfx")
 OUT_DIR     = Path("project/documentary/stories/mixed")
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
-MUSIC_VOL = 0.16
+MUSIC_VOL = 0.205
 SFX_VOL   = 0.15   # raised from 0.07
 
 # Assignments:
