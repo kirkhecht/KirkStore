@@ -20,8 +20,8 @@ SFX_DIR     = Path("project/audio/sfx")
 OUT_DIR     = Path("project/documentary/stories/mixed")
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
-MUSIC_VOL = 0.13
-SFX_VOL   = 0.12   # raised from 0.07
+MUSIC_VOL = 0.16
+SFX_VOL   = 0.15   # raised from 0.07
 
 # Assignments:
 #   tuple  → ("music.mp3", "sfx.mp3")  single track, stream-copy video
