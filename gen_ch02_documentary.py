@@ -31,7 +31,7 @@ for d in [AUDIO_DIR, CLIPS_DIR, OUTPUT_DIR]:
     d.mkdir(parents=True, exist_ok=True)
 
 # ── ElevenLabs config ──────────────────────────────────────────────────────────
-VOICE_ID = "BNgbHR0DNeZixGQVzloa"  # David: Deep and Engaging Storyteller
+VOICE_ID = "kmjgtnoB3DMXA9wZpudu"  # David: Deep and Engaging Storyteller
 EL_MODEL = "eleven_multilingual_v2"
 SILENCE_PAD = 0.45
 
@@ -140,9 +140,9 @@ def generate_tts(text, out_path, key):
             "text": text,
             "model_id": EL_MODEL,
             "voice_settings": {
-                "stability": 0.60,
+                "stability": 0.55,
                 "similarity_boost": 0.80,
-                "style": 0.15,
+                "style": 0.35,
                 "use_speaker_boost": True,
             },
         },

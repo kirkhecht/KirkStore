@@ -36,7 +36,7 @@ IMAGE_DIRS = {"cold_open": COLD_OPEN_DIR, "creation": CREATION_DIR}
 
 # ── ElevenLabs config ───────────────────────────────────────────────────────────
 # David: Deep and Engaging Storyteller — emotional, mature, cinematic
-VOICE_ID  = "BNgbHR0DNeZixGQVzloa"
+VOICE_ID  = "kmjgtnoB3DMXA9wZpudu"
 EL_MODEL  = "eleven_multilingual_v2"
 SILENCE_PAD = 0.45   # seconds of silence added after each narration clip
 
@@ -244,9 +244,9 @@ def generate_tts(text, out_path, key):
             "text": text,
             "model_id": EL_MODEL,
             "voice_settings": {
-                "stability": 0.60,
+                "stability": 0.55,
                 "similarity_boost": 0.80,
-                "style": 0.15,
+                "style": 0.35,
                 "use_speaker_boost": True,
             },
         },
