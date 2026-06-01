@@ -1,5 +1,11 @@
 # Generated pipeline outputs
-project/
+project/documentary/clips/
+project/documentary/tcards/
+project/documentary/audio/
+project/documentary/*.mp4
+project/documentary/stories/*.mp4
+project/documentary/stories/subtitles/
+project/images/
 
 # Audio source files (large binaries — keep local only)
 audio/
