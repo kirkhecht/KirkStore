@@ -17,6 +17,7 @@ from pathlib import Path
 STORIES_DIR = Path("project/documentary/stories")
 MUSIC_DIR   = Path("project/audio/music")
 SFX_DIR     = Path("project/audio/sfx")
+SRT_DIR     = Path("project/documentary/stories/subtitles")
 OUT_DIR     = Path("project/documentary/stories/mixed")
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -209,6 +210,25 @@ def mix_story(story_file, music_assign, sfx_name, out_file, video_bitrate=None):
     if r.returncode != 0:
         print(f"  ✗ FFmpeg error:\n{r.stderr[-500:]}")
         return False
+
+    # Embed SRT as optional soft subtitle track if available
+    srt_file = SRT_DIR / out_file.name.replace(".mp4", ".srt")
+    if srt_file.exists():
+        tmp = out_file.with_suffix(".tmp.mp4")
+        out_file.rename(tmp)
+        r2 = subprocess.run([
+            "ffmpeg", "-y",
+            "-i", str(tmp),
+            "-i", str(srt_file),
+            "-c", "copy",
+            "-c:s", "mov_text",
+            "-metadata:s:s:0", "language=eng",
+            str(out_file),
+        ], capture_output=True, text=True)
+        tmp.unlink()
+        if r2.returncode != 0:
+            print(f"  ⚠ Subtitle embed failed (video still OK): {r2.stderr[-200:]}")
+
     return True
 
 

@@ -42,7 +42,7 @@ FINAL_OUT  = OUTPUT_DIR / "genesis_patriarchs.mp4"
 for d in [AUDIO_DIR, CLIPS_DIR, TCARDS_DIR, OUTPUT_DIR]:
     d.mkdir(parents=True, exist_ok=True)
 
-VOICE_ID    = "BNgbHR0DNeZixGQVzloa"
+VOICE_ID    = "kmjgtnoB3DMXA9wZpudu"  # Brady J — Gripping Suspense
 EL_MODEL    = "eleven_multilingual_v2"
 SILENCE_PAD = 0.45
 
@@ -324,6 +324,27 @@ TITLES = [(item[1], item[2], item[3]) for item in CONTENT if item[0] == "title"]
 TOTAL_SCENES = len(SCENES)
 
 
+SRT_DIR = Path("project/documentary/stories/subtitles")
+
+# Which scenes belong to each story delivery file
+STORY_SCENE_RANGES = {
+    "06_calling_of_abram.mp4":        (1,   18),
+    "07_covenant_with_god.mp4":       (19,  34),
+    "08_the_three_visitors.mp4":      (35,  46),
+    "09_sodom_and_gomorrah.mp4":      (47,  64),
+    "10_birth_of_isaac.mp4":          (65,  76),
+    "11_binding_of_isaac.mp4":        (77,  94),
+    "12_rebekah_wife_of_isaac.mp4":   (95,  106),
+    "13_jacob_and_esau.mp4":          (107, 126),
+    "14_jacobs_dream_at_bethel.mp4":  (127, 136),
+    "15_jacob_leah_and_rachel.mp4":   (137, 150),
+    "16_jacob_wrestles_with_god.mp4": (151, 162),
+    "17_joseph_and_his_brothers.mp4": (163, 180),
+    "18_joseph_in_egypt.mp4":         (181, 196),
+    "19_pharaohs_dreams.mp4":         (197, 218),
+}
+
+
 def load_env():
     env = {}
     p = Path(".env")
@@ -344,6 +365,51 @@ def get_duration(path):
     return float(r.stdout.strip())
 
 
+def fmt_srt_time(seconds):
+    h = int(seconds // 3600)
+    m = int((seconds % 3600) // 60)
+    s = int(seconds % 60)
+    ms = int((seconds % 1) * 1000)
+    return f"{h:02d}:{m:02d}:{s:02d},{ms:03d}"
+
+
+def build_story_srt(story_file, scene_start, scene_end):
+    """Generate SRT content for one story using audio file durations."""
+    import re
+    TITLE_DUR = 5.0
+    entries = []
+    entry_n = 1
+    t = TITLE_DUR  # start after title card
+
+    for item in CONTENT:
+        if item[0] != "scene":
+            continue
+        scene_num, filename, narration, motion = item[1], item[2], item[3], item[4]
+        if not (scene_start <= scene_num <= scene_end):
+            continue
+
+        audio_file = AUDIO_DIR / f"{scene_num:03d}.mp3"
+        if not audio_file.exists():
+            t += 3.0 + SILENCE_PAD  # rough estimate if missing
+            continue
+
+        audio_dur = get_duration(audio_file)
+        clean = re.sub(r'\[[^\]]+\]', '', narration).strip()
+        clean = re.sub(r'\s+', ' ', clean)
+
+        if clean:
+            entries.append(
+                f"{entry_n}\n"
+                f"{fmt_srt_time(t)} --> {fmt_srt_time(t + audio_dur)}\n"
+                f"{clean}\n"
+            )
+            entry_n += 1
+
+        t += audio_dur + SILENCE_PAD
+
+    return "\n".join(entries)
+
+
 def generate_tts(text, out_path, key):
     resp = requests.post(
         f"https://api.elevenlabs.io/v1/text-to-speech/{VOICE_ID}",
@@ -352,9 +418,9 @@ def generate_tts(text, out_path, key):
             "text": text,
             "model_id": EL_MODEL,
             "voice_settings": {
-                "stability": 0.60,
+                "stability": 0.55,
                 "similarity_boost": 0.80,
-                "style": 0.15,
+                "style": 0.35,
                 "use_speaker_boost": True,
             },
         },
@@ -588,6 +654,18 @@ def main():
 
     size_mb = FINAL_OUT.stat().st_size / 1_000_000
     print(f"\n✓ {FINAL_OUT} ({size_mb:.1f} MB)")
+
+    # ── Phase 4: SRT subtitle files ───────────────────────────────────────────
+    print(f"\n{'='*60}")
+    print(f"  Phase 4: Generating SRT subtitle files")
+    print(f"{'='*60}")
+    SRT_DIR.mkdir(parents=True, exist_ok=True)
+    for story_file, (sc_start, sc_end) in STORY_SCENE_RANGES.items():
+        srt_path = SRT_DIR / story_file.replace(".mp4", ".srt")
+        srt_content = build_story_srt(story_file, sc_start, sc_end)
+        srt_path.write_text(srt_content, encoding="utf-8")
+        line_count = srt_content.count("\n\n") + 1
+        print(f"  ✓ {srt_path.name} ({line_count} entries)")
 
     web_out = OUTPUT_DIR / "genesis_patriarchs_720p.mp4"
     print("Encoding 720p web version...")
