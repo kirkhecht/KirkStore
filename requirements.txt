@@ -1,0 +1,9 @@
+mutagen>=1.47.0
+openai-whisper>=20231117
+anthropic>=0.40.0
+pydub>=0.25.1
+nltk>=3.8.1
+numpy>=1.24.0
+pandas>=2.0.0
+tqdm>=4.65.0
+ffmpeg-python>=0.2.0
